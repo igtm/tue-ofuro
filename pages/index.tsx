@@ -1,6 +1,5 @@
 import Link from "next/link";
 import React from "react";
-import "tailwindcss/tailwind.css";
 
 export default function Page() {
   return (
@@ -8,6 +7,78 @@ export default function Page() {
       <Link href={`/podcast`}>
         <a>Podcast</a>
       </Link>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
+      <div>hogehgoe</div>
     </div>
   );
 }
