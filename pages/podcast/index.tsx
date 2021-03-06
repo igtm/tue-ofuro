@@ -11,11 +11,12 @@ const Page: NextPage<Props> = ({ episodes }) => {
     <div>
       <ul>
         {episodes.map((e) => (
-          <li>
+          <li key={e.guid} className="p-4">
+            <div className="text-gray-500">
+              {new Date(Date.parse(e.pubDate)).toLocaleDateString()}
+            </div>
             <Link href={`/podcast/${e.guid}`}>
-              <a>
-                {e.title} {e.pubDate}
-              </a>
+              <a>{e.title}</a>
             </Link>
           </li>
         ))}
