@@ -1,20 +1,22 @@
 import { DetailedHTMLProps, InputHTMLAttributes, VFC } from "react";
 
-// 親からの className 上書きを防止するため、props には className を含めない
-type InputElementPropsWithoutClassName = Omit<
-  DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
-  "className"
->;
-
 type Props = {
   /**
    * label 要素に渡す文字列
    */
   labelString?: string;
-} & InputElementPropsWithoutClassName;
+
+  /**
+   * 補足説明として表示する文字列
+   */
+  description?: {
+    id: string;
+    string: string;
+  };
+} & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
 export const Input: VFC<Props> = (props) => {
-  const { labelString, ...inputElementProps } = props;
+  const { labelString, description, ...inputElementProps } = props;
 
   return (
     <div className="grid gap-2">
@@ -25,9 +27,16 @@ export const Input: VFC<Props> = (props) => {
       ) : null}
 
       <input
-        className="w-full border border-gray-300 px-4 py-2 rounded bg-white text-base text-gray-800"
         {...inputElementProps}
+        className="w-full border border-gray-300 px-4 py-2 rounded bg-white text-base text-gray-800"
+        aria-describedby={props.description?.id}
       />
+
+      {props.description != null ? (
+        <div id={props.description.id} className="text-xs text-gray-600">
+          <p>{props.description.string}</p>
+        </div>
+      ) : null}
     </div>
   );
 };
