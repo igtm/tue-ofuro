@@ -1,8 +1,8 @@
 import { convertAlphabetStringToNumberString } from "./convertAlphabetStringToNumberString";
 import { extractConsonantString } from "./extractConsonantString";
 import { extractVowelString } from "./extractVowelString";
-import { CabalaNumber, isCabalaNumbers } from "./typeCabalaNumber";
-import { isModernNumbers, ModernNumber } from "./typeModernNumber";
+import { CabalaNumber, isCabalaNumber } from "./typeCabalaNumber";
+import { isModernNumber, ModernNumber } from "./typeModernNumber";
 
 export const calculateNumbers = (
   bdayYear: string,
@@ -74,6 +74,15 @@ const calculateFutureNumber = (bdayMonth: string, bdayDay: string) => {
 const calculateModernNumber = (
   numberString: string
 ): ModernNumber | undefined => {
+  const number = parseInt(numberString, 10);
+  if (isNaN(number)) {
+    return;
+  }
+
+  if (isModernNumber(number)) {
+    return number;
+  }
+
   const sum = Array.from(numberString).reduce<number | undefined>(
     (acc, value) => {
       const number = parseInt(value, 10);
@@ -83,23 +92,28 @@ const calculateModernNumber = (
 
       if (acc == null) {
         return number;
-      } else {
-        return acc + number;
       }
+
+      return acc + number;
     },
     undefined
   );
 
-  if (sum === undefined || isModernNumbers(sum)) {
-    return sum;
-  } else {
-    return calculateModernNumber(`${sum}`);
-  }
+  return calculateModernNumber(`${sum}`);
 };
 
 const calculateCabalaNumber = (
   numberString: string
 ): CabalaNumber | undefined => {
+  const number = parseInt(numberString, 10);
+  if (isNaN(number)) {
+    return;
+  }
+
+  if (isCabalaNumber(number)) {
+    return number;
+  }
+
   const sum = Array.from(numberString).reduce<number | undefined>(
     (acc, value) => {
       const number = parseInt(value, 10);
@@ -109,16 +123,12 @@ const calculateCabalaNumber = (
 
       if (acc == null) {
         return number;
-      } else {
-        return acc + number;
       }
+
+      return acc + number;
     },
     undefined
   );
 
-  if (sum === undefined || isCabalaNumbers(sum)) {
-    return sum;
-  } else {
-    return calculateCabalaNumber(`${sum}`);
-  }
+  return calculateCabalaNumber(`${sum}`);
 };
