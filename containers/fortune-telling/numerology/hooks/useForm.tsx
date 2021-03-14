@@ -1,7 +1,7 @@
 import { Dispatch, FormEvent, SetStateAction, useCallback } from "react";
-import { calculateNumbers } from "./calculateNumbers";
-import { CabalaNumber } from "./typeCabalaNumber";
-import { ModernNumber } from "./typeModernNumber";
+import { calculateNumbers } from "../functions/calculateNumbers";
+import { CabalaNumber } from "../models/typeCabalaNumber";
+import { ModernNumber } from "../models/typeModernNumber";
 
 type Args = {
   bdayYear: string;

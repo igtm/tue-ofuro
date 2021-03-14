@@ -1,8 +1,8 @@
+import { CabalaNumber, isCabalaNumber } from "../models/typeCabalaNumber";
+import { isModernNumber, ModernNumber } from "../models/typeModernNumber";
 import { convertAlphabetStringToNumberString } from "./convertAlphabetStringToNumberString";
 import { extractConsonantString } from "./extractConsonantString";
 import { extractVowelString } from "./extractVowelString";
-import { CabalaNumber, isCabalaNumber } from "./typeCabalaNumber";
-import { isModernNumber, ModernNumber } from "./typeModernNumber";
 
 export const calculateNumbers = (
   bdayYear: string,

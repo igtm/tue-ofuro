@@ -1,6 +1,6 @@
 import { VFC } from "react";
-import { CabalaNumber } from "../../containers/fortune-telling/numerology/typeCabalaNumber";
-import { ModernNumber } from "../../containers/fortune-telling/numerology/typeModernNumber";
+import { CabalaNumber } from "../../containers/fortune-telling/numerology/models/typeCabalaNumber";
+import { ModernNumber } from "../../containers/fortune-telling/numerology/models/typeModernNumber";
 
 type Props = {
   title: string;

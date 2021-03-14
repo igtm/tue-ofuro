@@ -1,4 +1,4 @@
-import { isVowel } from "./typeVowels";
+import { isVowel } from "../models/typeVowels";
 
 export const extractConsonantString = (string: string): string => {
   const strings = Array.from(string);

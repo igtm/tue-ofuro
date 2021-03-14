@@ -2,7 +2,7 @@ import {
   AlphabetNumber,
   convertAlphabetToNumber,
   isAlphabet,
-} from "./typeAlphabetNumber";
+} from "../models/typeAlphabetNumber";
 
 export const convertAlphabetStringToNumberString = (alphabetString: string) => {
   const alphabets = Array.from(alphabetString);

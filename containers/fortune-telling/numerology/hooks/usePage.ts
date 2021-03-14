@@ -1,15 +1,15 @@
 import { ChangeEvent, useState } from "react";
-import { convertStringToRome } from "./convertStringToRome";
-import { CabalaNumber } from "./typeCabalaNumber";
-import { ModernNumber } from "./typeModernNumber";
+import { convertStringToRome } from "../functions/convertStringToRome";
+import { validateBdayDay } from "../functions/validators/validateBdayDay";
+import { validateBdayMonth } from "../functions/validators/validateBdayMonth";
+import { validateBdayYear } from "../functions/validators/validateBdayYear";
+import { validateFamilyNameHiragana } from "../functions/validators/validateFamilyNameHiragana";
+import { validateGivenNameHiragana } from "../functions/validators/validateGivenNameHiragana";
+import { validateNameRome } from "../functions/validators/validateNameRome";
+import { CabalaNumber } from "../models/typeCabalaNumber";
+import { ModernNumber } from "../models/typeModernNumber";
 import { useForm } from "./useForm";
 import { useInput } from "./useInput";
-import { validateBdayDay } from "./validateBdayDay";
-import { validateBdayMonth } from "./validateBdayMonth";
-import { validateBdayYear } from "./validateBdayYear";
-import { validateFamilyNameHiragana } from "./validateFamilyNameHiragana";
-import { validateGivenNameHiragana } from "./validateGivenNameHiragana";
-import { validateNameRome } from "./validateNameRome";
 
 export const usePage = () => {
   const [lifePathNumber, setLifePathNumber] = useState<

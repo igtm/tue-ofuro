@@ -2,7 +2,7 @@ import {
   convertHiraganaToHiraganaAlphabet,
   HiraganaAlphabet,
   isHiragana,
-} from "./typeHiraganaAlphabet";
+} from "../models/typeHiraganaAlphabet";
 
 export const convertStringToRome = (string: string) => {
   const hiraganas = Array.from(string);

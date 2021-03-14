@@ -3,7 +3,7 @@ import { H1 } from "../../../components/atoms/H1";
 import { H2 } from "../../../components/atoms/H2";
 import { Input } from "../../../components/atoms/Input";
 import { NumberCard } from "../../../components/atoms/NumberCard";
-import { usePage } from "./usePage";
+import { usePage } from "./hooks/usePage";
 
 export default function Page() {
   const {
