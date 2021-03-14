@@ -4,6 +4,11 @@ import { CabalaNumber } from "./typeCabalaNumber";
 import { ModernNumber } from "./typeModernNumber";
 import { useForm } from "./useForm";
 import { useInput } from "./useInput";
+import { validateBdayDay } from "./validateBdayDay";
+import { validateBdayMonth } from "./validateBdayMonth";
+import { validateBdayYear } from "./validateBdayYear";
+import { validateNameHiragana } from "./validateNameHiragana";
+import { validateNameRome } from "./validateNameRome";
 
 export const usePage = () => {
   const [lifePathNumber, setLifePathNumber] = useState<
@@ -36,22 +41,46 @@ export const usePage = () => {
 
   const [futureNumber, setFutureNumber] = useState<CabalaNumber | undefined>();
 
-  const { value: bdayYear, handleChange: handleChangeBdayYear } = useInput();
+  const {
+    value: bdayYear,
+    errors: bdayYearErrors,
+    touched: bdayYearTouched,
+    handleChange: handleChangeBdayYear,
+    handleBlur: handleBlurBdayYear,
+  } = useInput("", validateBdayYear);
 
-  const { value: bdayMonth, handleChange: handleChangeBdayMonth } = useInput();
+  const {
+    value: bdayMonth,
+    errors: bdayMonthErrors,
+    touched: bdayMonthTouched,
+    handleChange: handleChangeBdayMonth,
+    handleBlur: handleBlurBdayMonth,
+  } = useInput("", validateBdayMonth);
 
-  const { value: bdayDay, handleChange: handleChangeBdayDay } = useInput();
+  const {
+    value: bdayDay,
+    errors: bdayDayErrors,
+    touched: bdayDayTouched,
+    handleChange: handleChangeBdayDay,
+    handleBlur: handleBlurBdayDay,
+  } = useInput("", validateBdayDay);
 
   const {
     value: nameHiragana,
+    errors: nameHiraganaErrors,
+    touched: nameHiraganaTouched,
     handleChange: handleChangeNameHiragana,
-  } = useInput();
+    handleBlur: handleBlurNameHiragana,
+  } = useInput("", validateNameHiragana);
 
   const {
     value: nameRome,
     setValue: setNameRome,
+    errors: nameRomeErrors,
+    touched: nameRomeTouched,
     handleChange: handleChangeNameRome,
-  } = useInput();
+    handleBlur: handleBlurNameRome,
+  } = useInput("", validateNameRome);
 
   const onChangeNameHiragana = (event: ChangeEvent<HTMLInputElement>) => {
     handleChangeNameHiragana(event);
@@ -90,23 +119,38 @@ export const usePage = () => {
     },
     bdayYearInputElementProps: {
       value: bdayYear,
+      errors: bdayYearErrors,
+      touched: bdayYearTouched,
       onChange: handleChangeBdayYear,
+      onBlur: handleBlurBdayYear,
     },
     bdayMonthInputElementProps: {
       value: bdayMonth,
+      errors: bdayMonthErrors,
+      touched: bdayMonthTouched,
       onChange: handleChangeBdayMonth,
+      onBlur: handleBlurBdayMonth,
     },
     bdayDayInputElementProps: {
       value: bdayDay,
+      errors: bdayDayErrors,
+      touched: bdayDayTouched,
       onChange: handleChangeBdayDay,
+      onBlur: handleBlurBdayDay,
     },
     nameHiraganaInputElementProps: {
       value: nameHiragana,
+      errors: nameHiraganaErrors,
+      touched: nameHiraganaTouched,
       onChange: onChangeNameHiragana,
+      onBlur: handleBlurNameHiragana,
     },
     nameRomeInputElementProps: {
       value: nameRome,
+      errors: nameRomeErrors,
+      touched: nameRomeTouched,
       onChange: handleChangeNameRome,
+      onBlur: handleBlurNameRome,
     },
     formElementProps: {
       onSubmit,

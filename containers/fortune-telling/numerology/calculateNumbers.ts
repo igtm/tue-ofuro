@@ -19,7 +19,7 @@ export const calculateNumbers = (
     soulNumber: calculateSoulNumber(nameRome),
     personalityNumber: calculatePersonalityNumber(nameRome),
     birthdayNumber: calculateBirthdayNumber(bdayDay),
-    maturityNumber: calculateModernNumber(`${lifePathNumber}${destinyNumber}`),
+    maturityNumber: calculateMaturityNumber(lifePathNumber, destinyNumber),
     pastNumber: calculatePastNumber(bdayDay),
     presentNumber: calculatePresentNumber(bdayYear, bdayMonth, bdayDay),
     futureNumber: calculateFutureNumber(bdayMonth, bdayDay),
@@ -53,6 +53,16 @@ const calculatePersonalityNumber = (nameRome: string) => {
 
 const calculateBirthdayNumber = (bdayDay: string) => {
   return calculateModernNumber(bdayDay);
+};
+
+const calculateMaturityNumber = (
+  lifePathNumber?: ModernNumber,
+  destinyNumber?: ModernNumber
+) => {
+  if (lifePathNumber == null || destinyNumber == null) {
+    return;
+  }
+  return calculateModernNumber(`${lifePathNumber}${destinyNumber}`);
 };
 
 const calculatePastNumber = (bdayDay: string) => {

@@ -38,7 +38,13 @@ export default function Page() {
                       pattern="\d*"
                       autoComplete="bday-year"
                       value={bdayYearInputElementProps.value}
+                      description={{
+                        id: "bday-year-description",
+                        errors: bdayYearInputElementProps.errors,
+                      }}
+                      touched={bdayYearInputElementProps.touched}
                       onChange={bdayYearInputElementProps.onChange}
+                      onBlur={bdayYearInputElementProps.onBlur}
                     />
                   </div>
 
@@ -52,7 +58,13 @@ export default function Page() {
                       pattern="\d*"
                       autoComplete="bday-month"
                       value={bdayMonthInputElementProps.value}
+                      description={{
+                        id: "bday-month-description",
+                        errors: bdayMonthInputElementProps.errors,
+                      }}
+                      touched={bdayMonthInputElementProps.touched}
                       onChange={bdayMonthInputElementProps.onChange}
+                      onBlur={bdayMonthInputElementProps.onBlur}
                     />
                   </div>
 
@@ -66,7 +78,13 @@ export default function Page() {
                       pattern="\d*"
                       autoComplete="bday-day"
                       value={bdayDayInputElementProps.value}
+                      description={{
+                        id: "bday-day-description",
+                        errors: bdayDayInputElementProps.errors,
+                      }}
+                      touched={bdayDayInputElementProps.touched}
                       onChange={bdayDayInputElementProps.onChange}
+                      onBlur={bdayDayInputElementProps.onBlur}
                     />
                   </div>
 
@@ -78,7 +96,13 @@ export default function Page() {
                       name="name-hiragana"
                       pattern="[ぁ-ん]*"
                       value={nameHiraganaInputElementProps.value}
+                      description={{
+                        id: "name-hiragana-description",
+                        errors: nameHiraganaInputElementProps.errors,
+                      }}
+                      touched={nameHiraganaInputElementProps.touched}
                       onChange={nameHiraganaInputElementProps.onChange}
+                      onBlur={nameHiraganaInputElementProps.onBlur}
                     />
                   </div>
 
@@ -90,12 +114,15 @@ export default function Page() {
                       name="name-rome"
                       pattern="[a-z]*"
                       value={nameRomeInputElementProps.value}
-                      onChange={nameRomeInputElementProps.onChange}
                       description={{
                         id: "name-rome-description",
-                        string:
+                        note:
                           "長音は次のように修正してください。長音の u は表記しない、長音の o は末尾にある場合のみ表記する。",
+                        errors: nameRomeInputElementProps.errors,
                       }}
+                      touched={nameRomeInputElementProps.touched}
+                      onChange={nameRomeInputElementProps.onChange}
+                      onBlur={nameRomeInputElementProps.onBlur}
                     />
                   </div>
                 </div>
