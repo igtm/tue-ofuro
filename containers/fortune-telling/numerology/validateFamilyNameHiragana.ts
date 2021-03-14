@@ -1,4 +1,4 @@
-export const validateNameHiragana = (value: string) => {
+export const validateFamilyNameHiragana = (value: string) => {
   if (value === "") {
     return ["入力してください。"];
   }

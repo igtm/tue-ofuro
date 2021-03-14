@@ -11,7 +11,8 @@ export default function Page() {
     bdayYearInputElementProps,
     bdayMonthInputElementProps,
     bdayDayInputElementProps,
-    nameHiraganaInputElementProps,
+    familyNameHiraganaInputElementProps,
+    givenNameHiraganaInputElementProps,
     nameRomeInputElementProps,
     formElementProps,
   } = usePage();
@@ -27,8 +28,8 @@ export default function Page() {
 
             <form onSubmit={formElementProps.onSubmit} noValidate={true}>
               <div className="grid gap-y-8">
-                <div className="grid grid-flow-col grid-cols-3 gap-x-2 gap-y-4">
-                  <div className="row-start-1">
+                <div className="grid grid-flow-col grid-cols-6 gap-x-2 gap-y-4">
+                  <div className="row-start-1 col-start-1 col-end-3">
                     <Input
                       labelString="誕生年"
                       type="text"
@@ -48,7 +49,7 @@ export default function Page() {
                     />
                   </div>
 
-                  <div className="row-start-1">
+                  <div className="row-start-1 col-start-3 col-end-5">
                     <Input
                       labelString="誕生月"
                       type="text"
@@ -68,7 +69,7 @@ export default function Page() {
                     />
                   </div>
 
-                  <div className="row-start-1">
+                  <div className="row-start-1 col-start-5 col-end-7">
                     <Input
                       labelString="誕生日"
                       type="text"
@@ -90,23 +91,41 @@ export default function Page() {
 
                   <div className="row-start-2 col-start-1 col-end-4">
                     <Input
-                      labelString="氏名（ひらがな）"
+                      labelString="苗字（ひらがな）"
                       type="text"
-                      id="name-hiragana"
-                      name="name-hiragana"
+                      id="family-name-hiragana"
+                      name="family-name-hiragana"
                       pattern="[ぁ-ん]*"
-                      value={nameHiraganaInputElementProps.value}
+                      value={familyNameHiraganaInputElementProps.value}
                       description={{
-                        id: "name-hiragana-description",
-                        errors: nameHiraganaInputElementProps.errors,
+                        id: "family-name-hiragana-description",
+                        errors: familyNameHiraganaInputElementProps.errors,
                       }}
-                      touched={nameHiraganaInputElementProps.touched}
-                      onChange={nameHiraganaInputElementProps.onChange}
-                      onBlur={nameHiraganaInputElementProps.onBlur}
+                      touched={familyNameHiraganaInputElementProps.touched}
+                      onChange={familyNameHiraganaInputElementProps.onChange}
+                      onBlur={familyNameHiraganaInputElementProps.onBlur}
                     />
                   </div>
 
-                  <div className="row-start-3 col-start-1 col-end-4">
+                  <div className="row-start-2 col-start-4 col-end-7">
+                    <Input
+                      labelString="名前（ひらがな）"
+                      type="text"
+                      id="given-name-hiragana"
+                      name="given-name-hiragana"
+                      pattern="[ぁ-ん]*"
+                      value={givenNameHiraganaInputElementProps.value}
+                      description={{
+                        id: "given-name-hiragana-description",
+                        errors: givenNameHiraganaInputElementProps.errors,
+                      }}
+                      touched={givenNameHiraganaInputElementProps.touched}
+                      onChange={givenNameHiraganaInputElementProps.onChange}
+                      onBlur={givenNameHiraganaInputElementProps.onBlur}
+                    />
+                  </div>
+
+                  <div className="row-start-3 col-start-1 col-end-7">
                     <Input
                       labelString="氏名（ローマ字）"
                       type="text"

@@ -34,8 +34,11 @@ export const convertStringToRome = (string: string) => {
 
   const alphabets: string[] = [];
 
-  // 撥音（「ん」）、撥音（「っ」）の変化
+  // 撥音（「ん」）、撥音（「っ」）、長音（「う」「お」）の変化
   for (let i = 0; i < hiraganaAlphabets.length; i++) {
+    const z = hiraganaAlphabets[i - 1] as
+      | HiraganaAlphabet[][number]
+      | undefined;
     const a = hiraganaAlphabets[i];
     const b = hiraganaAlphabets[i + 1] as
       | HiraganaAlphabet[][number]
@@ -67,8 +70,18 @@ export const convertStringToRome = (string: string) => {
       } else {
         // 撥音（「っ」）に続く文字がない場合は無視する
       }
+    } else if (z != null && (z.endsWith("u") || z.endsWith("o")) && a === "u") {
+      // 長音の u は常に省略する
+    } else if (z != null && z.endsWith("o") && a === "o") {
+      // 長音の o の場合
+      if (b === undefined) {
+        // 長音の o が末尾にある場合は省略しない
+        alphabets.push(a);
+      } else {
+        // 長音の o が末尾以外にある場合は省略する
+      }
     } else {
-      // 撥音（「ん」）、撥音（「っ」）以外の場合は変化なし
+      // 撥音、撥音、長音以外の場合は変化なし
       alphabets.push(a);
     }
   }

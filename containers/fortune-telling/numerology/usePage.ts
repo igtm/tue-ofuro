@@ -7,7 +7,8 @@ import { useInput } from "./useInput";
 import { validateBdayDay } from "./validateBdayDay";
 import { validateBdayMonth } from "./validateBdayMonth";
 import { validateBdayYear } from "./validateBdayYear";
-import { validateNameHiragana } from "./validateNameHiragana";
+import { validateFamilyNameHiragana } from "./validateFamilyNameHiragana";
+import { validateGivenNameHiragana } from "./validateGivenNameHiragana";
 import { validateNameRome } from "./validateNameRome";
 
 export const usePage = () => {
@@ -66,12 +67,20 @@ export const usePage = () => {
   } = useInput("", validateBdayDay);
 
   const {
-    value: nameHiragana,
-    errors: nameHiraganaErrors,
-    touched: nameHiraganaTouched,
-    handleChange: handleChangeNameHiragana,
-    handleBlur: handleBlurNameHiragana,
-  } = useInput("", validateNameHiragana);
+    value: familyNameHiragana,
+    errors: familyNameHiraganaErrors,
+    touched: familyNameHiraganaTouched,
+    handleChange: handleChangeFamilyNameHiragana,
+    handleBlur: handleBlurFamilyNameHiragana,
+  } = useInput("", validateFamilyNameHiragana);
+
+  const {
+    value: givenNameHiragana,
+    errors: givenNameHiraganaErrors,
+    touched: givenNameHiraganaTouched,
+    handleChange: handleChangeGivenNameHiragana,
+    handleBlur: handleBlurGivenNameHiragana,
+  } = useInput("", validateGivenNameHiragana);
 
   const {
     value: nameRome,
@@ -82,10 +91,21 @@ export const usePage = () => {
     handleBlur: handleBlurNameRome,
   } = useInput("", validateNameRome);
 
-  const onChangeNameHiragana = (event: ChangeEvent<HTMLInputElement>) => {
-    handleChangeNameHiragana(event);
+  const onChangeFamilyNameHiragana = (event: ChangeEvent<HTMLInputElement>) => {
+    handleChangeFamilyNameHiragana(event);
 
-    const nameRome = convertStringToRome(event.target.value);
+    const nameRome =
+      convertStringToRome(event.target.value) +
+      convertStringToRome(givenNameHiragana);
+    setNameRome(nameRome);
+  };
+
+  const onChangeGivenNameHiragana = (event: ChangeEvent<HTMLInputElement>) => {
+    handleChangeGivenNameHiragana(event);
+
+    const nameRome =
+      convertStringToRome(familyNameHiragana) +
+      convertStringToRome(event.target.value);
     setNameRome(nameRome);
   };
 
@@ -138,12 +158,19 @@ export const usePage = () => {
       onChange: handleChangeBdayDay,
       onBlur: handleBlurBdayDay,
     },
-    nameHiraganaInputElementProps: {
-      value: nameHiragana,
-      errors: nameHiraganaErrors,
-      touched: nameHiraganaTouched,
-      onChange: onChangeNameHiragana,
-      onBlur: handleBlurNameHiragana,
+    familyNameHiraganaInputElementProps: {
+      value: familyNameHiragana,
+      errors: familyNameHiraganaErrors,
+      touched: familyNameHiraganaTouched,
+      onChange: onChangeFamilyNameHiragana,
+      onBlur: handleBlurFamilyNameHiragana,
+    },
+    givenNameHiraganaInputElementProps: {
+      value: givenNameHiragana,
+      errors: givenNameHiraganaErrors,
+      touched: givenNameHiraganaTouched,
+      onChange: onChangeGivenNameHiragana,
+      onBlur: handleBlurGivenNameHiragana,
     },
     nameRomeInputElementProps: {
       value: nameRome,
