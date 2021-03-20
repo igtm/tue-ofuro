@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { NextPage } from "next";
-import { PodcastEpisode } from "../../types";
+import { GetStaticProps, NextPage } from "next";
+import { isPodcastEpisodes, PodcastEpisode } from "../../types";
+import Parser from "rss-parser";
 
 type Props = {
   episodes: PodcastEpisode[];
@@ -27,13 +28,27 @@ const Page: NextPage<Props> = ({ episodes }) => {
 
 export default Page;
 
-export async function getStaticProps() {
-  const res = await fetch(`${process.env.WEBAPP_URL}/api/podcast`);
-  const data = await res.json();
+const parser: Parser = new Parser();
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  try {
+    const feed = await parser.parseURL(
+      "https://anchor.fm/s/2b3dd74c/podcast/rss"
+    );
+    if (isPodcastEpisodes(feed.items)) {
+      return {
+        props: {
+          episodes: feed.items as PodcastEpisode[],
+        },
+      };
+    }
+  } catch (error) {
+    console.error(error);
+  }
 
   return {
     props: {
-      episodes: data.items,
+      episodes: [],
     },
   };
-}
+};

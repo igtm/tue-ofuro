@@ -1,5 +1,10 @@
 import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
-import { PodcastEpisode } from "../../types";
+import {
+  EmptyPodcastEpisode,
+  isPodcastEpisode,
+  PodcastEpisode,
+} from "../../types";
+import Parser from "rss-parser";
 
 type Props = { episode: PodcastEpisode };
 
@@ -10,17 +15,32 @@ const getAllEpisodeIds = async (): Promise<string[]> => {
   );
 };
 
+const parser: Parser = new Parser();
+
 // revalidate する
-export const getStaticProps: GetStaticProps = async (
+export const getStaticProps: GetStaticProps<Props> = async (
   ctx: GetStaticPropsContext
 ) => {
   const guid = ctx.params?.guid;
-  const res = await fetch(`${process.env.WEBAPP_URL}/api/podcast/${guid}`);
-  const data = await res.json();
+  try {
+    const feed = await parser.parseURL(
+      "https://anchor.fm/s/2b3dd74c/podcast/rss"
+    );
+    const episode = feed.items.find((f) => f.guid === guid);
+    if (isPodcastEpisode(episode)) {
+      return {
+        props: {
+          episode: episode ?? EmptyPodcastEpisode,
+        },
+      };
+    }
+  } catch (error) {
+    console.error(error);
+  }
 
   return {
     props: {
-      episode: data,
+      episode: EmptyPodcastEpisode,
     },
   };
 };
