@@ -9,13 +9,6 @@ import Parser from "rss-parser";
 
 type Props = { episode: PodcastEpisode };
 
-const getAllEpisodeIds = async (): Promise<string[]> => {
-  const res = await fetch(`${process.env.WEBAPP_URL}/api/podcast`);
-  return (await res.json()).items.map(
-    (episode: PodcastEpisode) => episode.guid
-  );
-};
-
 const parser: Parser = new Parser();
 
 // revalidate する
