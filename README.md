@@ -43,13 +43,14 @@ Comming Soon
  - @gyo <Header> style
 
 # 3回目(今日やること)
-- ロゴ作る
+- ロゴ作る(figma)
 
 # 4回目
 - vercel デプロイ時の.env直す
 - podcast
   - 一覧キレイにする
   - 詳細descriptionとかフォーマットする
+- podcastではなく,「アーカイブ」にして Youtubeの動画もlistに入れる
 
 ```
 <Header />
