@@ -135,12 +135,12 @@ const PodcastEpisodeListItem: FC<ListItemProps> = (props) => {
   );
 };
 
-function playTime(t) {
+function playTime(t: number) {
   let hms = "";
   const h = (t / 3600) | 0;
   const m = ((t % 3600) / 60) | 0;
   const s = t % 60;
-  const z2 = (v) => {
+  const z2 = (v: number) => {
     const s = "00" + v;
     return s.substr(s.length - 2, 2);
   };
