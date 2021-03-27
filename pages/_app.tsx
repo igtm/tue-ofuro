@@ -6,7 +6,7 @@ import "../styles/dangerous.css";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative z-0">
       <div className="flex-shrink-0 sticky top-0 z-10">
         <Header />
       </div>
