@@ -1,8 +1,9 @@
+import Head from "next/head";
 import { Button } from "../../../components/atoms/Button";
-import { PageTitle } from "../../../components/atoms/PageTitle";
-import { SectionTitle } from "../../../components/atoms/SectionTitle";
 import { Input } from "../../../components/atoms/Input";
 import { NumberCard } from "../../../components/atoms/NumberCard";
+import { PageTitle } from "../../../components/atoms/PageTitle";
+import { SectionTitle } from "../../../components/atoms/SectionTitle";
 import { usePage } from "./hooks/usePage";
 
 export default function Page() {
@@ -19,6 +20,10 @@ export default function Page() {
 
   return (
     <>
+      <Head>
+        <title>数秘術 | 占い | 火曜日のおフロ</title>
+      </Head>
+
       <main className="grid gap-y-12">
         <PageTitle>数秘術</PageTitle>
 
