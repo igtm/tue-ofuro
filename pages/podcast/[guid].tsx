@@ -6,6 +6,7 @@ import {
   PodcastEpisode,
 } from "../../types";
 import Parser from "rss-parser";
+import React, { useMemo, FC } from "react";
 
 type Props = { episode: PodcastEpisode };
 
@@ -61,12 +62,53 @@ export const getStaticPaths = async () => {
   };
 };
 
-const Page: NextPage<Props> = ({ episode }) => {
+type ContentProps = {
+  content: string;
+};
+
+const EpisodeContent: FC<ContentProps> = (props) => {
+  // TODO: dangerouslySetInnerHTML を外す
+  // 外部の API から取得した値を dangerouslySetInnerHTML で出力している
+  // 出力された HTML にスタイルをあてにくい
+  // Anchor の RSS には、contentSnippet というフィールドがあるので、そっちを使うのもあり
+
   return (
-    <div>
-      <div>{episode.pubDate}</div>
-      <div>{episode.title}</div>
-    </div>
+    <>
+      <div
+        className="dangerousHTML"
+        dangerouslySetInnerHTML={{ __html: props.content }}
+      />
+    </>
+  );
+};
+
+const Page: NextPage<Props> = ({ episode }) => {
+  const pubDateISOString = useMemo(() => {
+    return new Date(Date.parse(episode.pubDate)).toISOString();
+  }, [episode.pubDate]);
+
+  const pubDateLocaleDateString = useMemo(() => {
+    return new Date(Date.parse(episode.pubDate)).toLocaleDateString();
+  }, [episode.pubDate]);
+
+  return (
+    <main>
+      <h1 className="text-2xl text-gray-800">{episode.title}</h1>
+
+      <time className="mt-16 text-sm text-gray-500" dateTime={pubDateISOString}>
+        {pubDateLocaleDateString}
+      </time>
+
+      <div className="mt-8">
+        <audio controls src={episode.enclosure.url}></audio>
+      </div>
+
+      <section className="mt-8">
+        <h2 className="sr-only">概要</h2>
+
+        <EpisodeContent content={episode.content} />
+      </section>
+    </main>
   );
 };
 

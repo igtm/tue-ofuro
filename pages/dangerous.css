@@ -1,0 +1,7 @@
+.dangerousHTML p {
+  @apply mt-2 text-base text-gray-800;
+}
+
+.dangerousHTML a {
+  @apply text-blue-700;
+}

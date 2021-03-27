@@ -1,9 +1,9 @@
 import { AppProps } from "next/app";
 import "tailwindcss/tailwind.css";
+import "./dangerous.css";
 import { Header } from "../components/organisms/Header";
 
 function App({ Component, pageProps }: AppProps) {
-  console.log("We are hiring!");
   return (
     <div>
       <Header />

@@ -5,7 +5,7 @@ type Props = DetailedHTMLProps<
   HTMLHeadingElement
 >;
 
-export const H2: FC<Props> = (props) => {
+export const SectionTitle: FC<Props> = (props) => {
   const { children, ...headingElementProps } = props;
 
   return (
