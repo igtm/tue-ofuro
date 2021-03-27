@@ -1,7 +1,16 @@
-import { FC } from "react";
 import Link from "next/link";
+import { FC, VFC } from "react";
 
-const Logo = () => (
+export const Header: VFC = () => {
+  return (
+    <header className="flex flex-wrap items-center justify-between bg-white shadow">
+      <Logo />
+      <Nav />
+    </header>
+  );
+};
+
+const Logo: VFC = () => (
   <Link href="/">
     <a className="block py-4 px-6 w-60">
       <img src="/icon.svg" />
@@ -21,7 +30,7 @@ const NavLink: FC<NavLinkProps> = (props) => (
   </Link>
 );
 
-const Nav = () => (
+const Nav: VFC = () => (
   <nav className="flex flex-nowrap justify-between items-center">
     <NavLink href="/podcast">ポッドキャスト</NavLink>
     <NavLink href="/blog">ブログ</NavLink>
@@ -29,12 +38,3 @@ const Nav = () => (
     <NavLink href="/game">ゲーム</NavLink>
   </nav>
 );
-
-export const Header = () => {
-  return (
-    <header className="sticky top-0 flex flex-wrap items-center justify-between bg-white shadow">
-      <Logo />
-      <Nav />
-    </header>
-  );
-};
