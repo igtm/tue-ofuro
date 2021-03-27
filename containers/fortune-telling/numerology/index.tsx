@@ -1,10 +1,12 @@
 import Head from "next/head";
 import { Button } from "../../../components/atoms/Button";
 import { Input } from "../../../components/atoms/Input";
-import { NumberCard } from "../../../components/atoms/NumberCard";
+import { NumberCard } from "./components/NumberCard";
 import { PageTitle } from "../../../components/atoms/PageTitle";
 import { SectionTitle } from "../../../components/atoms/SectionTitle";
 import { usePage } from "./hooks/usePage";
+import { getNumberDescription } from "./utilities/numbers";
+import { getNumberTypeDescription } from "./utilities/numberTypes";
 
 export default function Page() {
   const {
@@ -141,7 +143,7 @@ export default function Page() {
                       description={{
                         id: "name-rome-description",
                         note:
-                          "長音は次のように修正してください。長音の u は表記しない、長音の o は末尾にある場合のみ表記する。",
+                          "ここに表示されるローマ字表記が気になる場合は修正してください。",
                         errors: nameRomeInputElementProps.errors,
                       }}
                       touched={nameRomeInputElementProps.touched}
@@ -162,17 +164,49 @@ export default function Page() {
             <SectionTitle>現代数秘術</SectionTitle>
 
             <div className="grid grid-cols-3 gap-2">
-              <NumberCard title="LP" number={numbers.lifePathNumber} />
+              <NumberCard
+                numberType="LP"
+                numberTypeDescription={getNumberTypeDescription("LP")}
+                number={numbers.lifePathNumber}
+                numberDescription={getNumberDescription(numbers.lifePathNumber)}
+              />
 
-              <NumberCard title="S" number={numbers.soulNumber} />
+              <NumberCard
+                numberType="S"
+                numberTypeDescription={getNumberTypeDescription("S")}
+                number={numbers.soulNumber}
+                numberDescription={getNumberDescription(numbers.soulNumber)}
+              />
 
-              <NumberCard title="D" number={numbers.destinyNumber} />
+              <NumberCard
+                numberType="D"
+                numberTypeDescription={getNumberTypeDescription("D")}
+                number={numbers.destinyNumber}
+                numberDescription={getNumberDescription(numbers.destinyNumber)}
+              />
 
-              <NumberCard title="P" number={numbers.personalityNumber} />
+              <NumberCard
+                numberType="P"
+                numberTypeDescription={getNumberTypeDescription("P")}
+                number={numbers.personalityNumber}
+                numberDescription={getNumberDescription(
+                  numbers.personalityNumber
+                )}
+              />
 
-              <NumberCard title="B" number={numbers.birthdayNumber} />
+              <NumberCard
+                numberType="B"
+                numberTypeDescription={getNumberTypeDescription("B")}
+                number={numbers.birthdayNumber}
+                numberDescription={getNumberDescription(numbers.birthdayNumber)}
+              />
 
-              <NumberCard title="M" number={numbers.maturityNumber} />
+              <NumberCard
+                numberType="M"
+                numberTypeDescription={getNumberTypeDescription("M")}
+                number={numbers.maturityNumber}
+                numberDescription={getNumberDescription(numbers.maturityNumber)}
+              />
             </div>
           </section>
 
@@ -180,11 +214,26 @@ export default function Page() {
             <SectionTitle>カバラ</SectionTitle>
 
             <div className="grid grid-cols-3 gap-2">
-              <NumberCard title="過去" number={numbers.pastNumber} />
+              <NumberCard
+                numberType="過去"
+                numberTypeDescription={getNumberTypeDescription("過去")}
+                number={numbers.pastNumber}
+                numberDescription={getNumberDescription(numbers.pastNumber)}
+              />
 
-              <NumberCard title="現在" number={numbers.presentNumber} />
+              <NumberCard
+                numberType="現在"
+                numberTypeDescription={getNumberTypeDescription("現在")}
+                number={numbers.presentNumber}
+                numberDescription={getNumberDescription(numbers.presentNumber)}
+              />
 
-              <NumberCard title="未来" number={numbers.futureNumber} />
+              <NumberCard
+                numberType="未来"
+                numberTypeDescription={getNumberTypeDescription("未来")}
+                number={numbers.futureNumber}
+                numberDescription={getNumberDescription(numbers.futureNumber)}
+              />
             </div>
           </section>
         </div>
