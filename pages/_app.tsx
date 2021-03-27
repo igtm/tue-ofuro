@@ -2,7 +2,7 @@ import { AppProps } from "next/app";
 import "tailwindcss/tailwind.css";
 import { Footer } from "../components/organisms/Footer";
 import { Header } from "../components/organisms/Header";
-import "./dangerous.css";
+import "../styles/dangerous.css";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
