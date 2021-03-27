@@ -13,7 +13,7 @@ export const Header: VFC = () => {
 const Logo: VFC = () => (
   <Link href="/">
     <a className="block py-4 px-6 w-60">
-      <img src="/icon.svg" />
+      <img src="/icon.svg" alt="火曜日のおフロ" />
     </a>
   </Link>
 );
