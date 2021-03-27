@@ -38,7 +38,7 @@ export const NumberCard: VFC<Props> = (props) => {
         role="button"
         tabIndex={0}
       >
-        <section className="border-2 border-gray-300 rounded pb-2 bg-gray-50 grid gap-2 content-center">
+        <section className="border-2 border-gray-300 rounded pb-2 bg-gray-50 grid gap-2 content-center hover:bg-gray-200">
           <h1 className="grid place-content-center text-base text-gray-800">
             {props.numberType}
           </h1>

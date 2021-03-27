@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { PageTitle } from "../../../components/atoms/PageTitle";
+import { Card } from "./components/Card";
 
 export default function Page() {
   return (
@@ -16,35 +17,17 @@ export default function Page() {
           <li>
             <Link href="/fortune-telling/numerology">
               <a>
-                <div className="block aspect-w-1 aspect-h-1">
-                  <div className="border-2 border-gray-300 rounded bg-gray-50 grid place-items-center">
-                    <span className="text-lg text-center font-bold text-gray-900">
-                      数秘術
-                    </span>
-                  </div>
-                </div>
+                <Card>数秘術</Card>
               </a>
             </Link>
           </li>
 
           <li>
-            <div className="block aspect-w-1 aspect-h-1">
-              <div className="border-2 border-gray-300 rounded bg-gray-50 grid place-items-center">
-                <span className="text-lg text-center font-bold text-gray-900">
-                  Coming Soon
-                </span>
-              </div>
-            </div>
+            <Card>Coming Soon</Card>
           </li>
 
           <li>
-            <div className="block aspect-w-1 aspect-h-1">
-              <div className="border-2 border-gray-300 rounded bg-gray-50 grid place-items-center">
-                <span className="text-lg text-center font-bold text-gray-900">
-                  Coming Soon
-                </span>
-              </div>
-            </div>
+            <Card>Coming Soon</Card>
           </li>
         </ul>
       </main>
