@@ -1,6 +1,6 @@
 import { Button } from "../../../components/atoms/Button";
-import { H1 } from "../../../components/atoms/H1";
-import { H2 } from "../../../components/atoms/H2";
+import { PageTitle } from "../../../components/atoms/PageTitle";
+import { SectionTitle } from "../../../components/atoms/SectionTitle";
 import { Input } from "../../../components/atoms/Input";
 import { NumberCard } from "../../../components/atoms/NumberCard";
 import { usePage } from "./hooks/usePage";
@@ -20,11 +20,11 @@ export default function Page() {
   return (
     <>
       <main className="grid gap-y-12">
-        <H1>数秘術</H1>
+        <PageTitle>数秘術</PageTitle>
 
         <div className="grid gap-y-16">
           <section className="grid gap-y-8">
-            <H2>生年月日、氏名を入力</H2>
+            <SectionTitle>生年月日、氏名を入力</SectionTitle>
 
             <form onSubmit={formElementProps.onSubmit} noValidate={true}>
               <div className="grid gap-y-8">
@@ -154,7 +154,7 @@ export default function Page() {
           </section>
 
           <section className="grid gap-y-8">
-            <H2>現代数秘術</H2>
+            <SectionTitle>現代数秘術</SectionTitle>
 
             <div className="grid grid-cols-3 gap-2">
               <NumberCard title="LP" number={numbers.lifePathNumber} />
@@ -172,7 +172,7 @@ export default function Page() {
           </section>
 
           <section className="grid gap-y-8">
-            <H2>カバラ</H2>
+            <SectionTitle>カバラ</SectionTitle>
 
             <div className="grid grid-cols-3 gap-2">
               <NumberCard title="過去" number={numbers.pastNumber} />

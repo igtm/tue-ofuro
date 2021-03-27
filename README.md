@@ -42,16 +42,6 @@ Comming Soon
  - @ymdarake <Header.Nav>
  - @gyo <Header> style
 
-# 3回目(今日やること)
-- ロゴ作る(figma)
-
-# 4回目
-- vercel デプロイ時の.env直す
-- podcast
-  - 一覧キレイにする
-  - 詳細descriptionとかフォーマットする
-- podcastではなく,「アーカイブ」にして Youtubeの動画もlistに入れる
-
 ```
 <Header />
 <Main>
@@ -59,6 +49,32 @@ Comming Soon
   - sidemenu
 <Footer>
 ```
+
+# 3回目(今日やること)
+- ロゴ作る(figma)
+
+# 4回目
+- vercel デプロイ時の.env直す
+
+
+# 5回目(今日やること)
+- @ymdarake: 一覧キレイにする
+- @t-gyo: 詳細キレイにする
+- @igtm: Youtubeの動画も一覧に入れる
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # TODO
 - podcastではなく,「アーカイブ」にして Youtubeの動画もlistに入れる
