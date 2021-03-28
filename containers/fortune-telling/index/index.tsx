@@ -3,7 +3,7 @@ import Link from "next/link";
 import { PageTitle } from "../../../components/atoms/PageTitle";
 import { Card } from "./components/Card";
 
-export default function Page() {
+const Page = () => {
   return (
     <>
       <Head>
@@ -23,7 +23,11 @@ export default function Page() {
           </li>
 
           <li>
-            <Card>Coming Soon</Card>
+            <Link href="/fortune-telling/geomancy">
+              <a>
+                <Card>ジオマンシー</Card>
+              </a>
+            </Link>
           </li>
 
           <li>
@@ -33,4 +37,6 @@ export default function Page() {
       </main>
     </>
   );
-}
+};
+
+export default Page;

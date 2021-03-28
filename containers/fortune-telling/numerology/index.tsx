@@ -1,14 +1,14 @@
 import Head from "next/head";
 import { Button } from "../../../components/atoms/Button";
 import { Input } from "../../../components/atoms/Input";
-import { NumberCard } from "./components/NumberCard";
 import { PageTitle } from "../../../components/atoms/PageTitle";
 import { SectionTitle } from "../../../components/atoms/SectionTitle";
+import { NumberCard } from "./components/NumberCard";
+import { getNumberDescription } from "./functions/getNumberDescription";
+import { getNumberTypeDescription } from "./functions/getNumberTypeDescription";
 import { usePage } from "./hooks/usePage";
-import { getNumberDescription } from "./utilities/numbers";
-import { getNumberTypeDescription } from "./utilities/numberTypes";
 
-export default function Page() {
+const Page = () => {
   const {
     numbers,
     bdayYearInputElementProps,
@@ -18,6 +18,7 @@ export default function Page() {
     givenNameHiraganaInputElementProps,
     nameRomeInputElementProps,
     formElementProps,
+    scrollTargetRef,
   } = usePage();
 
   return (
@@ -160,7 +161,7 @@ export default function Page() {
             </form>
           </section>
 
-          <section className="grid gap-y-8">
+          <section className="grid gap-y-8" ref={scrollTargetRef}>
             <SectionTitle>現代数秘術</SectionTitle>
 
             <div className="grid grid-cols-3 gap-2">
@@ -240,4 +241,6 @@ export default function Page() {
       </main>
     </>
   );
-}
+};
+
+export default Page;
