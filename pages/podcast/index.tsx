@@ -1,9 +1,8 @@
-import Link from "next/link";
-import { MouseEvent, useEffect } from "react";
-import { FC, useRef } from "react";
 import { GetStaticProps, NextPage } from "next";
-import { isPodcastEpisodes, PodcastEpisode } from "../../types";
+import Link from "next/link";
+import { FC, MouseEvent, useEffect, useRef } from "react";
 import Parser from "rss-parser";
+import { isPodcastEpisodes, PodcastEpisode } from "../../types";
 
 type Props = {
   episodes: PodcastEpisode[];
@@ -36,7 +35,7 @@ const PodcastEpisodeListItem: FC<ListItemProps> = (props) => {
 
   useEffect(() => {
     audioRef.current?.addEventListener("loadedmetadata", function (e) {
-      var time = audioRef.current?.currentTime;
+      let time = audioRef.current?.currentTime;
       requestAnimationFrame(function me() {
         if (time !== audioRef.current?.currentTime) {
           time = audioRef.current?.currentTime;
@@ -134,7 +133,6 @@ const PodcastEpisodeListItem: FC<ListItemProps> = (props) => {
     </li>
   );
 };
-
 
 function playTime(t: number) {
   let hms = "";

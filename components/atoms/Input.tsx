@@ -26,25 +26,25 @@ export const Input: VFC<Props> = (props) => {
 
   return (
     <div className="grid gap-2">
-      {props.labelString != null ? (
+      {labelString != null ? (
         <label className="text-sm text-gray-800" htmlFor={props.id}>
-          {props.labelString}
+          {labelString}
         </label>
       ) : null}
 
       <input
         {...inputElementProps}
         className="w-full border border-gray-300 px-4 py-2 rounded bg-white text-base text-gray-800"
-        aria-describedby={props.description?.id}
+        aria-describedby={description?.id}
       />
 
-      {props.description != null ? (
-        <div id={props.description.id}>
-          {props.description.errors != null &&
-          props.description.errors.length > 0 &&
-          props.touched === true ? (
+      {description != null ? (
+        <div id={description.id}>
+          {description.errors != null &&
+          description.errors.length > 0 &&
+          touched === true ? (
             <>
-              {props.description.errors.map((error) => {
+              {description.errors.map((error) => {
                 return (
                   <p className="text-xs text-red-600" key={error}>
                     {error}
@@ -54,8 +54,8 @@ export const Input: VFC<Props> = (props) => {
             </>
           ) : null}
 
-          {props.description.note != null ? (
-            <p className="text-xs text-gray-600">{props.description.note}</p>
+          {description.note != null ? (
+            <p className="text-xs text-gray-600">{description.note}</p>
           ) : null}
         </div>
       ) : null}
