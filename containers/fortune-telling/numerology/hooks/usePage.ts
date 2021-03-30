@@ -109,7 +109,7 @@ export const usePage = () => {
     setNameRome(nameRome);
   };
 
-  const { onSubmit } = useForm({
+  const { onSubmit, scrollTargetRef } = useForm({
     bdayYear,
     bdayMonth,
     bdayDay,
@@ -182,5 +182,6 @@ export const usePage = () => {
     formElementProps: {
       onSubmit,
     },
+    scrollTargetRef,
   };
 };

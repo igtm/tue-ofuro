@@ -1,4 +1,10 @@
-import { Dispatch, FormEvent, SetStateAction, useCallback } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useCallback,
+  useRef,
+} from "react";
 import { calculateNumbers } from "../functions/calculateNumbers";
 import { CabalaNumber } from "../models/typeCabalaNumber";
 import { ModernNumber } from "../models/typeModernNumber";
@@ -20,6 +26,8 @@ type Args = {
 };
 
 export const useForm = (args: Args) => {
+  const scrollTargetRef = useRef<HTMLDivElement>(null);
+
   const onSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -50,11 +58,22 @@ export const useForm = (args: Args) => {
       args.setPastNumber(pastNumber);
       args.setPresentNumber(presentNumber);
       args.setFutureNumber(futureNumber);
+
+      const targetClientRectTop = scrollTargetRef.current?.getBoundingClientRect()
+        .top;
+      if (targetClientRectTop != null) {
+        window.scrollTo({
+          top: window.scrollY + targetClientRectTop - 72, // 72 はヘッダー避けやスクロール位置の余白などを計算する適当な値
+          left: 0,
+          behavior: "smooth",
+        });
+      }
     },
     [args]
   );
 
   return {
-    onSubmit: onSubmit,
+    onSubmit,
+    scrollTargetRef,
   };
 };

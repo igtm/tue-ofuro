@@ -54,13 +54,7 @@ export const NumberCard: VFC<Props> = (props) => {
         onRequestClose={handleClose}
         bodyOpenClassName="overflow-hidden"
       >
-        <div className="absolute top-0 right-0 z-10">
-          <button className="p-4" onClick={handleClose}>
-            <img src="/close-black-18dp.svg" alt="閉じる" />
-          </button>
-        </div>
-
-        <div className="relative h-full grid place-items-center">
+        <div className="h-full pt-8 grid place-items-center">
           <section className="grid place-items-center">
             <h1 className="text-5xl font-bold text-gray-800">
               {props.numberType}
@@ -82,6 +76,12 @@ export const NumberCard: VFC<Props> = (props) => {
               </>
             ) : null}
           </section>
+
+          <div className="absolute top-0 right-0 z-10">
+            <button className="p-4" onClick={handleClose}>
+              <img src="/close-black-18dp.svg" alt="閉じる" />
+            </button>
+          </div>
         </div>
       </ReactModal>
     </>
