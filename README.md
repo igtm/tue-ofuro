@@ -64,6 +64,22 @@ Comming Soon
 
 
 
+# 6回目(今日やること)
+- 一覧: 下に再生エリア作る
+  - <FloatingPlayArea />
+    - Play/Pause
+    - Skip
+    - SeekBar
+    - Title
+    - RemainingTime
+  - 表示非表示、ページ間で共有: Recoil? or Context
+    - PodcastEpisode? 型
+- @ymdarake: 一覧キレイにする
+- @t-gyo: 詳細キレイにする
+- @igtm: Youtubeの動画も一覧に入れる
+
+
+
 
 
 
