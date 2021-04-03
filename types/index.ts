@@ -7,30 +7,34 @@ export type PodcastEpisode = {
   pubDate: string;
   enclosure: {
     url: string;
-  }
+  };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- TypeGuard の引数なので any 型を許容する
 export const isPodcastEpisode = (item: any): item is PodcastEpisode => {
   return (
-    item.hasOwnProperty("guid") &&
-    item.hasOwnProperty("title") &&
-    item.hasOwnProperty("content") &&
-    item.hasOwnProperty("enclosure") &&
-    item.enclosure.hasOwnProperty("url") &&
-    item.hasOwnProperty("pubDate")
+    Object.prototype.hasOwnProperty.call(item, "guid") &&
+    Object.prototype.hasOwnProperty.call(item, "title") &&
+    Object.prototype.hasOwnProperty.call(item, "content") &&
+    Object.prototype.hasOwnProperty.call(item, "enclosure") &&
+    Object.prototype.hasOwnProperty.call(item.enclosure, "url") &&
+    Object.prototype.hasOwnProperty.call(item, "pubDate")
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- TypeGuard の引数なので any 型を許容する
 export const isPodcastEpisodes = (items: any[]): items is PodcastEpisode[] => {
-  return items?.every(
-    (item: any) =>
-      item.hasOwnProperty("guid") &&
-      item.hasOwnProperty("title") &&
-      item.hasOwnProperty("content") &&
-    item.hasOwnProperty("enclosure") &&
-    item.enclosure.hasOwnProperty("url") &&
-    item.hasOwnProperty("pubDate")
-  ) ?? false;
+  return (
+    items?.every(
+      (item) =>
+        Object.prototype.hasOwnProperty.call(item, "guid") &&
+        Object.prototype.hasOwnProperty.call(item, "title") &&
+        Object.prototype.hasOwnProperty.call(item, "content") &&
+        Object.prototype.hasOwnProperty.call(item, "enclosure") &&
+        Object.prototype.hasOwnProperty.call(item.enclosure, "url") &&
+        Object.prototype.hasOwnProperty.call(item, "pubDate")
+    ) ?? false
+  );
 };
 
 export const EmptyPodcastEpisode = {
@@ -39,6 +43,6 @@ export const EmptyPodcastEpisode = {
   content: "---",
   pubDate: "---",
   enclosure: {
-    url: "---"
+    url: "---",
   },
 };

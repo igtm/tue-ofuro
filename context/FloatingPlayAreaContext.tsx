@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useState, useCallback } from "react";
+import { createContext, FC, useContext, useState } from "react";
 import { PodcastEpisode } from "../types";
 
 type FloatingPlayAreaState = {
@@ -20,8 +20,8 @@ const FloatingPlayAreaStateContext = createContext<FloatingPlayAreaState>(
 
 const FloatingPlayAreaDispatchContext = createContext<FloatingPlayAreaDispatch>(
   {
-    updateFloatingPlayAreaState: () => {},
-    clearFloatingPlayAreaState: () => {},
+    updateFloatingPlayAreaState: () => undefined,
+    clearFloatingPlayAreaState: () => undefined,
   }
 );
 
