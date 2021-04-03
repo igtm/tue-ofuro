@@ -100,7 +100,8 @@ const Page: NextPage<Props> = ({ episode }) => {
       </time>
 
       <div className="mt-8">
-        <audio controls src={episode.enclosure.url}></audio>
+        {/* eslint-disable-next-line jsx-a11y/media-has-caption -- 代替コンテンツを用意できなていない*/}
+        <audio controls src={episode.enclosure.url} />
       </div>
 
       <section className="mt-8">

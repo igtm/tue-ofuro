@@ -1,9 +1,6 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import {
-  useFloatingPlayAreaContext,
-  useFloatingPlayDispatchContext,
-} from "../../context/FloatingPlayAreaContext";
+import { useFloatingPlayAreaContext } from "../../context/FloatingPlayAreaContext";
 
 export const FloatingPlayArea = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -11,10 +8,9 @@ export const FloatingPlayArea = () => {
   const currentTimeRef = useRef<HTMLSpanElement>(null);
   const durationRef = useRef<HTMLSpanElement>(null);
   const floatingPlayAreaState = useFloatingPlayAreaContext();
-  const floatingPlayAreaDispatchState = useFloatingPlayDispatchContext();
 
   useEffect(() => {
-    audioRef.current?.addEventListener("loadedmetadata", function (e) {
+    audioRef.current?.addEventListener("loadedmetadata", function () {
       let time = audioRef.current?.currentTime;
       requestAnimationFrame(function me() {
         if (time !== audioRef.current?.currentTime) {
@@ -24,7 +20,7 @@ export const FloatingPlayArea = () => {
         requestAnimationFrame(me);
       });
     });
-    audioRef.current?.addEventListener("timeupdate", (e) => {
+    audioRef.current?.addEventListener("timeupdate", () => {
       const audio = audioRef.current;
       const seekBar = seekBarRef.current;
       const currentTimeSpan = currentTimeRef.current;
@@ -52,7 +48,7 @@ export const FloatingPlayArea = () => {
     background: "linear-gradient(#ccc, #ccc) no-repeat #eee",
   };
 
-  const handleClickSeekBar = (e: MouseEvent) => {
+  const handleClickSeekBar = (e: React.MouseEvent<HTMLDivElement>) => {
     const audio = audioRef.current;
     if (audio === null) {
       return;
@@ -111,12 +107,14 @@ export const FloatingPlayArea = () => {
           ref={seekBarRef}
           style={seekBarStyle}
           onClick={(e) => handleClickSeekBar(e)}
-        ></div>
+          aria-hidden="true"
+        />
       </div>
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption -- 代替コンテンツを用意できなていない*/}
       <audio
         ref={audioRef}
         src={floatingPlayAreaState.podcastEpisode?.enclosure.url}
-      ></audio>
+      />
       <div className="flex-grow">
         <PlayLogo
           onClick={() => {
@@ -139,17 +137,17 @@ export const FloatingPlayArea = () => {
 
 const PlayLogo = ({ onClick }: { onClick: () => void }) => {
   return (
-    <a onClick={onClick} className="block py-4 px-4 md:px-6 w-48 md:w-60">
+    <button onClick={onClick} className="block py-4 px-4 md:px-6 w-48 md:w-60">
       <img src="/play_arrow_black_24dp.svg" alt="再生" />
-    </a>
+    </button>
   );
 };
 
 const PauseLogo = ({ onClick }: { onClick: () => void }) => {
   return (
-    <a onClick={onClick} className="block py-4 px-4 md:px-6 w-48 md:w-60">
+    <button onClick={onClick} className="block py-4 px-4 md:px-6 w-48 md:w-60">
       <img src="/pause_black_24dp.svg" alt="停止" />
-    </a>
+    </button>
   );
 };
 
@@ -161,13 +159,13 @@ const VolumeLogo = () => {
   );
 };
 
-const MuteLogo = () => {
-  return (
-    <a className="block py-4 px-4 md:px-6 w-48 md:w-60">
-      <img src="/volume_up_black_24dp.svg" alt="unmute" />
-    </a>
-  );
-};
+// const MuteLogo = () => {
+//   return (
+//     <a className="block py-4 px-4 md:px-6 w-48 md:w-60">
+//       <img src="/volume_up_black_24dp.svg" alt="unmute" />
+//     </a>
+//   );
+// };
 
 function playTime(t: number) {
   let hms = "";
