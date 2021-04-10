@@ -4,7 +4,7 @@ import {
   isPodcastEpisode,
   isPodcastEpisodes,
   PodcastEpisode,
-} from "../../types";
+} from "../types";
 import Parser from "rss-parser";
 import React, { useMemo, FC } from "react";
 
