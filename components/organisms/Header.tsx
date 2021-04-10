@@ -41,7 +41,7 @@ const AppBarNavLink: FC<NavLinkProps> = (props) => (
 
 const Nav: VFC = () => (
   <nav className="flex flex-nowrap justify-between items-center">
-    <AppBarNavLink href="/podcast">ポッドキャスト</AppBarNavLink>
+    <AppBarNavLink href="/">ポッドキャスト</AppBarNavLink>
     <AppBarNavLink href="/blog">ブログ</AppBarNavLink>
     <AppBarNavLink href="/fortune-telling">占い</AppBarNavLink>
     <AppBarNavLink href="/game">ゲーム</AppBarNavLink>
@@ -87,7 +87,7 @@ const Menu: VFC = () => {
         bodyOpenClassName="overflow-hidden"
       >
         <nav className="pt-8 grid gap-y-2">
-          <MenuNavLink href="/podcast">ポッドキャスト</MenuNavLink>
+          <MenuNavLink href="/">ポッドキャスト</MenuNavLink>
           <MenuNavLink href="/blog">ブログ</MenuNavLink>
           <MenuNavLink href="/fortune-telling">占い</MenuNavLink>
           <MenuNavLink href="/game">ゲーム</MenuNavLink>
