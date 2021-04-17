@@ -15,21 +15,20 @@ const Page: NextPage<Props> = ({ episodes }) => {
   return (
     <>
       <Head>
-        ​ <title>火曜日のおフロ</title>​{" "}
+        <title>火曜日のおフロ</title>
       </Head>
       <main className="w-full">
         <div className="mb-6">
           <h1>火曜日のおフロ</h1>
           <p>
-            ​{" "}
             <a href="https://github.com/igtm" target="_blank" rel="noreferrer">
               @igtm
             </a>
-            , ​{" "}
+            ,
             <a href="https://github.com/t-gyo" target="_blank" rel="noreferrer">
               @t-gyo
             </a>
-            , ​{" "}
+            ,
             <a
               href="https://github.com/ymdarake"
               target="_blank"
@@ -37,9 +36,7 @@ const Page: NextPage<Props> = ({ episodes }) => {
             >
               @ymdarake
             </a>
-            ​
             が、ゆるーくフロントエンド周りの気になった記事を紹介しながらお届けします。おフロは「フロントエンド」から来てます。毎週土曜日更新。
-            ​{" "}
           </p>
         </div>
         <ul>
