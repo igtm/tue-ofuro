@@ -1,9 +1,10 @@
+import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { PageTitle } from "../../../components/atoms/PageTitle";
 import { Card } from "./components/Card";
 
-const Page = () => {
+const Page: NextPage = () => {
   return (
     <>
       <Head>

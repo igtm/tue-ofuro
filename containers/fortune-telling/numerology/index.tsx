@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import Head from "next/head";
 import { Button } from "../../../components/atoms/Button";
 import { Input } from "../../../components/atoms/Input";
@@ -8,7 +9,7 @@ import { getNumberDescription } from "./functions/getNumberDescription";
 import { getNumberTypeDescription } from "./functions/getNumberTypeDescription";
 import { usePage } from "./hooks/usePage";
 
-const Page = () => {
+const Page: NextPage = () => {
   const {
     numbers,
     bdayYearInputElementProps,
