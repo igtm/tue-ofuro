@@ -45,12 +45,20 @@ export const isPodcastEpisodes = (items: any[]): items is PodcastEpisode[] => {
   );
 };
 
-export const EmptyPodcastEpisode = {
+export const EmptyPodcastEpisode: PodcastEpisode = {
   guid: "---",
   title: "---",
   content: "---",
   pubDate: "---",
   enclosure: {
     url: "---",
+  },
+  itunes: {
+    summary: "---",
+    explicit: "---",
+    image: "---",
+    episode: "---",
+    season: "---",
+    duration: "---",
   },
 };
