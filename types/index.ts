@@ -8,6 +8,14 @@ export type PodcastEpisode = {
   enclosure: {
     url: string;
   };
+  itunes: {
+    summary: string;
+    explicit: string;
+    image: string;
+    episode: string;
+    season: string;
+    duration: string;
+  };
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TypeGuard の引数なので any 型を許容する
