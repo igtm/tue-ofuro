@@ -1,13 +1,14 @@
-import { DetailedHTMLProps, FC, HTMLAttributes } from "react";
+import { DetailedHTMLProps, HTMLAttributes, VFC } from "react";
 
 type Props = DetailedHTMLProps<
   HTMLAttributes<HTMLHeadingElement>,
   HTMLHeadingElement
 >;
 
-export const SectionTitle: FC<Props> = (props) => {
-  const { children, ...headingElementProps } = props;
-
+export const SectionTitle: VFC<Props> = ({
+  children,
+  ...headingElementProps
+}) => {
   return (
     <h2 {...headingElementProps} className="text-2xl text-gray-800">
       {children}
