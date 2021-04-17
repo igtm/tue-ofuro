@@ -3,10 +3,10 @@ import Head from "next/head";
 import Link from "next/link";
 import { FC } from "react";
 import Parser from "rss-parser";
+import { Paragraph } from "../components/atoms/Paragraph";
+import { SvgPlayArrow } from "../components/atoms/SvgPlayArrow";
 import { useFloatingPlayDispatchContext } from "../context/FloatingPlayAreaContext";
 import { isPodcastEpisodes, PodcastEpisode } from "../types";
-import { SvgPlayArrow } from "../components/atoms/SvgPlayArrow";
-import { Paragraph } from "../components/atoms/Paragraph";
 
 type Props = {
   episodes: PodcastEpisode[];
@@ -28,21 +28,27 @@ const Page: NextPage<Props> = ({ episodes }) => {
               href="https://github.com/igtm"
               target="_blank"
               rel="noreferrer"
-            >@igtm</a>
+            >
+              @igtm
+            </a>
             ,{" "}
             <a
               className="underline hover:nounderline"
               href="https://github.com/t-gyo"
               target="_blank"
               rel="noreferrer"
-            >@t-gyo</a>
+            >
+              @t-gyo
+            </a>
             ,{" "}
             <a
               className="underline hover:nounderline"
               href="https://github.com/ymdarake"
               target="_blank"
               rel="noreferrer"
-            >@ymdarake</a>{" "}
+            >
+              @ymdarake
+            </a>{" "}
             が、ゆるーくフロントエンド周りの気になった記事を紹介しながらお届けします。おフロは「フロントエンド」から来てます。毎週土曜日更新。
           </Paragraph>
         </div>
@@ -64,16 +70,13 @@ type ListItemProps = {
 };
 
 const PodcastEpisodeListItem: FC<ListItemProps> = (props) => {
-  const {
-    updateFloatingPlayAreaState,
-    clearFloatingPlayAreaState,
-  } = useFloatingPlayDispatchContext();
+  const { updateFloatingPlayAreaState } = useFloatingPlayDispatchContext();
 
   return (
     <li>
       <div className="flex gap-4">
         <div className="flex-shrink-0 relative w-20 h-20 rounded overflow-hidden">
-          <img src="/saru.jpg" width={128} height={128} />
+          <img src="/saru.jpg" width={128} height={128} alt="" />
 
           <button
             className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-700 bg-opacity-20 hover:bg-opacity-5"
@@ -146,9 +149,9 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 function fmtPrettyJPTime(sec: number): string {
-  let hour = Math.floor(sec / 3600);
-  let min = `${Math.floor(sec / 60) % 60}`.padStart(2, "0");
-  let secOnly = `${sec % 60}`.padStart(2, "0");
+  const hour = Math.floor(sec / 3600);
+  const min = `${Math.floor(sec / 60) % 60}`.padStart(2, "0");
+  const secOnly = `${sec % 60}`.padStart(2, "0");
   let ret = "";
   if (hour > 0) {
     ret += `${hour}:`;
