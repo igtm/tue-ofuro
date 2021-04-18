@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { Button } from "../../../components/atoms/Button";
@@ -7,7 +8,7 @@ import { GeomancyButton } from "./components/GeomancyButton";
 import { GeomancyCard } from "./components/GeomancyCard";
 import { usePage } from "./hooks/usePage";
 
-const Page = () => {
+const Page: NextPage = () => {
   const {
     counter1,
     counter2,

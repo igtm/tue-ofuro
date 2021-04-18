@@ -1,12 +1,9 @@
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { FC } from "react";
 import Parser from "rss-parser";
-import { useFloatingPlayDispatchContext } from "../context/FloatingPlayAreaContext";
-import { isPodcastEpisodes, PodcastEpisode } from "../types";
-import { SvgPlayArrow } from "../components/atoms/SvgPlayArrow";
 import { Paragraph } from "../components/atoms/Paragraph";
+import { PodcastEpisodeListItem } from "../components/molecules/PodcastEpisodeListItem";
+import { isPodcastEpisodes, PodcastEpisode } from "../types";
 
 type Props = {
   episodes: PodcastEpisode[];
@@ -28,21 +25,27 @@ const Page: NextPage<Props> = ({ episodes }) => {
               href="https://github.com/igtm"
               target="_blank"
               rel="noreferrer"
-            >@igtm</a>
+            >
+              @igtm
+            </a>
             ,{" "}
             <a
               className="underline hover:nounderline"
               href="https://github.com/t-gyo"
               target="_blank"
               rel="noreferrer"
-            >@t-gyo</a>
+            >
+              @t-gyo
+            </a>
             ,{" "}
             <a
               className="underline hover:nounderline"
               href="https://github.com/ymdarake"
               target="_blank"
               rel="noreferrer"
-            >@ymdarake</a>{" "}
+            >
+              @ymdarake
+            </a>{" "}
             が、ゆるーくフロントエンド周りの気になった記事を紹介しながらお届けします。おフロは「フロントエンド」から来てます。毎週土曜日更新。
           </Paragraph>
         </div>
@@ -54,59 +57,6 @@ const Page: NextPage<Props> = ({ episodes }) => {
         </ul>
       </main>
     </>
-  );
-};
-
-// TODO: あとでコンポーネントにする
-type ListItemProps = {
-  key: string;
-  episode: PodcastEpisode;
-};
-
-const PodcastEpisodeListItem: FC<ListItemProps> = (props) => {
-  const {
-    updateFloatingPlayAreaState,
-    clearFloatingPlayAreaState,
-  } = useFloatingPlayDispatchContext();
-
-  return (
-    <li>
-      <div className="flex gap-4">
-        <div className="flex-shrink-0 relative w-20 h-20 rounded overflow-hidden">
-          <img src="/saru.jpg" width={128} height={128} />
-
-          <button
-            className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-700 bg-opacity-20 hover:bg-opacity-5"
-            onClick={() => {
-              updateFloatingPlayAreaState(props.episode);
-            }}
-          >
-            <SvgPlayArrow className="w-10 h-10 fill-current text-gray-50" />
-            <span className="sr-only">再生</span>
-          </button>
-        </div>
-
-        <Link href={`/${props.episode.guid}`}>
-          <a className="flex-grow hover:underline">
-            <div className="grid gap-y-2">
-              <div className="text-xs text-gray-500">
-                {new Date(
-                  Date.parse(props.episode.pubDate)
-                ).toLocaleDateString()}
-              </div>
-
-              <div className="text-base text-gray-900">
-                {props.episode.title}
-              </div>
-
-              <div className="text-xs text-gray-900">
-                {fmtPrettyJPTime(Number(props.episode.itunes.duration))}
-              </div>
-            </div>
-          </a>
-        </Link>
-      </div>
-    </li>
   );
 };
 
@@ -144,15 +94,3 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     },
   };
 };
-
-function fmtPrettyJPTime(sec: number): string {
-  let hour = Math.floor(sec / 3600);
-  let min = `${Math.floor(sec / 60) % 60}`.padStart(2, "0");
-  let secOnly = `${sec % 60}`.padStart(2, "0");
-  let ret = "";
-  if (hour > 0) {
-    ret += `${hour}:`;
-  }
-  ret += `${min}:${secOnly}`;
-  return ret;
-}

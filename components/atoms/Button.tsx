@@ -1,13 +1,11 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, FC } from "react";
+import { ButtonHTMLAttributes, DetailedHTMLProps, VFC } from "react";
 
 type Props = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 >;
 
-export const Button: FC<Props> = (props) => {
-  const { children, ...buttonElementProps } = props;
-
+export const Button: VFC<Props> = ({ children, ...buttonElementProps }) => {
   return (
     <button
       {...buttonElementProps}

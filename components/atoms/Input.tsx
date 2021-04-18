@@ -21,13 +21,16 @@ type Props = {
   touched?: boolean;
 } & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
-export const Input: VFC<Props> = (props) => {
-  const { labelString, description, touched, ...inputElementProps } = props;
-
+export const Input: VFC<Props> = ({
+  labelString,
+  description,
+  touched,
+  ...inputElementProps
+}) => {
   return (
     <div className="grid gap-2">
       {labelString != null ? (
-        <label className="text-sm text-gray-800" htmlFor={props.id}>
+        <label className="text-sm text-gray-800" htmlFor={inputElementProps.id}>
           {labelString}
         </label>
       ) : null}

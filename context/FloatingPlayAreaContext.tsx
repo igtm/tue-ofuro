@@ -1,7 +1,13 @@
-import { createContext, FC, useContext, useState } from "react";
+import React, { createContext, useContext, useState, VFC } from "react";
 import { PodcastEpisode } from "../types";
 
+/**
+ * FloatingPlayArea に関する Context で保持する値の型
+ */
 type FloatingPlayAreaState = {
+  /**
+   * FloatingPlayArea に表示するエピソード
+   */
   podcastEpisode?: PodcastEpisode;
 };
 
@@ -25,15 +31,25 @@ const FloatingPlayAreaDispatchContext = createContext<FloatingPlayAreaDispatch>(
   }
 );
 
+/**
+ * FloatingPlayArea に関する Context を取得する
+ */
 export const useFloatingPlayAreaContext = () => {
   return useContext(FloatingPlayAreaStateContext);
 };
 
+/**
+ * FloatingPlayArea に関する Context を更新するメソッドを取得する
+ */
 export const useFloatingPlayDispatchContext = () => {
   return useContext(FloatingPlayAreaDispatchContext);
 };
 
-export const FloatingPlayAreaStateProvider: FC = (props) => {
+type Props = {
+  children: React.ReactNode;
+};
+
+export const FloatingPlayAreaStateProvider: VFC<Props> = (props) => {
   const [
     floatingPlayAreaState,
     setFloatingPlayAreaState,
