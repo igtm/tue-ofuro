@@ -2,6 +2,7 @@ import Link from "next/link";
 import { VFC } from "react";
 import { useFloatingPlayDispatchContext } from "../../context/FloatingPlayAreaContext";
 import { PodcastEpisode } from "../../types";
+import { fmtPrettyJPTime } from "../../utilities/fmtPrettyJPTime";
 import { SvgPlayArrow } from "../atoms/SvgPlayArrow";
 
 type Props = {
@@ -51,15 +52,3 @@ export const PodcastEpisodeListItem: VFC<Props> = (props) => {
     </li>
   );
 };
-
-function fmtPrettyJPTime(sec: number): string {
-  const hour = Math.floor(sec / 3600);
-  const min = `${Math.floor(sec / 60) % 60}`.padStart(2, "0");
-  const secOnly = `${sec % 60}`.padStart(2, "0");
-  let ret = "";
-  if (hour > 0) {
-    ret += `${hour}:`;
-  }
-  ret += `${min}:${secOnly}`;
-  return ret;
-}
