@@ -10,6 +10,7 @@ import { useFloatingPlayAreaContext } from "../../context/FloatingPlayAreaContex
 import { fmtPrettyJPTime } from "../../utilities/fmtPrettyJPTime";
 import { SvgPause } from "../atoms/SvgPause";
 import { SvgPlayArrow } from "../atoms/SvgPlayArrow";
+import Marquee from "react-fast-marquee";
 
 export const FloatingPlayArea: VFC = () => {
   const floatingPlayAreaState = useFloatingPlayAreaContext();
@@ -147,7 +148,7 @@ export const FloatingPlayArea: VFC = () => {
       className="fixed bottom-0 left-0 w-full bg-white"
     >
       <div
-        className="relative h-2 w-full bg-gray-300 cursor-pointer"
+        className="relative w-full h-2 bg-gray-300 cursor-pointer"
         onClick={handleClickSeekBar}
         aria-hidden="true"
       >
@@ -157,42 +158,53 @@ export const FloatingPlayArea: VFC = () => {
         ></div>
       </div>
 
-      <div className="flex flex-row-reverse items-center gap-4 w-full p-4 pb-6">
-        <div className="w-1/2">
-          <h1 className="text-base text-gray-900">
-            {floatingPlayAreaState.podcastEpisode.title}
-          </h1>
+      <div
+        className="w-full gap-4 p-4 pb-6"
+        style={{
+          display: "grid",
+          alignItems: "center",
+          gridTemplateColumns:
+            "64px calc(100% - 64px - 48px - (50% - 24px - 16px) - 48px) 48px 1fr",
+        }}
+      >
+        <div className="">
+          <div className="w-16 h-16 overflow-hidden rounded">
+            <img src="/saru.jpg" width={128} height={128} alt="" />
+          </div>
         </div>
 
-        <div className="flex-shrink-0">
+        <div className="">
+          <Marquee speed={50} gradientWidth={50}>
+            <h1 className="w-full text-sm text-gray-900 whitespace-nowrap">
+              {floatingPlayAreaState.podcastEpisode.title}
+              {"     "}
+            </h1>
+          </Marquee>
+        </div>
+
+        <div className="">
           {playing ? (
             <button
-              className="grid place-items-center w-16 h-16 rounded-full border border-gray-900"
+              className="grid w-12 h-12 border border-gray-900 rounded-full place-items-center focus:outline-none"
               onClick={pauseAudio}
             >
-              <SvgPause className="w-10 h-10 fill-current text-gray-900" />
+              <SvgPause className="w-10 h-10 text-gray-900 fill-current" />
               <span className="sr-only">停止</span>
             </button>
           ) : (
             <button
-              className="grid place-items-center w-16 h-16 rounded-full border border-gray-900"
+              className="grid w-12 h-12 border border-gray-900 rounded-full place-items-center focus:outline-none"
               onClick={playAudio}
             >
-              <SvgPlayArrow className="w-10 h-10 fill-current text-gray-900" />
+              <SvgPlayArrow className="w-10 h-10 text-gray-900 fill-current" />
               <span className="sr-only">再生</span>
             </button>
           )}
         </div>
 
-        <div className="w-1/2">
-          <div className="flex items-center gap-2 w-full">
-            <div className="w-20 h-20 rounded overflow-hidden">
-              <img src="/saru.jpg" width={128} height={128} alt="" />
-            </div>
-
-            <div className="font-mono text-base text-gray-900">
-              {currentTimeString} / {durationString}
-            </div>
+        <div className="hidden fle md:block" style={{ justifySelf: "end" }}>
+          <div className="font-mono text-sm text-gray-900">
+            {currentTimeString} / {durationString}
           </div>
         </div>
 
