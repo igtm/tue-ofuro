@@ -16,6 +16,7 @@
     "postcss": "^8.2.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-fast-marquee": "^1.1.2",
     "react-modal": "^3.12.1",
     "rss-parser": "^3.12.0",
     "tailwindcss": "^2.0.3"
