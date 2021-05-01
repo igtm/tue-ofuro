@@ -84,9 +84,8 @@ Comming Soon
 
 
 # 8回目(今日やること)
-- 一覧下の再生バーを実装する
-
-
+- Youtubeの動画も一覧に入れる
+- ISR（Incremental Static Regeneration）を有効にする
 
 # TODO
 - podcastではなく,「アーカイブ」にして Youtubeの動画もlistに入れる

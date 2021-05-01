@@ -11,15 +11,14 @@ type Props = {
 
 export const PodcastEpisodeListItem: VFC<Props> = (props) => {
   const { updateFloatingPlayAreaState } = useFloatingPlayDispatchContext();
-
   return (
     <li>
       <div className="flex gap-4">
-        <div className="flex-shrink-0 relative w-20 h-20 rounded overflow-hidden">
+        <div className="relative flex-shrink-0 w-20 h-20 overflow-hidden rounded">
           <img src="/saru.jpg" width={128} height={128} alt="" />
 
           <button
-            className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-700 bg-opacity-20 hover:bg-opacity-5"
+            className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-gray-700 bg-opacity-20 hover:bg-opacity-5"
             onClick={() => {
               updateFloatingPlayAreaState(props.episode);
             }}
@@ -33,9 +32,7 @@ export const PodcastEpisodeListItem: VFC<Props> = (props) => {
           <a className="flex-grow hover:underline">
             <div className="grid gap-y-2">
               <div className="text-xs text-gray-500">
-                {new Date(
-                  Date.parse(props.episode.pubDate)
-                ).toLocaleDateString()}
+                {new Date(props.episode.pubDate).toLocaleDateString()}
               </div>
 
               <div className="text-base text-gray-900">

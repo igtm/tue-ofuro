@@ -3,10 +3,17 @@ import Head from "next/head";
 import Parser from "rss-parser";
 import { Paragraph } from "../components/atoms/Paragraph";
 import { PodcastEpisodeListItem } from "../components/molecules/PodcastEpisodeListItem";
-import { isPodcastEpisodes, PodcastEpisode } from "../types";
+import { YouTubeEpisodeListItem } from "../components/molecules/YouTubeEpisodeListItem";
+import {
+  isPodcastEpisode,
+  isPodcastEpisodes,
+  isYouTubeEpisodes,
+  PodcastEpisode,
+  YouTubeEpisode,
+} from "../types";
 
 type Props = {
-  episodes: PodcastEpisode[];
+  episodes: (PodcastEpisode | YouTubeEpisode)[];
 };
 
 const Page: NextPage<Props> = ({ episodes }) => {
@@ -15,7 +22,7 @@ const Page: NextPage<Props> = ({ episodes }) => {
       <Head>
         <title>火曜日のおフロ</title>
       </Head>
-      <main className="w-full grid gap-y-8">
+      <main className="grid w-full gap-y-8">
         <div className="grid gap-y-4">
           <h1>火曜日のおフロ</h1>
 
@@ -51,9 +58,12 @@ const Page: NextPage<Props> = ({ episodes }) => {
         </div>
 
         <ul className="grid gap-y-8">
-          {episodes.map((e) => (
-            <PodcastEpisodeListItem key={e.guid} episode={e} />
-          ))}
+          {episodes.map((e) => {
+            if (isPodcastEpisode(e)) {
+              return <PodcastEpisodeListItem key={e.guid} episode={e} />;
+            }
+            return <YouTubeEpisodeListItem key={e.videoId} episode={e} />;
+          })}
         </ul>
       </main>
     </>
@@ -66,21 +76,38 @@ const parser: Parser = new Parser();
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   try {
-    // const res = await fetch(
-    //   `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCEpBWGBKeawXcNupDevCmSg&key=${process.env.YOUTUBE_API_KEY}`
-    // );
-    // const data = await res.json();
-    // console.log(data.items);
-    // console.log(data.items[0].id);
-    // console.log(data.items[0].id.videoId);
-    // console.log(data.items[0].snippet);
+    // https://developers.google.com/youtube/v3/docs/search/list?hl=ja
+    // 使用量制限 https://developers.google.com/youtube/v3/getting-started?hl=ja#quota
+    const res = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=50&order=date&channelId=UCEpBWGBKeawXcNupDevCmSg&key=${process.env.YOUTUBE_API_KEY}`
+    );
+    const data = await res.json();
+    const videos =
+      data.items?.map((item: any) => ({
+        videoId: item.id.videoId,
+        isLive: item.snippet.liveBroadcastContent === "live",
+        title: item.snippet.title,
+        description: item.snippet.description,
+        thumbnailUrl: item.snippet.thumbnails.high.url,
+        pubDate: item.snippet.publishedAt,
+      })) ?? [];
+
     const feed = await parser.parseURL(
       "https://anchor.fm/s/2b3dd74c/podcast/rss"
     );
-    if (isPodcastEpisodes(feed.items)) {
+
+    if (isYouTubeEpisodes(videos) && isPodcastEpisodes(feed.items)) {
+      // マージ&ソートする
+      const videoAndFeed: (PodcastEpisode | YouTubeEpisode)[] = [
+        ...videos,
+        ...feed.items,
+      ];
+      videoAndFeed.sort((x, y) => {
+        return Date.parse(y.pubDate) - Date.parse(x.pubDate);
+      });
       return {
         props: {
-          episodes: feed.items as PodcastEpisode[],
+          episodes: videoAndFeed,
         },
       };
     }
@@ -92,5 +119,6 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     props: {
       episodes: [],
     },
+    revalidate: 3600,
   };
 };
