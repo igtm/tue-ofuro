@@ -58,7 +58,8 @@ export const getStaticPaths = async () => {
 
   return {
     paths: [],
-    fallback: false,
+    // https://nextjs.org/docs/basic-features/data-fetching#fallback-pages
+    fallback: true,
   };
 };
 
