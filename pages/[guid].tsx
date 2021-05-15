@@ -49,7 +49,7 @@ export const getStaticPaths = async () => {
       const guids = feed.items.map((item) => item.guid);
       return {
         paths: guids.map((guid) => ({ params: { guid } })),
-        fallback: false,
+        fallback: true,
       };
     }
   } catch (error) {
@@ -84,6 +84,10 @@ const EpisodeContent: FC<ContentProps> = (props) => {
 };
 
 const Page: NextPage<Props> = ({ episode }) => {
+  if (episode == null) {
+    return <>loading...</>;
+  }
+
   const pubDateISOString = useMemo(() => {
     return new Date(Date.parse(episode.pubDate)).toISOString();
   }, [episode.pubDate]);
