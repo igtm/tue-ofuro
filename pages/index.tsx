@@ -109,6 +109,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         props: {
           episodes: videoAndFeed,
         },
+        revalidate: 3600,
       };
     }
   } catch (error) {
