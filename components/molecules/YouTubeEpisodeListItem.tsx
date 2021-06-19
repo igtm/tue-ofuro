@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { VFC } from "react";
 import { YouTubeEpisode } from "../../types";
 
@@ -12,7 +11,7 @@ export const YouTubeEpisodeListItem: VFC<Props> = (props) => {
       <a
         href={`https://www.youtube.com/watch/?v=${props.episode.videoId}`}
         target="_blank"
-        className="flex-grow hover:underline"
+        className="flex-grow hover:underline" rel="noreferrer"
       >
         <div className="flex gap-4">
           <div className="relative flex-shrink-0 w-20 overflow-hidden rounded h-15">

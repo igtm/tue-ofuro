@@ -84,10 +84,6 @@ const EpisodeContent: FC<ContentProps> = (props) => {
 };
 
 const Page: NextPage<Props> = ({ episode }) => {
-  if (episode == null) {
-    return <>loading...</>;
-  }
-
   const pubDateISOString = useMemo(() => {
     return new Date(Date.parse(episode.pubDate)).toISOString();
   }, [episode.pubDate]);
@@ -95,6 +91,10 @@ const Page: NextPage<Props> = ({ episode }) => {
   const pubDateLocaleDateString = useMemo(() => {
     return new Date(Date.parse(episode.pubDate)).toLocaleDateString();
   }, [episode.pubDate]);
+
+  if (episode == null) {
+    return <>loading...</>;
+  }
 
   return (
     <main>
