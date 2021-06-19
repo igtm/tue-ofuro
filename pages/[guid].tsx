@@ -8,7 +8,8 @@ import {
 import Parser from "rss-parser";
 import React, { useMemo, FC } from "react";
 
-type Props = { episode: PodcastEpisode };
+// getStaticPaths において fallback: true を指定するので、props は空になることがある
+type Props = { episode?: PodcastEpisode };
 
 const parser: Parser = new Parser();
 
@@ -84,17 +85,25 @@ const EpisodeContent: FC<ContentProps> = (props) => {
 };
 
 const Page: NextPage<Props> = ({ episode }) => {
+  const pubDateISOString = useMemo(() => {
+    if (episode?.pubDate == null) {
+      return "";
+    }
+
+    return new Date(Date.parse(episode.pubDate)).toISOString();
+  }, [episode?.pubDate]);
+
+  const pubDateLocaleDateString = useMemo(() => {
+    if (episode?.pubDate == null) {
+      return "";
+    }
+
+    return new Date(Date.parse(episode.pubDate)).toLocaleDateString();
+  }, [episode?.pubDate]);
+
   if (episode == null) {
     return <>loading...</>;
   }
-
-  const pubDateISOString = useMemo(() => {
-    return new Date(Date.parse(episode.pubDate)).toISOString();
-  }, [episode.pubDate]);
-
-  const pubDateLocaleDateString = useMemo(() => {
-    return new Date(Date.parse(episode.pubDate)).toLocaleDateString();
-  }, [episode.pubDate]);
 
   return (
     <main>

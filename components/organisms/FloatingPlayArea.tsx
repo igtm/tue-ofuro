@@ -10,7 +10,6 @@ import { useFloatingPlayAreaContext } from "../../context/FloatingPlayAreaContex
 import { fmtPrettyJPTime } from "../../utilities/fmtPrettyJPTime";
 import { SvgPause } from "../atoms/SvgPause";
 import { SvgPlayArrow } from "../atoms/SvgPlayArrow";
-import Marquee from "react-fast-marquee";
 
 export const FloatingPlayArea: VFC = () => {
   const floatingPlayAreaState = useFloatingPlayAreaContext();
@@ -174,12 +173,9 @@ export const FloatingPlayArea: VFC = () => {
         </div>
 
         <div className="">
-          <Marquee speed={50} gradientWidth={50}>
-            <h1 className="w-full text-sm text-gray-900 whitespace-nowrap">
-              {floatingPlayAreaState.podcastEpisode.title}
-              {"     "}
-            </h1>
-          </Marquee>
+          <h1 className="w-full text-sm text-gray-900">
+            {floatingPlayAreaState.podcastEpisode.title}
+          </h1>
         </div>
 
         <div className="">
