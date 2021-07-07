@@ -1,12 +1,14 @@
 import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
+import React, { FC, useMemo } from "react";
+import Parser from "rss-parser";
+import { SvgPlayArrow } from "../components/atoms/SvgPlayArrow";
+import { useFloatingPlayDispatchContext } from "../context/FloatingPlayAreaContext";
 import {
   EmptyPodcastEpisode,
   isPodcastEpisode,
   isPodcastEpisodes,
   PodcastEpisode,
 } from "../types";
-import Parser from "rss-parser";
-import React, { useMemo, FC } from "react";
 
 // getStaticPaths において fallback: true を指定するので、props は空になることがある
 type Props = { episode?: PodcastEpisode };
@@ -101,21 +103,36 @@ const Page: NextPage<Props> = ({ episode }) => {
     return new Date(Date.parse(episode.pubDate)).toLocaleDateString();
   }, [episode?.pubDate]);
 
+  const { updateFloatingPlayAreaState } = useFloatingPlayDispatchContext();
+
   if (episode == null) {
     return <>loading...</>;
   }
 
   return (
     <main>
-      <h1 className="text-2xl text-gray-800">{episode.title}</h1>
+      <div className="flex gap-x-4">
+        <div className="relative flex-shrink-0 w-20 h-20 overflow-hidden rounded">
+          <img src="/saru.jpg" width={128} height={128} alt="" />
 
-      <time className="mt-16 text-sm text-gray-500" dateTime={pubDateISOString}>
-        {pubDateLocaleDateString}
-      </time>
+          <button
+            className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-gray-700 bg-opacity-20 hover:bg-opacity-5"
+            onClick={() => {
+              updateFloatingPlayAreaState(episode);
+            }}
+          >
+            <SvgPlayArrow className="w-10 h-10 fill-current text-gray-50" />
+            <span className="sr-only">再生</span>
+          </button>
+        </div>
 
-      <div className="mt-8">
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption -- 代替コンテンツを用意できなていない*/}
-        <audio controls src={episode.enclosure.url} />
+        <div className="grid">
+          <time className="text-sm text-gray-500" dateTime={pubDateISOString}>
+            {pubDateLocaleDateString}
+          </time>
+
+          <h1 className="text-2xl text-gray-800">{episode.title}</h1>
+        </div>
       </div>
 
       <section className="mt-8">
