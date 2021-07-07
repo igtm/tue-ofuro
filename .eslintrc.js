@@ -1,15 +1,17 @@
 module.exports = {
   root: true,
-  parser: "@typescript-eslint/parser",
-  plugins: ["jsx-a11y", "react-hooks", "react", "@typescript-eslint"],
   extends: [
     "eslint:recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
+
+    // Basic Features: ESLint | Next.js https://nextjs.org/docs/basic-features/eslint
+    // If you need to also include a separate, custom ESLint configuration, it is highly recommended that eslint-config-next is extended last after other configurations.
+    "next",
+    "next/core-web-vitals",
   ],
   rules: {
+    "@next/next/no-img-element": 0,
     "@typescript-eslint/camelcase": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/no-unused-vars": 1,
