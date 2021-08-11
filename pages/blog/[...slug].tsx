@@ -1,11 +1,11 @@
-import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
-import ErrorPage from "next/error";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { DangerousHTML } from "../../components/atoms/DangerousHTML";
-import { Fallback } from "../../components/organisms/Fallback";
-import { getAllPosts, getPostBySlug } from "../../lib/api";
-import markdownToHtml from "../../lib/markdownToHtml";
+import { GetStaticPropsContext, NextPage } from 'next';
+import ErrorPage from 'next/error';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { DangerousHTML } from '../../components/atoms/DangerousHTML';
+import { Fallback } from '../../components/organisms/Fallback';
+import { getAllPostSlugs, getPostBySlug } from '../../lib/api';
+import markdownToHtml from '../../lib/markdownToHtml';
 
 type Props = {
   post?: {
@@ -16,20 +16,18 @@ type Props = {
 };
 
 type Params = {
-  slug: string;
+  slug: string[];
 };
 
-export const getStaticProps: GetStaticProps<Props> = async (
-  ctx: GetStaticPropsContext<Params>
-) => {
+export const getStaticProps = async (ctx: GetStaticPropsContext<Params>) => {
   if (ctx.params?.slug === undefined) {
     return {
       props: {},
     };
   }
 
-  const post = getPostBySlug(ctx.params.slug, ["slug", "title", "content"]);
-  const content = await markdownToHtml(post.content ?? "");
+  const post = getPostBySlug(ctx.params.slug);
+  const content = await markdownToHtml(post.content ?? '');
 
   return {
     props: {
@@ -42,13 +40,13 @@ export const getStaticProps: GetStaticProps<Props> = async (
 };
 
 export const getStaticPaths = async () => {
-  const posts = getAllPosts(["slug"]);
+  const slugs = getAllPostSlugs();
 
   return {
-    paths: posts.map((post) => {
+    paths: slugs.map((slug) => {
       return {
         params: {
-          slug: post.slug,
+          slug,
         },
       };
     }),

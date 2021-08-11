@@ -1,49 +1,32 @@
-import fs from "fs";
-import { join } from "path";
-import matter from "gray-matter";
+import fs from 'fs';
+import { join } from 'path';
+import matter from 'gray-matter';
+import { Post } from '../types';
 
-const postsDirectory = join(process.cwd(), "posts");
+const postsDirectory = join(process.cwd(), 'posts');
 
-export function getPostSlugs() {
+export function getPostDirs() {
   return fs.readdirSync(postsDirectory);
 }
 
-export function getPostBySlug(slug: string, fields: string[] = []) {
-  const realSlug = slug.replace(/\.md$/, "");
-  const fullPath = join(postsDirectory, `${realSlug}.md`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents);
+export function getPostBySlug(slug: string[]): Post {
+  const fullPath = join(postsDirectory, ...slug);
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
+  // const { data, content } = matter(fileContents);
 
-  const items: {
-    slug: string;
-    title: string;
-    content: string;
-  } = {
-    slug: "",
-    title: "",
-    content: "",
+  return {
+    slug: join(...slug),
+    title: 'hoge',
+    content: fileContents,
   };
-
-  // Ensure only the minimal needed data is exposed
-  fields.forEach((field) => {
-    if (field === "slug") {
-      items.slug = realSlug;
-    }
-    if (field === "title") {
-      items.title = data.title;
-    }
-    if (field === "content") {
-      items.content = content;
-    }
-  });
-
-  return items;
 }
 
-export function getAllPosts(fields: string[] = []) {
-  const slugs = getPostSlugs();
-  const posts = slugs.map((slug) => getPostBySlug(slug, fields));
-  // sort posts by date in descending order
-  // .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
-  return posts;
+export function getAllPostSlugs() {
+  const dirs = getPostDirs(); // ['10-usability-heuristics']
+  const slugsGroupedByDir = dirs.map((dir) => getPostSlugsByDir(dir));
+  return slugsGroupedByDir.flat();
+}
+
+function getPostSlugsByDir(dir: string) {
+  return fs.readdirSync(join(postsDirectory, dir)).map((slug) => [dir, slug]);
 }
