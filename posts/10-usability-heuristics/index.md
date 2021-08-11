@@ -1,3 +1,7 @@
+---
+dateTime: "2021-08-01T15:00:00.000Z"
+---
+
 # 10 Usability Heuristics for User Interface Design
 
 [Index](../)
