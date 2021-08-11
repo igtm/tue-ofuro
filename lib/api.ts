@@ -12,12 +12,10 @@ export function getPostDirs() {
 export function getPostBySlug(slug: string[]): Post {
   const fullPath = join(postsDirectory, ...slug);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
-  // TODO: マークダウンをパースしてくる
-  // const { data, content } = matter(fileContents);
 
   return {
     slug: join(...slug),
-    title: 'hoge',
+    title: fileContents.split('\n')[0].replace(/#\s+/gi, ''),
     content: fileContents,
   };
 }
