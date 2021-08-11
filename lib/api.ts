@@ -12,6 +12,7 @@ export function getPostDirs() {
 export function getPostBySlug(slug: string[]): Post {
   const fullPath = join(postsDirectory, ...slug);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
+  // TODO: マークダウンをパースしてくる
   // const { data, content } = matter(fileContents);
 
   return {
