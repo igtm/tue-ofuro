@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { DangerousHTML } from '../../components/atoms/DangerousHTML';
 import { Fallback } from '../../components/organisms/Fallback';
-import { getAllPostSlugs, getPostBySlug } from '../../lib/api';
+import { getAllPosts, getPostBySlug } from '../../lib/api';
 import markdownToHtml from '../../lib/markdownToHtml';
 
 type Props = {
@@ -29,6 +29,12 @@ export const getStaticProps = async (ctx: GetStaticPropsContext<Params>) => {
   const post = getPostBySlug(ctx.params.slug);
   const content = await markdownToHtml(post.content ?? '');
 
+  // Next.js の getStaticProps が返す props に渡せない値を変換する
+  // undefined は渡せないので delete する
+  if (post.dateTime === undefined) {
+    delete post.dateTime;
+  }
+
   return {
     props: {
       post: {
@@ -40,13 +46,13 @@ export const getStaticProps = async (ctx: GetStaticPropsContext<Params>) => {
 };
 
 export const getStaticPaths = async () => {
-  const slugs = getAllPostSlugs();
+  const posts = getAllPosts();
 
   return {
-    paths: slugs.map((slug) => {
+    paths: posts.map((post) => {
       return {
         params: {
-          slug,
+          slug: post.slug,
         },
       };
     }),

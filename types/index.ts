@@ -73,7 +73,8 @@ export const EmptyPodcastEpisode: PodcastEpisode = {
 
 // blog
 export type Post = {
-  slug: string;
+  slug: string[];
+  dateTime?: string | undefined;
   title: string;
   content: string;
 };

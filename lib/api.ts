@@ -5,13 +5,24 @@ import { Post } from '../types';
 
 const postsDirectory = join(process.cwd(), 'posts');
 
+/**
+ * 
+ * @param slug post の slug （ファイルのパスを配列で表現したもの）
+ * @returns post のメタ情報、本文など
+ */
 export function getPostBySlug(slug: string[]): Post {
   const fullPath = join(postsDirectory, ...slug);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
-  const { content } = matter(fileContents);
+  const { data, content } = matter(fileContents);
+
+  let dateTime: Post["dateTime"];
+  if (typeof data.dateTime === "string") {
+    dateTime = data.dateTime;
+  }
 
   return {
-    slug: join(...slug),
+    slug,
+    dateTime,
     title: content.trim().split('\n')[0].replace(/#\s+/gi, ''),
     content: content,
   };
@@ -19,25 +30,19 @@ export function getPostBySlug(slug: string[]): Post {
 
 /**
  *
- * @returns post の slug （ファイルのパスを配列で表現したもの）を、日付の新しい順の配列で取得する
+ * @returns post のメタ情報を、日付の新しい順の配列で取得する
  */
-export function getAllPostSlugs() {
+export function getAllPosts() {
   const slugs = recursiveReadDirSync(postsDirectory);
 
   const sortedSlugs = slugs
     .map((slug) => {
-      const fullPath = join(postsDirectory, ...slug);
-      const fileContents = fs.readFileSync(fullPath, "utf8");
-      const { data } = matter(fileContents);
-
-      let dateTime: Date | undefined;
-      if (typeof data.dateTime === "string") {
-        dateTime = new Date(data.dateTime);
-      }
+      const post = getPostBySlug(slug);
 
       return {
-        dateTime,
-        slug,
+        slug: post.slug,
+        dateTime: post.dateTime,
+        title: post.title,
       };
     })
     .sort((a, b) => {
@@ -51,8 +56,8 @@ export function getAllPostSlugs() {
         return -1;
       }
 
-      const aTime = a.dateTime.getTime();
-      const bTime = b.dateTime.getTime();
+      const aTime = new Date(a.dateTime).getTime();
+      const bTime = new Date(b.dateTime).getTime();
 
       // 不正な日付は最後尾へ
       if (isNaN(aTime)) {
@@ -70,8 +75,7 @@ export function getAllPostSlugs() {
       } else {
         return -1;
       }
-    })
-    .map((item) => item.slug);
+    });
 
   return sortedSlugs;
 }
