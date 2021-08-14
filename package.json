@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "tsc": "tsc",
+    "prettier": "prettier **/*.{ts,tsx,js} --write",
     "fix": "npm run tsc && npm run lint"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
     "gray-matter": "^4.0.3",
     "next": "^11.0.1",
     "postcss": "^8.3.6",
+    "prettier": "^2.3.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-modal": "^3.14.3",

@@ -1,18 +1,18 @@
-import fs from 'fs';
-import { join } from 'path';
-import matter from 'gray-matter';
-import { Post } from '../types';
+import fs from "fs";
+import { join } from "path";
+import matter from "gray-matter";
+import { Post } from "../types";
 
-const postsDirectory = join(process.cwd(), 'posts');
+const postsDirectory = join(process.cwd(), "posts");
 
 /**
- * 
+ *
  * @param slug post の slug （ファイルのパスを配列で表現したもの）
  * @returns post のメタ情報、本文など
  */
 export function getPostBySlug(slug: string[]): Post {
   const fullPath = join(postsDirectory, ...slug);
-  const fileContents = fs.readFileSync(fullPath, 'utf8');
+  const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
   let dateTime: Post["dateTime"];
@@ -23,7 +23,7 @@ export function getPostBySlug(slug: string[]): Post {
   return {
     slug,
     dateTime,
-    title: content.trim().split('\n')[0].replace(/#\s+/gi, ''),
+    title: content.trim().split("\n")[0].replace(/#\s+/gi, ""),
     content: content,
   };
 }

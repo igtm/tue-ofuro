@@ -59,8 +59,8 @@ export const useForm = (args: Args) => {
       args.setPresentNumber(presentNumber);
       args.setFutureNumber(futureNumber);
 
-      const targetClientRectTop = scrollTargetRef.current?.getBoundingClientRect()
-        .top;
+      const targetClientRectTop =
+        scrollTargetRef.current?.getBoundingClientRect().top;
       if (targetClientRectTop != null) {
         window.scrollTo({
           top: window.scrollY + targetClientRectTop - 72, // 72 はヘッダー避けやスクロール位置の余白などを計算する適当な値

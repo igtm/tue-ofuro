@@ -1,11 +1,11 @@
-import { GetStaticPropsContext, NextPage } from 'next';
-import ErrorPage from 'next/error';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { DangerousHTML } from '../../components/atoms/DangerousHTML';
-import { Fallback } from '../../components/organisms/Fallback';
-import { getAllPosts, getPostBySlug } from '../../lib/api';
-import markdownToHtml from '../../lib/markdownToHtml';
+import { GetStaticPropsContext, NextPage } from "next";
+import ErrorPage from "next/error";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { DangerousHTML } from "../../components/atoms/DangerousHTML";
+import { Fallback } from "../../components/organisms/Fallback";
+import { getAllPosts, getPostBySlug } from "../../lib/api";
+import markdownToHtml from "../../lib/markdownToHtml";
 
 type Props = {
   post?: {
@@ -27,7 +27,7 @@ export const getStaticProps = async (ctx: GetStaticPropsContext<Params>) => {
   }
 
   const post = getPostBySlug(ctx.params.slug);
-  const content = await markdownToHtml(post.content ?? '');
+  const content = await markdownToHtml(post.content ?? "");
 
   // Next.js の getStaticProps が返す props に渡せない値を変換する
   // undefined は渡せないので delete する

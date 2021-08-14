@@ -1,10 +1,10 @@
-import { NextPage, GetStaticProps } from 'next';
-import Head from 'next/head';
-import path from 'path';
-import { PageTitle } from '../../components/atoms/PageTitle';
-import { BlogListItem } from '../../components/molecules/BlogListItem';
-import { getAllPosts } from '../../lib/api';
-import { Post } from '../../types';
+import { NextPage, GetStaticProps } from "next";
+import Head from "next/head";
+import path from "path";
+import { PageTitle } from "../../components/atoms/PageTitle";
+import { BlogListItem } from "../../components/molecules/BlogListItem";
+import { getAllPosts } from "../../lib/api";
+import { Post } from "../../types";
 
 type Props = {
   posts: Pick<Post, "slug" | "dateTime" | "title">[];
@@ -26,7 +26,7 @@ const Page: NextPage<Props> = ({ posts }) => {
             return (
               <BlogListItem
                 key={detailPagePath}
-                href={'/blog/' + detailPagePath}
+                href={"/blog/" + detailPagePath}
                 title={post.title}
                 dateTime={post.dateTime}
               />

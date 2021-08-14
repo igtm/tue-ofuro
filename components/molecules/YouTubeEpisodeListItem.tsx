@@ -11,7 +11,8 @@ export const YouTubeEpisodeListItem: VFC<Props> = (props) => {
       <a
         href={`https://www.youtube.com/watch/?v=${props.episode.videoId}`}
         target="_blank"
-        className="flex-grow hover:underline" rel="noreferrer"
+        className="flex-grow hover:underline"
+        rel="noreferrer"
       >
         <div className="flex gap-4">
           <div className="relative flex-shrink-0 w-20 overflow-hidden rounded h-15">
@@ -30,7 +31,9 @@ export const YouTubeEpisodeListItem: VFC<Props> = (props) => {
             )}
           </div>
           <div className="grid gap-y-2">
-            <div className="text-xs text-gray-500">{new Date(props.episode.pubDate).toLocaleString()}</div>
+            <div className="text-xs text-gray-500">
+              {new Date(props.episode.pubDate).toLocaleString()}
+            </div>
             <div className="text-base text-gray-900">{props.episode.title}</div>
           </div>
         </div>

@@ -2,9 +2,9 @@ import { VFC } from "react";
 
 type Props = {
   className?: string;
-}
+};
 
-export const SvgPlayArrow: VFC<Props> = ({className}) => {
+export const SvgPlayArrow: VFC<Props> = ({ className }) => {
   return (
     <svg
       className={className}
