@@ -20,9 +20,8 @@ const initialState: FloatingPlayAreaState = {
   podcastEpisode: undefined,
 };
 
-const FloatingPlayAreaStateContext = createContext<FloatingPlayAreaState>(
-  initialState
-);
+const FloatingPlayAreaStateContext =
+  createContext<FloatingPlayAreaState>(initialState);
 
 const FloatingPlayAreaDispatchContext = createContext<FloatingPlayAreaDispatch>(
   {
@@ -50,10 +49,8 @@ type Props = {
 };
 
 export const FloatingPlayAreaStateProvider: VFC<Props> = (props) => {
-  const [
-    floatingPlayAreaState,
-    setFloatingPlayAreaState,
-  ] = useState<FloatingPlayAreaState>(initialState);
+  const [floatingPlayAreaState, setFloatingPlayAreaState] =
+    useState<FloatingPlayAreaState>(initialState);
 
   const updateFloatingPlayAreaState = (podcastEpisode: PodcastEpisode) => {
     setFloatingPlayAreaState({ podcastEpisode });

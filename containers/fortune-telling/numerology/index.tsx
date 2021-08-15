@@ -144,8 +144,7 @@ const Page: NextPage = () => {
                       value={nameRomeInputElementProps.value}
                       description={{
                         id: "name-rome-description",
-                        note:
-                          "ここに表示されるローマ字表記が気になる場合は修正してください。",
+                        note: "ここに表示されるローマ字表記が気になる場合は修正してください。",
                         errors: nameRomeInputElementProps.errors,
                       }}
                       touched={nameRomeInputElementProps.touched}

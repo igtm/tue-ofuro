@@ -1,6 +1,7 @@
 import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
 import React, { FC, useMemo } from "react";
 import Parser from "rss-parser";
+import { DangerousHTML } from "../components/atoms/DangerousHTML";
 import { SvgPlayArrow } from "../components/atoms/SvgPlayArrow";
 import { useFloatingPlayDispatchContext } from "../context/FloatingPlayAreaContext";
 import {
@@ -66,26 +67,6 @@ export const getStaticPaths = async () => {
   };
 };
 
-type ContentProps = {
-  content: string;
-};
-
-const EpisodeContent: FC<ContentProps> = (props) => {
-  // TODO: dangerouslySetInnerHTML を外す
-  // 外部の API から取得した値を dangerouslySetInnerHTML で出力している
-  // 出力された HTML にスタイルをあてにくい
-  // Anchor の RSS には、contentSnippet というフィールドがあるので、そっちを使うのもあり
-
-  return (
-    <>
-      <div
-        className="dangerousHTML"
-        dangerouslySetInnerHTML={{ __html: props.content }}
-      />
-    </>
-  );
-};
-
 const Page: NextPage<Props> = ({ episode }) => {
   const pubDateISOString = useMemo(() => {
     if (episode?.pubDate == null) {
@@ -138,7 +119,7 @@ const Page: NextPage<Props> = ({ episode }) => {
       <section className="mt-8">
         <h2 className="sr-only">概要</h2>
 
-        <EpisodeContent content={episode.content} />
+        <DangerousHTML content={episode.content} />
       </section>
     </main>
   );

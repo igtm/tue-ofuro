@@ -1,5 +1,4 @@
 import { AppProps } from "next/app";
-import ReactModal from "react-modal";
 import "tailwindcss/tailwind.css";
 import { FloatingPlayArea } from "../components/organisms/FloatingPlayArea";
 import { Footer } from "../components/organisms/Footer";
@@ -7,11 +6,9 @@ import { Header } from "../components/organisms/Header";
 import { FloatingPlayAreaStateProvider } from "../context/FloatingPlayAreaContext";
 import "../styles/dangerous.css";
 
-ReactModal.setAppElement("#tue-ofuro");
-
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <div id="tue-ofuro">
+    <div>
       <FloatingPlayAreaStateProvider>
         <div className="flex flex-col min-h-screen relative z-0">
           <div className="flex-shrink-0 sticky top-0 z-10">
@@ -26,7 +23,7 @@ const App = ({ Component, pageProps }: AppProps) => {
             <Footer />
           </div>
         </div>
-        
+
         <FloatingPlayArea />
       </FloatingPlayAreaStateProvider>
     </div>

@@ -70,3 +70,11 @@ export const EmptyPodcastEpisode: PodcastEpisode = {
     duration: "---",
   },
 };
+
+// blog
+export type Post = {
+  slug: string[];
+  dateTime?: string | undefined;
+  title: string;
+  content: string;
+};
