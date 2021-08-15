@@ -18,7 +18,7 @@ export const BlogListItem: VFC<Props> = (props) => {
 
   return (
     <li>
-      <div className="flex gap-4 w-max">
+      <div className="flex gap-4">
         <Link href={props.href}>
           <a className="flex-grow hover:underline">
             <div className="grid gap-y-2">
