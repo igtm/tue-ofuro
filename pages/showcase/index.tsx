@@ -19,14 +19,20 @@ export default function Page() {
     <>
       <Head>
         <title>ShowCase | 火曜日のおフロ</title>
-        <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
-        <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"></script>
+        <script
+          src="https://aframe.io/releases/0.9.2/aframe.min.js"
+          async
+        ></script>
+        <script
+          src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"
+          async
+        ></script>
       </Head>
 
       <main className="grid gap-y-12">
         <PageTitle>ShowCase </PageTitle>
         <h2>
-          <a href="https://aframe.io/" target="_blank">
+          <a href="https://aframe.io/" target="_blank" rel="noreferrer">
             A-FRAME
           </a>
           で遊んでみる
