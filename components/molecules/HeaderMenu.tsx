@@ -40,6 +40,7 @@ export const HeaderMenu: VFC = () => {
           <HeaderMenuNavLink href="/blog">ブログ</HeaderMenuNavLink>
           <HeaderMenuNavLink href="/fortune-telling">占い</HeaderMenuNavLink>
           <HeaderMenuNavLink href="/game">ゲーム</HeaderMenuNavLink>
+          <HeaderMenuNavLink href="/showcase">ShowCase</HeaderMenuNavLink>
         </nav>
 
         <div className="absolute top-0 right-0 z-10">

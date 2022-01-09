@@ -7,5 +7,6 @@ export const HeaderNav: VFC = () => (
     <HeaderNavLink href="/blog">ブログ</HeaderNavLink>
     <HeaderNavLink href="/fortune-telling">占い</HeaderNavLink>
     <HeaderNavLink href="/game">ゲーム</HeaderNavLink>
+    <HeaderNavLink href="/showcase">ShowCase</HeaderNavLink>
   </nav>
 );
