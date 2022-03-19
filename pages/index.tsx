@@ -54,6 +54,15 @@ const Page: NextPage<Props> = ({ episodes }) => {
               @ymdarake
             </a>{" "}
             が、ゆるーくフロントエンド周りの気になった記事を紹介しながらお届けします。おフロは「フロントエンド」から来てます。毎週土曜日更新。
+            <br />
+            このサイトでは、Youtube Live中で作成したフォントを使っています。
+            <a
+              href="/Tue_ofuro_font_kana-Regular.otf"
+              target="_blank"
+              style={{ color: "blue", textDecoration: "underline" }}
+            >
+              ひらがなだけ自作フォント
+            </a>
           </Paragraph>
         </div>
 

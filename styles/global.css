@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "tue-ofuro";
+  src: url("/Tue_ofuro_font_kana-Regular.otf");
+  size-adjust: 120%;
+}
+
+html {
+  font-family: "tue-ofuro";
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #fff;
+}
