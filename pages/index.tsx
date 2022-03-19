@@ -1,5 +1,6 @@
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import Parser from "rss-parser";
 import { Paragraph } from "../components/atoms/Paragraph";
 import { PodcastEpisodeListItem } from "../components/molecules/PodcastEpisodeListItem";
@@ -56,13 +57,11 @@ const Page: NextPage<Props> = ({ episodes }) => {
             が、ゆるーくフロントエンド周りの気になった記事を紹介しながらお届けします。おフロは「フロントエンド」から来てます。毎週土曜日更新。
             <br />
             このサイトでは、Youtube Live中で作成したフォントを使っています。
-            <a
-              href="/Tue_ofuro_font_kana-Regular.otf"
-              target="_blank"
-              style={{ color: "blue", textDecoration: "underline" }}
-            >
-              ひらがなだけ自作フォント
-            </a>
+            <Link href="/Tue_ofuro_font_kana-Regular.otf">
+              <a style={{ color: "blue", textDecoration: "underline" }}>
+                ひらがなだけ自作フォント
+              </a>
+            </Link>
           </Paragraph>
         </div>
 
