@@ -57,7 +57,7 @@ const Page: NextPage<Props> = ({ episodes }) => {
             が、ゆるーくフロントエンド周りの気になった記事を紹介しながらお届けします。おフロは「フロントエンド」から来てます。毎週土曜日更新。
             <br />
             このサイトでは、Youtube Live中で作成したフォントを使っています。
-            <Link href="/Tue_ofuro_font_kana-Regular.otf">
+            <Link href="/Tue_ofuro_kana-Regular.otf">
               <a style={{ color: "blue", textDecoration: "underline" }}>
                 ひらがなだけ自作フォント
               </a>
