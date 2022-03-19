@@ -5,6 +5,7 @@ import { Footer } from "../components/organisms/Footer";
 import { Header } from "../components/organisms/Header";
 import { FloatingPlayAreaStateProvider } from "../context/FloatingPlayAreaContext";
 import "../styles/dangerous.css";
+import "../styles/global.css";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
