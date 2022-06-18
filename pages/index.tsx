@@ -6,6 +6,10 @@ import { Paragraph } from "../components/atoms/Paragraph";
 import { PodcastEpisodeListItem } from "../components/molecules/PodcastEpisodeListItem";
 import { YouTubeEpisodeListItem } from "../components/molecules/YouTubeEpisodeListItem";
 import {
+  useCustomFontContext,
+  useCustomFontDispatchContext,
+} from "../context/CustomFont";
+import {
   isPodcastEpisode,
   isPodcastEpisodes,
   isYouTubeEpisodes,
@@ -18,6 +22,9 @@ type Props = {
 };
 
 const Page: NextPage<Props> = ({ episodes }) => {
+  const customFontContext = useCustomFontContext();
+  const customFontDispatchContext = useCustomFontDispatchContext();
+
   return (
     <>
       <Head>
@@ -54,14 +61,32 @@ const Page: NextPage<Props> = ({ episodes }) => {
             >
               @ymdarake
             </a>{" "}
-            が、ゆるーくフロントエンド周りの気になった記事を紹介しながらお届けします。おフロは「フロントエンド」から来てます。毎週土曜日更新。
+            が、ゆるーくフロントエンド周りの気になった記事を紹介しながらお届けします。おフロは「フロントエンド」から来てます。ほぼ毎週土曜日更新。
             <br />
-            このサイトでは、Youtube Live中で作成したフォントを使っています。
-            <Link href="/Tue_ofuro_kana-Regular.otf">
-              <a style={{ color: "blue", textDecoration: "underline" }}>
-                ひらがなだけ自作フォント
-              </a>
-            </Link>
+          </Paragraph>
+
+          <Paragraph>
+            <span className="flex items-center">
+              <input
+                id="custom-font"
+                className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                type="checkbox"
+                checked={customFontContext.activated}
+                onChange={customFontDispatchContext.toggle}
+              />
+              <label htmlFor="custom-font" className="ml-2 text-sm">
+                オリジナルフォントを有効にする
+              </label>
+            </span>
+
+            <span className="text-sm">
+              YouTube Liveで作成したフォントで表示されます。
+              <Link href="/Tue_ofuro_kana-Regular.otf">
+                <a style={{ color: "blue", textDecoration: "underline" }}>
+                  ひらがなだけ自作フォント
+                </a>
+              </Link>
+            </span>
           </Paragraph>
         </div>
 
