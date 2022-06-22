@@ -20,7 +20,7 @@
 
 ## ブログ
 
-- 開設しました🎉
+- 開設しました 🎉
 
 ## 占い
 
@@ -30,17 +30,18 @@ Comming Soon
 
 Comming Soon
 
+# 1 回目
 
-# 1回目
 - podcast 一覧・詳細
   - データの fetch
 
-# 2回目
+# 2 回目
+
 - <Header /> を作っていく
- - 担当
- - @igtm <Header.Logo>
- - @ymdarake <Header.Nav>
- - @gyo <Header> style
+- 担当
+- @igtm <Header.Logo>
+- @ymdarake <Header.Nav>
+- @gyo <Header> style
 
 ```
 <Header />
@@ -50,21 +51,22 @@ Comming Soon
 <Footer>
 ```
 
-# 3回目(今日やること)
+# 3 回目(今日やること)
+
 - ロゴ作る(figma)
 
-# 4回目
-- vercel デプロイ時の.env直す
+# 4 回目
 
+- vercel デプロイ時の.env 直す
 
-# 5回目(今日やること)
+# 5 回目(今日やること)
+
 - @ymdarake: 一覧キレイにする
 - @t-gyo: 詳細キレイにする
-- @igtm: Youtubeの動画も一覧に入れる
+- @igtm: YouTube の動画も一覧に入れる
 
+# 6 回目(今日やること)
 
-
-# 6回目(今日やること)
 - 一覧: 下に再生エリア作る
   - <FloatingPlayArea />
     - Play/Pause
@@ -76,36 +78,38 @@ Comming Soon
     - PodcastEpisode? 型
 - @ymdarake: 一覧キレイにする
 - @t-gyo: 詳細キレイにする
-- @igtm: Youtubeの動画も一覧に入れる
+- @igtm: YouTube の動画も一覧に入れる
 
+# 7 回目
 
-# 7回目
 - 一覧下の再生バーを実装する
 
+# 8 回目(今日やること)
 
-# 8回目(今日やること)
-- Youtubeの動画も一覧に入れる
+- YouTube の動画も一覧に入れる
 - ISR（Incremental Static Regeneration）を有効にする
 
 # TODO
-- podcastではなく,「アーカイブ」にして Youtubeの動画もlistに入れる
-- list画面で 再生ボタン付ける
-- 矢印キーでn秒早送り
-- spaceキーで停止
+
+- podcast ではなく,「アーカイブ」にして YouTube の動画も list に入れる
+- list 画面で 再生ボタン付ける
+- 矢印キーで n 秒早送り
+- space キーで停止
 - 連続再生
 - content-visibility: auto
 - now on air 機能
 
-
-
 # 研究課題
-- 真ん中寄せ(max-width指定)Websiteとフルフル横幅どっちがいいの? (note.com vs medium.com)
+
+- 真ん中寄せ(max-width 指定)Website とフルフル横幅どっちがいいの? (note.com vs medium.com)
 
 ポッドキャスト一覧
+
 - 日時、タイトル、時間を表示する順序、場所
 - 時間の表示形式
 
 再生機能と詳細へ遷移する機能を"適切"にする
+
 - 再生する領域
 - 詳細へ遷移する領域
 - 全体のクリックを再生として、詳細への遷移ボタンをつける
@@ -114,9 +118,11 @@ Comming Soon
 - focus, hover 時の表現
 
 リンク要素の表現
+
 - 色、下線
 - 外部リンク
 
-本文width
+本文 width
+
 - note.com: 620px
 - medium.com: 680px
