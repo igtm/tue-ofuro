@@ -2,7 +2,6 @@ import Link from "next/link";
 import { VFC } from "react";
 import { useFloatingPlayDispatchContext } from "../../context/FloatingPlayAreaContext";
 import { PodcastEpisode } from "../../types";
-import { fmtPrettyJPTime } from "../../utilities/fmtPrettyJPTime";
 import { SvgPlayArrow } from "../atoms/SvgPlayArrow";
 
 type Props = {
@@ -40,7 +39,7 @@ export const PodcastEpisodeListItem: VFC<Props> = (props) => {
               </div>
 
               <div className="text-xs text-gray-900">
-                {fmtPrettyJPTime(Number(props.episode.itunes.duration))}
+                {props.episode.itunes.duration}
               </div>
             </div>
           </a>
