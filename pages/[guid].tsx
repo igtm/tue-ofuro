@@ -102,17 +102,20 @@ const Page: NextPage<Props> = ({ episode }) => {
               updateFloatingPlayAreaState(episode);
             }}
           >
-            <SvgPlayArrow className="w-10 h-10 fill-current text-gray-50" />
+            <SvgPlayArrow className="w-10 h-10 fill-current text-primary-50" />
             <span className="sr-only">再生</span>
           </button>
         </div>
 
         <div className="grid">
-          <time className="text-sm text-gray-500" dateTime={pubDateISOString}>
+          <time
+            className="text-sm text-primary-500"
+            dateTime={pubDateISOString}
+          >
             {pubDateLocaleDateString}
           </time>
 
-          <h1 className="text-2xl text-gray-800">{episode.title}</h1>
+          <h1 className="text-2xl text-primary-800">{episode.title}</h1>
         </div>
       </div>
 

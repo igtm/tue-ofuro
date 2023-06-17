@@ -173,7 +173,7 @@ export const FloatingPlayArea: VFC = () => {
         </div>
 
         <div className="">
-          <h1 className="w-full text-sm text-gray-900">
+          <h1 className="w-full text-sm text-primary-900">
             {floatingPlayAreaState.podcastEpisode.title}
           </h1>
         </div>
@@ -184,7 +184,7 @@ export const FloatingPlayArea: VFC = () => {
               className="grid w-12 h-12 border border-gray-900 rounded-full place-items-center focus:outline-none"
               onClick={pauseAudio}
             >
-              <SvgPause className="w-10 h-10 text-gray-900 fill-current" />
+              <SvgPause className="w-10 h-10 text-primary-900 fill-current" />
               <span className="sr-only">停止</span>
             </button>
           ) : (
@@ -192,14 +192,14 @@ export const FloatingPlayArea: VFC = () => {
               className="grid w-12 h-12 border border-gray-900 rounded-full place-items-center focus:outline-none"
               onClick={playAudio}
             >
-              <SvgPlayArrow className="w-10 h-10 text-gray-900 fill-current" />
+              <SvgPlayArrow className="w-10 h-10 text-primary-900 fill-current" />
               <span className="sr-only">再生</span>
             </button>
           )}
         </div>
 
         <div className="hidden fle md:block" style={{ justifySelf: "end" }}>
-          <div className="font-mono text-sm text-gray-900">
+          <div className="font-mono text-sm text-primary-900">
             {currentTimeString} / {durationString}
           </div>
         </div>

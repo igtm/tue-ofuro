@@ -2,6 +2,10 @@
 
 ### Nextjs: 11.0.1 -> 13
 
+```
+yarn upgrade-interactive --latest
+```
+
 https://nextjs.org/docs/pages/building-your-application/upgrading/version-13
 
 - `Error: Invalid <Link> with <a> child. Please remove <a> or use <Link legacyBehavior>.`
@@ -47,10 +51,6 @@ npx @next/codemod new-link .
 }
 ```
 
-
-```
-yarn upgrade-interactive --latest
-```
 
 - tailwindcss v3
 https://tailwindcss.com/docs/upgrade-guide#configure-content-sources

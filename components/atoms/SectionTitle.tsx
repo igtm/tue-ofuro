@@ -10,7 +10,7 @@ export const SectionTitle: VFC<Props> = ({
   ...headingElementProps
 }) => {
   return (
-    <h2 {...headingElementProps} className="text-2xl text-gray-800">
+    <h2 {...headingElementProps} className="text-2xl text-primary-800">
       {children}
     </h2>
   );

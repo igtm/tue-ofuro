@@ -1,3 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* https://tailwindcss.com/docs/customizing-colors */
+@layer base {
+  :root {
+    --color-primary: #6b7280;
+    --color-bg: #fff;
+  }
+
+  :root[class~="dark"] {
+    --color-primary: #fff;
+    --color-bg: #0f172a;
+  }
+}
+
 @font-face {
   font-family: "tue-ofuro";
   src: url("/Tue_ofuro_kana-Regular.otf");
@@ -7,8 +24,7 @@
 html {
   font-size: 16px;
   line-height: 1.5;
-  color: #333;
-  background-color: #fff;
+  background-color: var(--color-bg);
 }
 
 .font-root {

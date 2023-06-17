@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const HeaderMenuNavLink: VFC<Props> = ({ children, href }) => (
-  <Link href={href} className="p-2 text-gray-800">
+  <Link href={href} className="p-2 text-primary-800">
     {children}
   </Link>
 );

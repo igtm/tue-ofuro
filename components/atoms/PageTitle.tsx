@@ -7,7 +7,7 @@ type Props = DetailedHTMLProps<
 
 export const PageTitle: VFC<Props> = ({ children, ...headingElementProps }) => {
   return (
-    <h1 {...headingElementProps} className="text-3xl text-gray-800">
+    <h1 {...headingElementProps} className="text-3xl text-primary-800">
       {children}
     </h1>
   );
