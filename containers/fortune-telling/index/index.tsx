@@ -17,17 +17,13 @@ const Page: NextPage = () => {
         <ul className="grid grid-cols-3 gap-2 px-2">
           <li>
             <Link href="/fortune-telling/numerology">
-              <a>
-                <Card>数秘術</Card>
-              </a>
+              <Card>数秘術</Card>
             </Link>
           </li>
 
           <li>
             <Link href="/fortune-telling/geomancy">
-              <a>
-                <Card>ジオマンシー</Card>
-              </a>
+              <Card>ジオマンシー</Card>
             </Link>
           </li>
 

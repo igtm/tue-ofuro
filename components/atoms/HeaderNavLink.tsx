@@ -7,9 +7,11 @@ type Props = {
 };
 
 export const HeaderNavLink: VFC<Props> = ({ children, href }) => (
-  <Link href={href}>
-    <a className="py-4 px-4 md:px-6 text-gray-500 hover:text-gray-800 transition-all duration-100">
-      {children}
-    </a>
-  </Link>
+  (<Link
+    href={href}
+    className="py-4 px-4 md:px-6 text-gray-500 hover:text-gray-800 transition-all duration-100">
+
+    {children}
+
+  </Link>)
 );
