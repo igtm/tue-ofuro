@@ -19,6 +19,7 @@ class MyDocument extends Document {
       <Html lang="ja">
         <Head>
           <Script
+            id="darkmode-toggle"
             strategy="beforeInteractive"
             dangerouslySetInnerHTML={{
               __html: `
