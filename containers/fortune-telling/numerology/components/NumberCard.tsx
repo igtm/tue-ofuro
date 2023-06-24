@@ -1,7 +1,8 @@
-import { useCallback, useMemo, useState, VFC } from "react";
+import { useCallback, useMemo, useState, VFC, ComponentType } from "react";
 import ReactModal from "react-modal";
 import { CabalaNumber } from "../models/typeCabalaNumber";
 import { ModernNumber } from "../models/typeModernNumber";
+const ModalSafeForReact18 = ReactModal as ComponentType<ReactModal['props']>;
 
 type Props = {
   numberType: string;
@@ -49,7 +50,7 @@ export const NumberCard: VFC<Props> = (props) => {
         </section>
       </div>
 
-      <ReactModal
+      <ModalSafeForReact18
         isOpen={isOpen}
         onRequestClose={handleClose}
         bodyOpenClassName="overflow-hidden"
@@ -83,7 +84,7 @@ export const NumberCard: VFC<Props> = (props) => {
             </button>
           </div>
         </div>
-      </ReactModal>
+      </ModalSafeForReact18>
     </>
   );
 };

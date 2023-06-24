@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState, FC } from "react";
+import { useCallback, useEffect, useState, FC, ComponentType } from "react";
 import ReactModal from "react-modal";
 import { HeaderMenuNavLink } from "../atoms/HeaderMenuNavLink";
 import { ThemeToggle } from "../atoms/ThemeToggle";
+const ModalSafeForReact18 = ReactModal as ComponentType<ReactModal['props']>;
 
 export const HeaderMenu: FC = () => {
   const router = useRouter();
@@ -40,7 +41,7 @@ export const HeaderMenu: FC = () => {
         </svg>
       </button>
 
-      <ReactModal
+      <ModalSafeForReact18
         isOpen={isOpen}
         onRequestClose={handleClose}
         bodyOpenClassName="overflow-hidden"
@@ -64,7 +65,7 @@ export const HeaderMenu: FC = () => {
             <img src="/close-black-18dp.svg" alt="閉じる" />
           </button>
         </div>
-      </ReactModal>
+      </ModalSafeForReact18>
     </>
   );
 };

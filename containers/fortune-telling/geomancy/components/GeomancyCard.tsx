@@ -1,6 +1,7 @@
-import { useCallback, useMemo, useState, VFC } from "react";
+import { useCallback, useMemo, useState, VFC, ComponentType } from "react";
 import ReactModal from "react-modal";
 import { GeomancySymbol } from "../models/typeGeomancySymbol";
+const ModalSafeForReact18 = ReactModal as ComponentType<ReactModal['props']>;
 
 type Props = {
   geomancySymbol?: GeomancySymbol;
@@ -42,7 +43,7 @@ export const GeomancyCard: VFC<Props> = (props) => {
         </div>
       </div>
 
-      <ReactModal
+      <ModalSafeForReact18
         isOpen={isOpen}
         onRequestClose={handleClose}
         bodyOpenClassName="overflow-hidden"
@@ -68,7 +69,7 @@ export const GeomancyCard: VFC<Props> = (props) => {
             <img src="/close-black-18dp.svg" alt="閉じる" />
           </button>
         </div>
-      </ReactModal>
+      </ModalSafeForReact18>
     </>
   );
 };
