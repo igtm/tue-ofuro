@@ -14,7 +14,12 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
       res.json({ title: feed.title, items: feed.items.map((f) => ({ ...f })) });
     })();
   } catch (e) {
+    if (e instanceof Error) {
+      res.statusCode = 500;
+      res.json({ message: e.message });
+      return;
+    }
     res.statusCode = 500;
-    res.json({ message: e.message });
+    res.json({ message: "unexpected error" });
   }
 };
