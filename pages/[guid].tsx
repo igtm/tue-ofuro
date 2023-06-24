@@ -10,6 +10,8 @@ import {
   isPodcastEpisodes,
   PodcastEpisode,
 } from "../types";
+import { format, parseISO } from "date-fns";
+import { ja } from "date-fns/locale";
 
 // getStaticPaths において fallback: true を指定するので、props は空になることがある
 type Props = { episode?: PodcastEpisode };
@@ -80,8 +82,11 @@ const Page: NextPage<Props> = ({ episode }) => {
     if (episode?.pubDate == null) {
       return "";
     }
-
-    return new Date(Date.parse(episode.pubDate)).toLocaleDateString();
+    return format(
+      parseISO(new Date(episode.pubDate).toISOString()),
+      "yyyy/MM/dd",
+      { locale: ja }
+    );
   }, [episode?.pubDate]);
 
   const { updateFloatingPlayAreaState } = useFloatingPlayDispatchContext();
