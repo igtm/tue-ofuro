@@ -144,16 +144,16 @@ export const FloatingPlayArea: VFC = () => {
         boxShadow:
           "0 6px 10px 0 rgb(0 0 0 / 14%), 0 1px 18px 0 rgb(0 0 0 / 12%), 0 3px 5px -1px rgb(0 0 0 / 20%)",
       }}
-      className="fixed bottom-0 left-0 w-full bg-white"
+      className="fixed bottom-0 left-0 w-full bg-base-100"
     >
       <div
-        className="relative w-full h-2 bg-gray-300 cursor-pointer"
+        className="relative w-full h-2 bg-base-300 cursor-pointer"
         onClick={handleClickSeekBar}
         aria-hidden="true"
       >
         <div
           style={{ width: `${progress}%` }}
-          className="absolute top-0 left-0 h-full bg-yellow-500"
+          className="absolute top-0 left-0 h-full bg-primary"
         ></div>
       </div>
 
@@ -173,7 +173,7 @@ export const FloatingPlayArea: VFC = () => {
         </div>
 
         <div className="">
-          <h1 className="w-full text-sm text-gray-900">
+          <h1 className="w-full text-sm text-primary-900">
             {floatingPlayAreaState.podcastEpisode.title}
           </h1>
         </div>
@@ -181,25 +181,25 @@ export const FloatingPlayArea: VFC = () => {
         <div className="">
           {playing ? (
             <button
-              className="grid w-12 h-12 border border-gray-900 rounded-full place-items-center focus:outline-none"
+              className="grid w-12 h-12 border border-primary rounded-full place-items-center focus:outline-none"
               onClick={pauseAudio}
             >
-              <SvgPause className="w-10 h-10 text-gray-900 fill-current" />
+              <SvgPause className="w-10 h-10 text-primary-900 fill-primary" />
               <span className="sr-only">停止</span>
             </button>
           ) : (
             <button
-              className="grid w-12 h-12 border border-gray-900 rounded-full place-items-center focus:outline-none"
+              className="grid w-12 h-12 border border-primary rounded-full place-items-center focus:outline-none"
               onClick={playAudio}
             >
-              <SvgPlayArrow className="w-10 h-10 text-gray-900 fill-current" />
+              <SvgPlayArrow className="w-10 h-10 text-primary-900 fill-primary" />
               <span className="sr-only">再生</span>
             </button>
           )}
         </div>
 
         <div className="hidden fle md:block" style={{ justifySelf: "end" }}>
-          <div className="font-mono text-sm text-gray-900">
+          <div className="font-mono text-sm text-primary-900">
             {currentTimeString} / {durationString}
           </div>
         </div>

@@ -1,12 +1,26 @@
 module.exports = {
-  purge: [
+  content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./containers/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: false, // or 'media' or 'class'
-  theme: {
-    extend: {},
+  darkMode: "class", // or 'media' or 'class'
+  daisyui: {
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["[data-theme=light]"],
+          // primary: "white",
+        },
+      },
+      {
+        dark: {
+          ...require("daisyui/src/theming/themes")["[data-theme=dark]"],
+          // primary: "black",
+        },
+      },
+      "retro",
+    ],
   },
   variants: {
     extend: {
@@ -15,5 +29,5 @@ module.exports = {
       opacity: ["disabled"],
     },
   },
-  plugins: [require("@tailwindcss/aspect-ratio")],
+  plugins: [require("daisyui"), require("@tailwindcss/aspect-ratio")],
 };

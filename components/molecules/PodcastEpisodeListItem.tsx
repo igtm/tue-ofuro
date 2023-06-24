@@ -22,27 +22,28 @@ export const PodcastEpisodeListItem: VFC<Props> = (props) => {
               updateFloatingPlayAreaState(props.episode);
             }}
           >
-            <SvgPlayArrow className="w-10 h-10 fill-current text-gray-50" />
+            <SvgPlayArrow className="w-10 h-10 fill-primary text-primary-50" />
             <span className="sr-only">再生</span>
           </button>
         </div>
 
-        <Link href={`/${props.episode.guid}`}>
-          <a className="flex-grow hover:underline">
-            <div className="grid gap-y-2">
-              <div className="text-xs text-gray-500">
-                {new Date(props.episode.pubDate).toLocaleDateString()}
-              </div>
-
-              <div className="text-base text-gray-900">
-                {props.episode.title}
-              </div>
-
-              <div className="text-xs text-gray-900">
-                {props.episode.itunes.duration}
-              </div>
+        <Link
+          href={`/${props.episode.guid}`}
+          className="flex-grow hover:underline"
+        >
+          <div className="grid gap-y-2">
+            <div className="text-xs text-primary-500">
+              {new Date(props.episode.pubDate).toLocaleDateString()}
             </div>
-          </a>
+
+            <div className="text-base text-primary-900">
+              {props.episode.title}
+            </div>
+
+            <div className="text-xs text-primary-900">
+              {props.episode.itunes.duration}
+            </div>
+          </div>
         </Link>
       </div>
     </li>

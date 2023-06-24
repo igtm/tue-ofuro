@@ -81,10 +81,11 @@ const Page: NextPage<Props> = ({ episodes }) => {
 
             <span className="text-sm">
               YouTube Liveで作成したフォントで表示されます。
-              <Link href="/Tue_ofuro_kana-Regular.otf">
-                <a style={{ color: "blue", textDecoration: "underline" }}>
-                  ひらがなだけ自作フォント
-                </a>
+              <Link
+                href="/Tue_ofuro_kana-Regular.otf"
+                style={{ color: "blue", textDecoration: "underline" }}
+              >
+                ひらがなだけ自作フォント
               </Link>
             </span>
           </Paragraph>

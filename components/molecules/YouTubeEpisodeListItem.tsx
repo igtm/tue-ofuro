@@ -31,10 +31,12 @@ export const YouTubeEpisodeListItem: VFC<Props> = (props) => {
             )}
           </div>
           <div className="grid gap-y-2">
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-primary-500">
               {new Date(props.episode.pubDate).toLocaleString()}
             </div>
-            <div className="text-base text-gray-900">{props.episode.title}</div>
+            <div className="text-base text-primary-900">
+              {props.episode.title}
+            </div>
           </div>
         </div>
       </a>

@@ -10,7 +10,10 @@ export const Paragraph: VFC<Props> = ({
   ...paragraphElementProps
 }) => {
   return (
-    <p {...paragraphElementProps} className="text-base text-gray-900 leading-7">
+    <p
+      {...paragraphElementProps}
+      className="text-base text-primary-900 leading-7"
+    >
       {children}
     </p>
   );

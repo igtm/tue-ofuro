@@ -18,7 +18,12 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
       res.json({ ...feed.items.find((f) => f.guid === guid) });
     })();
   } catch (e) {
+    if (e instanceof Error) {
+      res.statusCode = 500;
+      res.json({ message: e.message });
+      return;
+    }
     res.statusCode = 500;
-    res.json({ message: e.message });
+    res.json({ message: "unexpected error" });
   }
 };

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
   font-family: "tue-ofuro";
   src: url("/Tue_ofuro_kana-Regular.otf");
@@ -7,8 +11,6 @@
 html {
   font-size: 16px;
   line-height: 1.5;
-  color: #333;
-  background-color: #fff;
 }
 
 .font-root {

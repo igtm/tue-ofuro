@@ -1,6 +1,7 @@
-import { useCallback, useMemo, useState, VFC } from "react";
+import { useCallback, useMemo, useState, VFC, ComponentType } from "react";
 import ReactModal from "react-modal";
 import { GeomancySymbol } from "../models/typeGeomancySymbol";
+const ModalSafeForReact18 = ReactModal as ComponentType<ReactModal['props']>;
 
 type Props = {
   geomancySymbol?: GeomancySymbol;
@@ -36,13 +37,13 @@ export const GeomancyCard: VFC<Props> = (props) => {
         tabIndex={0}
       >
         <div className="border-2 border-gray-300 rounded bg-gray-50 grid gap-2 content-center hover:bg-gray-200">
-          <p className="grid place-content-center text-center text-4xl font-bold text-gray-900">
+          <p className="grid place-content-center text-center text-4xl font-bold text-primary-900">
             {geomancySymbolString}
           </p>
         </div>
       </div>
 
-      <ReactModal
+      <ModalSafeForReact18
         isOpen={isOpen}
         onRequestClose={handleClose}
         bodyOpenClassName="overflow-hidden"
@@ -51,11 +52,11 @@ export const GeomancyCard: VFC<Props> = (props) => {
           <section className="grid place-items-center">
             {hasGeomancySymbol ? (
               <>
-                <h1 className="mt-16 text-5xl font-bold text-gray-800">
+                <h1 className="mt-16 text-5xl font-bold text-primary-800">
                   {geomancySymbolString}
                 </h1>
 
-                <p className="mt-8 text-base text-gray-900">
+                <p className="mt-8 text-base text-primary-900">
                   {props.geomancySymbolDescription}
                 </p>
               </>
@@ -68,7 +69,7 @@ export const GeomancyCard: VFC<Props> = (props) => {
             <img src="/close-black-18dp.svg" alt="閉じる" />
           </button>
         </div>
-      </ReactModal>
+      </ModalSafeForReact18>
     </>
   );
 };

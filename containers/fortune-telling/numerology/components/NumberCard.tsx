@@ -1,7 +1,8 @@
-import { useCallback, useMemo, useState, VFC } from "react";
+import { useCallback, useMemo, useState, VFC, ComponentType } from "react";
 import ReactModal from "react-modal";
 import { CabalaNumber } from "../models/typeCabalaNumber";
 import { ModernNumber } from "../models/typeModernNumber";
+const ModalSafeForReact18 = ReactModal as ComponentType<ReactModal['props']>;
 
 type Props = {
   numberType: string;
@@ -39,38 +40,38 @@ export const NumberCard: VFC<Props> = (props) => {
         tabIndex={0}
       >
         <section className="border-2 border-gray-300 rounded pb-2 bg-gray-50 grid gap-2 content-center hover:bg-gray-200">
-          <h1 className="grid place-content-center text-base text-gray-800">
+          <h1 className="grid place-content-center text-base text-primary-800">
             {props.numberType}
           </h1>
 
-          <p className="grid place-content-center text-4xl font-bold text-gray-900">
+          <p className="grid place-content-center text-4xl font-bold text-primary-900">
             {numberString}
           </p>
         </section>
       </div>
 
-      <ReactModal
+      <ModalSafeForReact18
         isOpen={isOpen}
         onRequestClose={handleClose}
         bodyOpenClassName="overflow-hidden"
       >
         <div className="h-full pt-8 grid place-items-center">
           <section className="grid place-items-center">
-            <h1 className="text-5xl font-bold text-gray-800">
+            <h1 className="text-5xl font-bold text-primary-800">
               {props.numberType}
             </h1>
 
-            <p className="mt-8 text-base text-gray-900">
+            <p className="mt-8 text-base text-primary-900">
               {props.numberTypeDescription}
             </p>
 
             {hasNumber ? (
               <>
-                <h2 className="mt-16 text-5xl font-bold text-gray-800">
+                <h2 className="mt-16 text-5xl font-bold text-primary-800">
                   {numberString}
                 </h2>
 
-                <p className="mt-8 text-base text-gray-900">
+                <p className="mt-8 text-base text-primary-900">
                   {props.numberDescription}
                 </p>
               </>
@@ -83,7 +84,7 @@ export const NumberCard: VFC<Props> = (props) => {
             </button>
           </div>
         </div>
-      </ReactModal>
+      </ModalSafeForReact18>
     </>
   );
 };
