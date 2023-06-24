@@ -22,7 +22,7 @@ export const PodcastEpisodeListItem: VFC<Props> = (props) => {
               updateFloatingPlayAreaState(props.episode);
             }}
           >
-            <SvgPlayArrow className="w-10 h-10 fill-current text-primary-50" />
+            <SvgPlayArrow className="w-10 h-10 fill-primary text-primary-50" />
             <span className="sr-only">再生</span>
           </button>
         </div>
