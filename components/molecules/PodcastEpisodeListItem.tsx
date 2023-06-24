@@ -3,6 +3,8 @@ import { VFC } from "react";
 import { useFloatingPlayDispatchContext } from "../../context/FloatingPlayAreaContext";
 import { PodcastEpisode } from "../../types";
 import { SvgPlayArrow } from "../atoms/SvgPlayArrow";
+import { format, formatISO, parseISO } from "date-fns";
+import ja from "date-fns/locale/ja";
 
 type Props = {
   episode: PodcastEpisode;
@@ -33,7 +35,11 @@ export const PodcastEpisodeListItem: VFC<Props> = (props) => {
         >
           <div className="grid gap-y-2">
             <div className="text-xs text-primary-500">
-              {new Date(props.episode.pubDate).toLocaleDateString()}
+              {format(
+                parseISO(new Date(props.episode.pubDate).toISOString()),
+                "yyyy/MM/dd k:mm:ss",
+                { locale: ja }
+              )}
             </div>
 
             <div className="text-base text-primary-900">
