@@ -2,7 +2,7 @@ import { VFC } from "react";
 
 export const Footer: VFC = () => {
   return (
-    <footer className="text-center pt-4 pb-4 bg-gray-100">
+    <footer className="text-center pt-4 pb-4 bg-base-100">
       <ul className="flex items-center justify-center gap-2">
         <li>
           <a
