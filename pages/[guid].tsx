@@ -1,17 +1,16 @@
 import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
-import React, { FC, useMemo } from "react";
+import { useMemo } from "react";
 import Parser from "rss-parser";
 import { DangerousHTML } from "../components/atoms/DangerousHTML";
 import { SvgPlayArrow } from "../components/atoms/SvgPlayArrow";
 import { useFloatingPlayDispatchContext } from "../context/FloatingPlayAreaContext";
+import { formatAsJSTDate, parseDate } from "../lib/date";
 import {
   EmptyPodcastEpisode,
   isPodcastEpisode,
   isPodcastEpisodes,
-  PodcastEpisode,
+  PodcastEpisode
 } from "../types";
-import { format, parseISO } from "date-fns";
-import { ja } from "date-fns/locale";
 
 // getStaticPaths において fallback: true を指定するので、props は空になることがある
 type Props = { episode?: PodcastEpisode };
@@ -82,11 +81,7 @@ const Page: NextPage<Props> = ({ episode }) => {
     if (episode?.pubDate == null) {
       return "";
     }
-    return format(
-      parseISO(new Date(episode.pubDate).toISOString()),
-      "yyyy/MM/dd",
-      { locale: ja }
-    );
+    return formatAsJSTDate(parseDate(episode.pubDate));
   }, [episode?.pubDate]);
 
   const { updateFloatingPlayAreaState } = useFloatingPlayDispatchContext();

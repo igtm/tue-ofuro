@@ -1,7 +1,6 @@
 import { VFC } from "react";
+import { formatAsJSTDateTime, parseDate } from "../../lib/date";
 import { YouTubeEpisode } from "../../types";
-import { format, parseISO } from "date-fns";
-import { ja } from "date-fns/locale";
 
 type Props = {
   episode: YouTubeEpisode;
@@ -34,11 +33,7 @@ export const YouTubeEpisodeListItem: VFC<Props> = (props) => {
           </div>
           <div className="grid gap-y-2">
             <div className="text-xs text-primary-500">
-              {format(
-                parseISO(new Date(props.episode.pubDate).toISOString()),
-                "yyyy/MM/dd k:mm:ss",
-                { locale: ja }
-              )}
+              {formatAsJSTDateTime(parseDate(props.episode.pubDate))}
             </div>
             <div className="text-base text-primary-900">
               {props.episode.title}
