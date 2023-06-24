@@ -34,13 +34,7 @@ export const PodcastEpisodeListItem: VFC<Props> = (props) => {
           className="flex-grow hover:underline"
         >
           <div className="grid gap-y-2">
-            <div className="text-xs text-primary-500">
-              {format(
-                parseISO(new Date(props.episode.pubDate).toISOString()),
-                "yyyy/MM/dd k:mm:ss",
-                { locale: ja }
-              )}
-            </div>
+            <div className="text-xs text-primary-500"></div>
 
             <div className="text-base text-primary-900">
               {props.episode.title}
