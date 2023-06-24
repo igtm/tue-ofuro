@@ -3,8 +3,6 @@ import { VFC } from "react";
 import { useFloatingPlayDispatchContext } from "../../context/FloatingPlayAreaContext";
 import { PodcastEpisode } from "../../types";
 import { SvgPlayArrow } from "../atoms/SvgPlayArrow";
-import { format, formatISO, parseISO } from "date-fns";
-import ja from "date-fns/locale/ja";
 
 type Props = {
   episode: PodcastEpisode;
