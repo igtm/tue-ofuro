@@ -1,5 +1,19 @@
 # UPGRADE memo
 
+
+### Nextjs: 13 -> 14.1 (2024/1/20)
+
+https://nextjs.org/docs/pages/building-your-application/upgrading/version-14
+
+```zsh
+yarn add next@latest react@latest react-dom@latest eslint-config-next@latest @types/react @types/react-dom
+```
+
+
+
+
+
+
 ### Nextjs: 11.0.1 -> 13
 
 ```

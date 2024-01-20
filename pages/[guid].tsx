@@ -9,7 +9,7 @@ import {
   EmptyPodcastEpisode,
   isPodcastEpisode,
   isPodcastEpisodes,
-  PodcastEpisode
+  PodcastEpisode,
 } from "../types";
 
 // getStaticPaths において fallback: true を指定するので、props は空になることがある
