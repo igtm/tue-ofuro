@@ -37,7 +37,11 @@ export const PodcastEpisodeListItem: VFC<Props> = (props) => {
         </div>
 
         <TransitionLink href={`/${props.episode.guid}`}>
-          <div className="grid gap-y-2">
+          <div
+            className="grid gap-y-2"
+            //@ts-expect-error nosupported
+            style={{ viewTransitionName: `title-${props.episode.guid}` }}
+          >
             <div className="text-xs text-primary-500">
               {formatAsJSTDateTime(parseDate(props.episode.pubDate))}
             </div>
