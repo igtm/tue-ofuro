@@ -98,7 +98,7 @@ const Page: NextPage<Props> = ({ episode }) => {
             src="/saru.jpg"
             width={128}
             height={128}
-            //@ts-ignore
+            //@ts-expect-error nosupported
             style={{ viewTransitionName: `saru-${episode.guid}` }}
           />
 
