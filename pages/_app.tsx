@@ -8,8 +8,22 @@ import { CustomFontStateProvider } from "../context/CustomFont";
 import { FloatingPlayAreaStateProvider } from "../context/FloatingPlayAreaContext";
 import "../styles/dangerous.css";
 import "../styles/global.css";
+import { useTransitionRouterPush } from "../hooks/useTransitionRouterPush";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const { routerPushWithTransition } = useTransitionRouterPush();
+  const router = useRouter();
+
+  // ここでブラウザバックに対応させる
+  useEffect(() => {
+    router.beforePopState(({ as }) => {
+      routerPushWithTransition(as);
+      return false;
+    });
+  }, [router, routerPushWithTransition]);
+
   return (
     <div>
       <CustomFontStateProvider>

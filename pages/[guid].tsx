@@ -94,7 +94,12 @@ const Page: NextPage<Props> = ({ episode }) => {
     <main>
       <div className="flex gap-x-4">
         <div className="relative flex-shrink-0 w-20 h-20 overflow-hidden rounded">
-          <img src="/saru.jpg" width={128} height={128} alt="" />
+          <img
+            src="/saru.jpg"
+            width={128}
+            height={128}
+            style={{ viewTransitionName: `saru-${episode.guid}` }}
+          />
 
           <button
             className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-gray-700 bg-opacity-20 hover:bg-opacity-5"
