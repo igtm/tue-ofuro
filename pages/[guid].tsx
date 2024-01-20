@@ -113,7 +113,11 @@ const Page: NextPage<Props> = ({ episode }) => {
           </button>
         </div>
 
-        <div className="grid">
+        <div
+          className="grid"
+          //@ts-expect-error nosupported
+          style={{ viewTransitionName: `title-${episode.guid}` }}
+        >
           <time
             className="text-sm text-primary-500"
             dateTime={pubDateISOString}
