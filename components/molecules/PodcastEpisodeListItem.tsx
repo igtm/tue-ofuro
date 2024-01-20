@@ -21,6 +21,7 @@ export const PodcastEpisodeListItem: VFC<Props> = (props) => {
             width={128}
             height={128}
             alt=""
+            //@ts-ignore
             style={{ viewTransitionName: `saru-${props.episode.guid}` }}
           />
 
