@@ -11,18 +11,10 @@ import "../styles/global.css";
 import { useTransitionRouterPush } from "../hooks/useTransitionRouterPush";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useScrollRestoration } from "../hooks/useScrollRestoration";
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const { routerPushWithTransition } = useTransitionRouterPush();
-  const router = useRouter();
-
-  // ここでブラウザバックに対応させる
-  useEffect(() => {
-    router.beforePopState(({ as }) => {
-      routerPushWithTransition(as);
-      return false;
-    });
-  }, [router, routerPushWithTransition]);
+  useScrollRestoration();
 
   return (
     <div>
