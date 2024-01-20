@@ -16,12 +16,14 @@ import {
   PodcastEpisode,
   YouTubeEpisode,
 } from "../types";
+import { useScrollRestoration } from "../hooks/useScrollRestoration";
 
 type Props = {
   episodes: (PodcastEpisode | YouTubeEpisode)[];
 };
 
 const Page: NextPage<Props> = ({ episodes }) => {
+  useScrollRestoration();
   const customFontContext = useCustomFontContext();
   const customFontDispatchContext = useCustomFontDispatchContext();
 

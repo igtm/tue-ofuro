@@ -1,21 +1,15 @@
 import { AppProps } from "next/app";
 import "tailwindcss/tailwind.css";
-import { FontRoot } from "../components/organisms/FontRoot";
 import { FloatingPlayArea } from "../components/organisms/FloatingPlayArea";
+import { FontRoot } from "../components/organisms/FontRoot";
 import { Footer } from "../components/organisms/Footer";
 import { Header } from "../components/organisms/Header";
 import { CustomFontStateProvider } from "../context/CustomFont";
 import { FloatingPlayAreaStateProvider } from "../context/FloatingPlayAreaContext";
 import "../styles/dangerous.css";
 import "../styles/global.css";
-import { useTransitionRouterPush } from "../hooks/useTransitionRouterPush";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useScrollRestoration } from "../hooks/useScrollRestoration";
 
 const App = ({ Component, pageProps }: AppProps) => {
-  useScrollRestoration();
-
   return (
     <div>
       <CustomFontStateProvider>
