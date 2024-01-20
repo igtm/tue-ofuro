@@ -7,6 +7,11 @@
   @apply my-2 text-base text-gray-800;
 }
 
+[data-theme="dark"] .dangerousHTML p,
+[data-theme="dark"] .dangerousHTML li {
+  @apply my-2 text-base text-[#A6ADBA];
+}
+
 .dangerousHTML a {
   @apply text-blue-700;
 }
