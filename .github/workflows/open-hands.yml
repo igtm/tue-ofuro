@@ -28,4 +28,4 @@ jobs:
       target_branch: ${{ vars.TARGET_BRANCH || 'main' }}
     secrets:
       LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GH_PATH }}
