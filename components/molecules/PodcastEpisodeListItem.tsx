@@ -46,7 +46,7 @@ export const PodcastEpisodeListItem: VFC<Props> = (props) => {
               {formatAsJSTDateTime(parseDate(props.episode.pubDate))}
             </div>
 
-            <div className="text-base text-primary-900">
+            <div className="text-lg text-primary-900">
               {props.episode.title}
             </div>
 
