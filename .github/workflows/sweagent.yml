@@ -98,4 +98,6 @@ jobs:
             --agent.model.api_key=${{ secrets.LLM_API_KEY }} \
             --env.repo.path=. \
             --problem_statement.github_url=${{ github.event.issue.html_url }} \
-            --actions.open_pr=True
+            --actions.open_pr=True \
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
