@@ -68,7 +68,7 @@ jobs:
               issue_number: ${{ env.ISSUE_NUMBER }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `fixing by [SWE-agent](https://github.com/SWE-agent/SWE-agent)... [Workflow](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).`
+              body: `[SWE-agent](https://github.com/SWE-agent/SWE-agent) is fixing... [Workflow](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).`
             });
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -92,7 +92,7 @@ jobs:
       - name: Run SWEAgent
         run: |
           sweagent run \
-            --agent.model.name=${{ vars.LLM_MODEL || 'gpt-4o-mini' }} \
+            --agent.model.name=${{ vars.LLM_MODEL || 'openai/gpt-4o-mini' }} \
             --agent.model.per_instance_cost_limit=2.00 \
             --agent.model.max_input_tokens=120000 \
             --agent.model.api_key=${{ secrets.LLM_API_KEY }} \
