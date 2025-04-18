@@ -156,20 +156,8 @@ jobs:
           echo "Running codex CLI..."
           # Escape double quotes for the shell command line
           ESCAPED_PROBLEM_STATEMENT=$(echo "$PROBLEM_STATEMENT" | sed 's/"/\\"/g')
-          # Pass problem statement as argument, but connect stdin from /dev/null
-          codex -a auto-edit --model "${{ vars.LLM_MODEL || 'o4-mini' }}" "$ESCAPED_PROBLEM_STATEMENT" </dev/null > codex_output.log 2>&1
-          EXIT_CODE=$?
-          echo "Codex CLI exited with code: $EXIT_CODE"
-          echo "--- Codex Output Start ---"
-          cat codex_output.log
-          echo "--- Codex Output End ---"
-          # Fail the step explicitly if codex command failed
-          if [ $EXIT_CODE -ne 0 ]; then
-            echo "Codex command failed."
-            # Optionally decide if failure should stop the workflow entirely
-            # exit $EXIT_CODE # Uncomment to fail the workflow run
-          fi
-          # Continue to check for file changes regardless of exit code for now
+          # Pass problem statement as argument
+          codex -a auto-edit "$ESCAPED_PROBLEM_STATEMENT"
 
       - name: Check for changes
         id: check_changes
