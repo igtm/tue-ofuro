@@ -154,13 +154,8 @@ jobs:
           CODEX_QUIET_MODE: 1
         run: |
           echo "Running codex CLI..."
-          # Pipe the problem statement to stdin instead of passing as an argument
-          if echo "$PROBLEM_STATEMENT" | codex -a auto-edit --model "${{ vars.LLM_MODEL || 'o4-mini' }}" --quiet; then
-            echo "Codex CLI completed successfully."
-          else
-            echo "Codex CLI failed or exited with an error."
-            exit 1 # Exit with failure code if codex fails
-          fi
+          ESCAPED_PROBLEM_STATEMENT=$(echo "$PROBLEM_STATEMENT" | sed 's/"/\\"/g')
+          codex -a auto-edit --model "${{ vars.LLM_MODEL || 'o4-mini' }}" --quiet "$ESCAPED_PROBLEM_STATEMENT"
 
       - name: Check for changes
         id: check_changes
