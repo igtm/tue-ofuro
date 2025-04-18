@@ -1,0 +1,369 @@
+name: Codex Auto-Fix
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  auto-fix:
+    if: |
+      ((github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment') &&
+      contains(github.event.comment.body, '/codex-fix')
+      )
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug github.event
+        run: cat $GITHUB_EVENT_PATH
+      - name: Set environment variables
+        run: |
+          # Get the number of the issue or pull request
+          echo "ISSUE_OR_PR_NUMBER=${{ github.event.issue.number || github.event.pull_request.number }}" >> $GITHUB_ENV
+          # Get the ID of the triggering comment
+          echo "TRIGGERING_COMMENT_ID=${{ github.event.comment.id || 'None' }}" >> $GITHUB_ENV
+
+      - name: React to trigger comment
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const commentId = process.env.TRIGGERING_COMMENT_ID;
+
+            if (commentId !== 'None') {
+              try {
+                // Determine API based on the event that triggered the workflow
+                const reactionApi = context.eventName === 'pull_request_review_comment'
+                  ? github.rest.reactions.createForPullRequestReviewComment
+                  : github.rest.reactions.createForIssueComment;
+
+                await reactionApi({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: commentId,
+                  content: 'eyes'
+                });
+              } catch (error) {
+                console.log('Failed to create reaction:', error);
+              }
+            }
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          # Fetch full history for diffing later if needed
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Problem Statement for Codex
+        id: problem_statement
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            let problemStatement = '';
+            // Use the triggering comment's body
+            const userRequest = (context.payload.comment?.body || '').replace('/codex-fix', '').trim();
+            const isPullRequest = !!context.payload.issue?.pull_request || context.eventName === 'pull_request_review_comment';
+            const repoName = context.repo.repo;
+            const owner = context.repo.owner;
+            const issueOrPrNumber = process.env.ISSUE_OR_PR_NUMBER; // Use the env var
+
+            // --- Helper function to get file content ---
+            async function getFileContent(github, path) {
+              try {
+                const ref = context.eventName === 'pull_request_review_comment'
+                  ? context.payload.pull_request.head.sha // Use PR head SHA for review comments
+                  : context.payload.issue?.pull_request // Check if issue comment is on a PR
+                    ? context.payload.issue.pull_request.head.sha // Use PR head SHA if issue comment is on PR
+                    : context.sha; // Use commit SHA otherwise (e.g., issue comment on main branch)
+
+                const { data } = await github.rest.repos.getContent({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  path: path,
+                  ref: ref
+                });
+                if (data.type === 'file' && data.content) {
+                  return Buffer.from(data.content, 'base64').toString('utf8');
+                }
+              } catch (error) {
+                console.log(`Could not fetch content for ${path}: ${error.message}`);
+              }
+              return null;
+            }
+            // --- End Helper ---
+
+            problemStatement += `Repository: ${owner}/${repoName}\n`;
+
+            if (context.eventName === 'issue_comment') {
+              if (isPullRequest) {
+                // PR Comment
+                problemStatement += `Context: Comment on Pull Request #${issueOrPrNumber}\n`;
+                problemStatement += `User Request: ${userRequest}\n\n`;
+                problemStatement += `Please modify the code in PR #${issueOrPrNumber} based on the user request. Analyze the PR's changes and apply the request logically.`;
+              } else {
+                // Issue Comment
+                problemStatement += `Context: Comment on Issue #${issueOrPrNumber}\n`;
+                problemStatement += `Issue Title: ${context.payload.issue.title}\n`;
+                problemStatement += `Issue Body:\n${context.payload.issue.body}\n\n`;
+                problemStatement += `User Request: ${userRequest}\n\n`;
+                problemStatement += `Please modify the code to address the issue and the user's comment. Identify relevant files and apply the necessary changes.`;
+              }
+            } else if (context.eventName === 'pull_request_review_comment') {
+              // PR Review Comment
+              const filePath = context.payload.comment.path;
+              const diffHunk = context.payload.comment.diff_hunk;
+              const startLine = context.payload.comment.start_line;
+              const line = context.payload.comment.line;
+
+              problemStatement += `Context: Review comment on Pull Request #${issueOrPrNumber}\n`;
+              problemStatement += `File: ${filePath}\n`;
+              if (line) problemStatement += `Line: ${line}\n`;
+              if (startLine) problemStatement += `Start Line of Diff: ${startLine}\n`;
+              problemStatement += `Relevant Diff Hunk:\n\`\`\`diff\n${diffHunk}\n\`\`\`\n`;
+              problemStatement += `User Request: ${userRequest}\n\n`;
+
+              // Try to fetch file content for more context
+              const fileContent = await getFileContent(github, filePath);
+              if (fileContent) {
+                 problemStatement += `Current content of ${filePath}:\n\`\`\`\n${fileContent}\n\`\`\`\n\n`;
+              } else {
+                 problemStatement += `Could not fetch current content of ${filePath}.\n\n`;
+              }
+
+              problemStatement += `Please modify the code in the file "${filePath}" near line ${line || startLine || 'indicated by the diff'} based *only* on the user request and the provided context/diff. Do not modify other files. Provide the complete updated file content for "${filePath}" or a clear patch.`;
+            }
+
+            console.log('Generated Problem Statement for Codex:');
+            console.log(problemStatement);
+            core.setOutput('statement', problemStatement);
+
+      - name: Install @openai/codex CLI
+        run: npm install -g @openai/codex
+
+      - name: Run @openai/codex CLI
+        id: codex_run
+        env:
+          OPENAI_API_KEY: ${{ secrets.LLM_API_KEY }}
+          PROBLEM_STATEMENT: ${{ steps.problem_statement.outputs.statement }}
+          CODEX_QUIET_MODE: 1
+        run: |
+          echo "Running codex CLI..."
+          ESCAPED_PROBLEM_STATEMENT=$(echo "$PROBLEM_STATEMENT" | sed 's/"/\\"/g')
+          if codex -a auto-edit --model "${{ vars.LLM_MODEL || 'o4-mini' }}" --quiet "$ESCAPED_PROBLEM_STATEMENT"; then
+            echo "Codex CLI completed successfully."
+          else
+            echo "Codex CLI failed or exited with an error."
+          fi
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          # Check if git status reports any changes
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "Changes detected by git status."
+            echo "skip_remaining=false" >> $GITHUB_ENV
+          else
+            echo "No changes detected by git status."
+            echo "skip_remaining=true" >> $GITHUB_ENV
+          fi
+
+      - name: Determine Branch Name
+        id: determine_branch
+        if: env.skip_remaining != 'true'
+        run: |
+          if [ "${{ github.event_name }}" = "issue_comment" ] && [ -z "${{ github.event.issue.pull_request }}" ]; then
+            # New branch for issue comment
+            BRANCH_NAME="codex-fix-${{ env.ISSUE_OR_PR_NUMBER }}-$(date +%s)"
+            echo "Using new branch: $BRANCH_NAME"
+            echo "delete_branch=true" >> $GITHUB_OUTPUT # Mark for deletion if PR merges/closes
+          else
+            # Existing branch for PR comment/review
+            PR_NUMBER=${{ env.ISSUE_OR_PR_NUMBER }}
+            echo "Fetching headRefName for PR $PR_NUMBER"
+            PR_DATA=$(gh pr view $PR_NUMBER --json headRefName --repo $GITHUB_REPOSITORY)
+            BRANCH_NAME=$(echo $PR_DATA | jq -r .headRefName)
+            echo "Using existing branch: $BRANCH_NAME"
+            echo "delete_branch=false" >> $GITHUB_OUTPUT # Do not delete existing PR branches
+          fi
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate PR Title and Body
+        id: generate_pr_content
+        # Only run if creating a new PR (from an issue comment) and changes exist
+        if: github.event_name == 'issue_comment' && !github.event.issue.pull_request && env.skip_remaining != 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.LLM_API_KEY }}
+          ISSUE_NUMBER: ${{ env.ISSUE_OR_PR_NUMBER }} # Use the correct env var
+          CPR_BRANCH_NAME: ${{ steps.determine_branch.outputs.branch_name }}
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }} # For fetching issue title
+          script: |
+            const { repo, owner } = context.repo;
+            const issueNumber = process.env.ISSUE_NUMBER; // Stays ISSUE_NUMBER here as it refers to the original issue
+            const branchName = process.env.CPR_BRANCH_NAME;
+            const defaultBranch = context.payload.repository.default_branch;
+            const triggerCommentUrl = context.payload.comment.html_url; // Get trigger comment URL
+
+            // Fetch issue title
+            let issueTitle = `Issue ${issueNumber}`;
+            try {
+              const { data: issue } = await github.rest.issues.get({
+                owner, repo, issue_number: parseInt(issueNumber)
+              });
+              issueTitle = issue.title;
+            } catch (error) {
+              console.log('Could not fetch issue title:', error);
+            }
+            const prTitle = `[Codex AI] Fix: ${issueTitle}`;
+            core.setOutput('pr_title', prTitle);
+
+            // Generate diff for body generation (diff against default branch)
+            const { execSync } = require('child_process');
+            let diff = '';
+            try {
+              // Stage changes first to diff against HEAD
+              execSync('git add .');
+              // Fetch the target base branch
+              execSync(`git fetch origin ${defaultBranch}`);
+              // Diff staged changes against the base branch
+              diff = execSync(`git diff --staged origin/${defaultBranch}`).toString();
+            } catch (error) {
+               console.error("Error generating diff for PR body:", error);
+               diff = "Could not generate diff.";
+            }
+
+            // Generate PR description using OpenAI API
+            const { OpenAI } = require("openai");
+            const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            const modelName = '${{ vars.LLM_MODEL || 'o4-mini' }}';
+            const prompt = `Generate a concise Pull Request description based on the following git diff. Explain the main changes and their purpose. Format it nicely using Markdown.\n\nGit diff:\n\`\`\`diff\n${diff}\n\`\`\``;
+            let generatedDescription = 'Automated code changes by Codex AI.';
+            try {
+              const completion = await client.chat.completions.create({
+                model: modelName, messages: [{ role: 'user', content: prompt }],
+              });
+              generatedDescription = completion.choices[0].message.content;
+            } catch (error) {
+              console.error("Error generating PR description:", error);
+            }
+
+            const prBody = `${generatedDescription}\n\n---\n*Created by Codex AI based on [Issue #${issueNumber}](${context.payload.issue.html_url}).*\n*Triggered by [comment](${triggerCommentUrl}).*`;
+            core.setOutput('pr_body', prBody);
+
+      - name: Create or Update Pull Request
+        id: cpr
+        if: env.skip_remaining != 'true'
+        uses: peter-evans/create-pull-request@v7 # Use v7 or latest stable
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Corrected commit message trigger URL
+          commit-message: "Fix: Auto-fix by Codex AI\n\nApplied changes based on request in #${{ env.ISSUE_OR_PR_NUMBER }}.\nTriggered by comment: ${{ github.event.comment.html_url }}"
+          committer: "GitHub Actions (Codex) <actions@github.com>"
+          author: "GitHub Actions (Codex) <actions@github.com>" # Or use github.actor if preferred
+          signoff: false
+          branch: ${{ steps.determine_branch.outputs.branch_name }}
+          delete-branch: ${{ steps.determine_branch.outputs.delete_branch }} # Dynamically set based on branch type
+          # Only set title/body/draft for new PRs (issue comments)
+          # For existing PRs (PR comments/reviews), the action updates the branch, title/body are ignored
+          title: ${{ github.event_name == 'issue_comment' && !github.event.issue.pull_request && steps.generate_pr_content.outputs.pr_title || '' }}
+          body: ${{ github.event_name == 'issue_comment' && !github.event.issue.pull_request && steps.generate_pr_content.outputs.pr_body || '' }}
+          draft: ${{ github.event_name == 'issue_comment' && !github.event.issue.pull_request }} # Set draft only for new PRs from issues
+          # base: # Defaults to the branch checked out, usually the default branch. Specify if needed.
+          # labels: codex-ai, automated-pr # Optional
+          # assignees: # Optional
+          # reviewers: # Optional
+
+      - name: Output PR Info
+        if: env.skip_remaining != 'true' && steps.cpr.outputs.pull-request-number
+        run: |
+          echo "Pull Request Number: ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL: ${{ steps.cpr.outputs.pull-request-url }}"
+          echo "Operation: ${{ steps.cpr.outputs.pull-request-operation }}"
+
+      - name: Add PR Comment
+        # Run if it was a PR event AND changes were made (skip_remaining is false)
+        if: ${{ (github.event_name != 'issue_comment' || github.event.issue.pull_request) && env.skip_remaining != 'true' }}
+        continue-on-error: true
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        env:
+          OPENAI_API_KEY: ${{ secrets.LLM_API_KEY }}
+          PR_NUMBER: ${{ env.ISSUE_OR_PR_NUMBER }} # Use the correct env var
+          BRANCH_NAME: ${{ steps.determine_branch.outputs.branch_name }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { repo, owner } = context.repo;
+            const prNumber = process.env.PR_NUMBER; // Use env var
+            const branchName = process.env.BRANCH_NAME;
+            const triggerCommentUrl = context.payload.comment?.html_url; // Get trigger comment URL
+
+            // Get diff of the commit created by create-pull-request action
+            const { execSync } = require('child_process');
+            let diff = '';
+            try {
+              // Show the latest commit on the current branch (assumed to be the one just made)
+              diff = execSync('git show HEAD').toString();
+            } catch (error) {
+               console.error("Error getting diff:", error);
+               diff = "Could not generate diff for the latest commit.";
+            }
+
+            const { OpenAI } = require("openai");
+            const client = new OpenAI({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const modelName = '${{ vars.LLM_MODEL || 'o4-mini' }}';
+
+            const prompt = `Generate a concise comment explaining the changes introduced by the following git commit diff. Format it nicely using Markdown.\n\nGit diff:\n\`\`\`diff\n${diff}\n\`\`\``;
+            let generatedDescription = 'Applied automated code changes.';
+            try {
+              const completion = await client.chat.completions.create({
+                model: modelName,
+                messages: [{ role: 'user', content: prompt }],
+              });
+              generatedDescription = completion.choices[0].message.content;
+            } catch (error) {
+              console.error("Error generating comment description:", error);
+            }
+
+            let commentBody = `🤖 Codex AI applied the following changes based on your request:\n\n${generatedDescription}\n\n---\n*Changes pushed to branch \`${branchName}\`.*`;
+
+            if (context.eventName === 'pull_request_review_comment') {
+              // Reply directly to the review comment
+              try {
+                const comment = await github.rest.pulls.createReplyForReviewComment({
+                  owner, repo,
+                  pull_number: parseInt(prNumber),
+                  comment_id: context.payload.comment.id, // ID of the review comment to reply to
+                  body: commentBody // Body doesn't need the "In response to" link here
+                });
+                console.log(`Reply added to review comment: ${comment.data.html_url}`);
+              } catch (error) {
+                 console.error("Error replying to review comment:", error);
+                 // Fallback: Add a general comment if replying fails? Or just log error.
+              }
+            } else if (context.eventName === 'issue_comment' && context.payload.issue.pull_request) {
+              // General comment on the PR (triggered by an issue_comment on a PR)
+              // Add the link back to the triggering comment
+              commentBody += `\n*In response to [this comment](${triggerCommentUrl}).*`;
+              try {
+                const comment = await github.rest.issues.createComment({
+                  owner, repo,
+                  issue_number: parseInt(prNumber), // issue_number is the PR number here
+                  body: commentBody
+                });
+                console.log(`General PR comment added: ${comment.data.html_url}`);
+              } catch (error) {
+                 console.error("Error adding general PR comment:", error);
+              }
+            }
