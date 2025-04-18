@@ -154,10 +154,8 @@ jobs:
           CODEX_QUIET_MODE: 1 # Keep env var for potential future use
         run: |
           echo "Running codex CLI..."
-          # Escape double quotes for the shell command line
-          ESCAPED_PROBLEM_STATEMENT=$(echo "$PROBLEM_STATEMENT" | sed 's/"/\\"/g')
-          # Run codex auto-edit, redirecting stdout and stderr to a log file
-          codex -a auto-edit --model "${{ vars.LLM_MODEL || 'o4-mini' }}" "$ESCAPED_PROBLEM_STATEMENT" > codex_output.log 2>&1
+          # Pipe the problem statement via stdin instead of command line argument
+          echo "$PROBLEM_STATEMENT" | codex -a auto-edit --model "${{ vars.LLM_MODEL || 'o4-mini' }}" > codex_output.log 2>&1
           EXIT_CODE=$?
           echo "Codex CLI exited with code: $EXIT_CODE"
           echo "--- Codex Output Start ---"
