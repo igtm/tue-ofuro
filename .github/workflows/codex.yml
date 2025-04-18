@@ -157,7 +157,7 @@ jobs:
           # Escape double quotes for the shell command line
           ESCAPED_PROBLEM_STATEMENT=$(echo "$PROBLEM_STATEMENT" | sed 's/"/\\"/g')
           # Pass problem statement as argument
-          codex -a auto-edit "$ESCAPED_PROBLEM_STATEMENT"
+          echo "$ESCAPED_PROBLEM_STATEMENT" | codex -a auto-edit
 
       - name: Check for changes
         id: check_changes
