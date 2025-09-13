@@ -1,0 +1,87 @@
+name: Update Submodule
+
+on:
+  schedule:
+    # 毎時間 submodule の更新をチェック
+    - cron: '0 * * * *'
+  workflow_dispatch: # 手動実行も可能
+  repository_dispatch:
+    types: [submodule-updated]
+
+jobs:
+  update-submodule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Check for submodule updates
+        id: check-updates
+        run: |
+          # submodule を最新に更新
+          git submodule update --remote --merge
+          
+          # 変更があるかチェック
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+            # 新しいコミットハッシュを取得
+            NEW_COMMIT=$(cd game-src && git rev-parse HEAD)
+            echo "new_commit=$NEW_COMMIT" >> $GITHUB_OUTPUT
+            # コミットメッセージを取得
+            COMMIT_MESSAGE=$(cd game-src && git log -1 --pretty=format:"%s")
+            echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.check-updates.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: |
+            Update game-src submodule to ${{ steps.check-updates.outputs.new_commit }}
+            
+            Latest commit: ${{ steps.check-updates.outputs.commit_message }}
+            
+            🤖 Auto-updated by GitHub Actions
+          title: 'Update game-src submodule'
+          body: |
+            ## Submodule Update
+
+            This PR automatically updates the `game-src` submodule to the latest commit.
+
+            **Latest commit:** ${{ steps.check-updates.outputs.commit_message }}
+            **Commit hash:** `${{ steps.check-updates.outputs.new_commit }}`
+
+            ### Changes
+            - Updated `game-src` submodule to latest version
+            - No manual code changes required
+
+            **🤖 This PR was created automatically by GitHub Actions**
+
+            Please review and merge if the changes look good.
+          branch: update-submodule-${{ steps.check-updates.outputs.new_commit }}
+          delete-branch: true
+          base: main
+
+      - name: Auto-approve PR (optional)
+        if: steps.check-updates.outputs.changes == 'true'
+        uses: juliangruber/approve-pull-request-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.create-pull-request.outputs.pull-request-number }}
+
+      - name: Notify Slack (optional)
+        if: steps.check-updates.outputs.changes == 'true'
+        run: |
+          echo "Submodule updated! New commit: ${{ steps.check-updates.outputs.new_commit }}"
+          # Slack通知が必要な場合はここに追加
