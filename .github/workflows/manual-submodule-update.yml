@@ -1,0 +1,81 @@
+name: Manual Submodule Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: '強制的に更新（変更がなくてもPRを作成）'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  manual-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Force update submodule
+        run: |
+          cd game-src
+          git fetch origin
+          git reset --hard origin/main
+          cd ..
+          git add game-src
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if [ -n "$(git status --porcelain)" ] || [ "${{ inputs.force_update }}" = "true" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+            NEW_COMMIT=$(cd game-src && git rev-parse HEAD)
+            echo "new_commit=$NEW_COMMIT" >> $GITHUB_OUTPUT
+            COMMIT_MESSAGE=$(cd game-src && git log -1 --pretty=format:"%s")
+            echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.check-changes.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: |
+            Manual update: game-src submodule to ${{ steps.check-changes.outputs.new_commit }}
+            
+            Latest commit: ${{ steps.check-changes.outputs.commit_message }}
+            
+            🔧 Manual update by GitHub Actions
+          title: 'Manual update: game-src submodule'
+          body: |
+            ## Manual Submodule Update
+
+            This PR was manually triggered to update the `game-src` submodule.
+
+            **Latest commit:** ${{ steps.check-changes.outputs.commit_message }}
+            **Commit hash:** `${{ steps.check-changes.outputs.new_commit }}`
+            **Force update:** ${{ inputs.force_update }}
+
+            ### Changes
+            - Updated `game-src` submodule to latest version
+            - No manual code changes required
+
+            **🔧 This PR was created by manual GitHub Actions trigger**
+          branch: manual-update-submodule-${{ steps.check-changes.outputs.new_commit }}
+          delete-branch: true
+          base: main
+
+      - name: No changes found
+        if: steps.check-changes.outputs.changes == 'false'
+        run: |
+          echo "No changes found in submodule. Current version is already up to date."
