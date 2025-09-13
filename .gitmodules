@@ -1,0 +1,3 @@
+[submodule "game-src"]
+	path = game-src
+	url = git@github.com:ymdarake/himatsubu-respect.git
