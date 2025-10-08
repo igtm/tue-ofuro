@@ -1,4 +1,4 @@
-import App from '../../game-src/App';
+import App from '../../game-src/src/App';
 
 export default function Page() {
   return <App />;
