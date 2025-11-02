@@ -23,7 +23,7 @@ export const BlogListItem: VFC<Props> = (props) => {
           <div className="grid gap-y-2">
             <div className="text-xs text-primary-500">{dateTimeString}</div>
 
-            <div className="text-base text-primary-900">{props.title}</div>
+            <div className="text-lg text-primary-900">{props.title}</div>
           </div>
         </Link>
       </div>

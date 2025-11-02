@@ -35,7 +35,7 @@ export const YouTubeEpisodeListItem: VFC<Props> = (props) => {
             <div className="text-xs text-primary-500">
               {formatAsJSTDateTime(parseDate(props.episode.pubDate))}
             </div>
-            <div className="text-base text-primary-900">
+            <div className="text-lg text-primary-900">
               {props.episode.title}
             </div>
           </div>

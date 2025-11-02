@@ -40,7 +40,7 @@ export const Input: VFC<Props> = ({
 
       <input
         {...inputElementProps}
-        className="w-full border border-gray-300 px-4 py-2 rounded bg-white text-base text-primary-800"
+        className="w-full border border-gray-300 px-4 py-2 rounded bg-white text-lg text-primary-800"
         aria-describedby={description?.id}
       />
 
