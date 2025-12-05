@@ -17,6 +17,7 @@ import {
   YouTubeEpisode,
 } from "../types";
 import { useScrollRestoration } from "../hooks/useScrollRestoration";
+import { TwitchLivePlayer } from "../components/molecules/TwitchLivePlayer";
 
 type Props = {
   episodes: (PodcastEpisode | YouTubeEpisode)[];
@@ -34,6 +35,7 @@ const Page: NextPage<Props> = ({ episodes }) => {
       </Head>
       <main className="grid w-full gap-y-8">
         <div className="grid gap-y-4">
+          <TwitchLivePlayer />
           <h1>火曜日のおフロ</h1>
 
           <Paragraph>
