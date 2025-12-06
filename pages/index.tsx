@@ -3,8 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Parser from "rss-parser";
 import { Paragraph } from "../components/atoms/Paragraph";
-import { PodcastEpisodeListItem } from "../components/molecules/PodcastEpisodeListItem";
-import { YouTubeEpisodeListItem } from "../components/molecules/YouTubeEpisodeListItem";
+
 import {
   useCustomFontContext,
   useCustomFontDispatchContext,
@@ -17,92 +16,117 @@ import {
   YouTubeEpisode,
 } from "../types";
 import { useScrollRestoration } from "../hooks/useScrollRestoration";
-import { TwitchLivePlayer } from "../components/molecules/TwitchLivePlayer";
+
 
 type Props = {
   episodes: (PodcastEpisode | YouTubeEpisode)[];
 };
+
+import { useState } from "react";
+import { HeroEpisode } from "../components/organisms/HeroEpisode";
+import { EpisodeCard } from "../components/molecules/EpisodeCard";
 
 const Page: NextPage<Props> = ({ episodes }) => {
   useScrollRestoration();
   const customFontContext = useCustomFontContext();
   const customFontDispatchContext = useCustomFontDispatchContext();
 
+  const [visibleCount, setVisibleCount] = useState(7); // 1 Hero + 6 Cards
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 6);
+  };
+
+  const heroEpisode = episodes[0];
+  const listEpisodes = episodes.slice(1, visibleCount);
+  const hasMore = visibleCount < episodes.length;
+
   return (
     <>
       <Head>
         <title>火曜日のおフロ</title>
       </Head>
-      <main className="grid w-full gap-y-8">
-        <div className="grid gap-y-4">
-          <TwitchLivePlayer />
-          <h1>火曜日のおフロ</h1>
+      <main className="w-full">
+        {/* Full Width Hero Section */}
+        {heroEpisode && (
+          <div className="w-full mb-12">
+             <HeroEpisode episode={heroEpisode} />
+          </div>
+        )}
 
-          <Paragraph>
-            <a
-              className="underline hover:nounderline"
-              href="https://github.com/igtm"
-              target="_blank"
-              rel="noreferrer"
-            >
-              @igtm
-            </a>
-            ,{" "}
-            <a
-              className="underline hover:nounderline"
-              href="https://github.com/t-gyo"
-              target="_blank"
-              rel="noreferrer"
-            >
-              @t-gyo
-            </a>
-            ,{" "}
-            <a
-              className="underline hover:nounderline"
-              href="https://github.com/ymdarake"
-              target="_blank"
-              rel="noreferrer"
-            >
-              @ymdarake
-            </a>{" "}
-            が、ゆるーくフロントエンド周りの気になった記事を紹介しながらお届けします。おフロは「フロントエンド」から来てます。ほぼ毎週土曜日更新。
-            <br />
-          </Paragraph>
+        {/* Centered Content Container */}
+        <div className="max-w-screen-xl mx-auto px-4">
+             
+            {/* Recent Episodes Grid */}
+            <div className="mb-8">
+                <div className="flex justify-between items-end mb-6">
+                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                        <span className="w-2 h-8 bg-primary rounded-full"></span>
+                        Recent Episodes
+                    </h2>
+                    
+                    {/* Font Toggle moved here for utility */}
+                     <div className="form-control">
+                      <label className="label cursor-pointer gap-2">
+                        <span className="label-text text-xs opacity-70">Original Font</span>
+                        <input
+                            type="checkbox"
+                            className="toggle toggle-primary toggle-xs"
+                            checked={customFontContext.activated}
+                            onChange={customFontDispatchContext.toggle}
+                        />
+                      </label>
+                   </div>
+                </div>
 
-          <Paragraph>
-            <span className="flex items-center">
-              <input
-                id="custom-font"
-                className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                type="checkbox"
-                checked={customFontContext.activated}
-                onChange={customFontDispatchContext.toggle}
-              />
-              <label htmlFor="custom-font" className="ml-2 text-sm">
-                オリジナルフォントを有効にする
-              </label>
-            </span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                {listEpisodes.map((e) => (
+                    <div key={isPodcastEpisode(e) ? e.guid : e.videoId}>
+                        <EpisodeCard episode={e} />
+                    </div>
+                ))}
+                </div>
+            </div>
+            
+            {/* Load More */}
+            {hasMore && (
+                <div className="flex justify-center py-8">
+                    <button 
+                        className="btn btn-outline btn-wide"
+                        onClick={handleLoadMore}
+                    >
+                        View More Episodes
+                    </button>
+                </div>
+            )}
 
-            <span className="text-sm">
-              YouTube Liveで作成したフォントで表示されます。
-              <Link
-                href="/Tue_ofuro_kana-Regular.otf"
-                style={{ color: "blue", textDecoration: "underline" }}
-              >
-                ひらがなだけ自作フォント
-              </Link>
-            </span>
-          </Paragraph>
+            {/* Look & Feel / Intro moved to bottom */}
+            <div className="mt-24 pt-8 border-t border-base-200">
+                 <div className="mb-4">
+                    <h3 className="font-bold text-lg mb-2">About 火曜日のおフロ</h3>
+                    <Paragraph>
+                        <span className="text-base-content/70">
+                            <a className="link link-primary no-underline hover:underline" href="https://github.com/igtm" target="_blank" rel="noreferrer">@igtm</a>,{" "}
+                            <a className="link link-primary no-underline hover:underline" href="https://github.com/t-gyo" target="_blank" rel="noreferrer">@t-gyo</a>,{" "}
+                            <a className="link link-primary no-underline hover:underline" href="https://github.com/ymdarake" target="_blank" rel="noreferrer">@ymdarake</a>{" "}
+                            が、ゆるーくフロントエンド周りの気になった記事を紹介しながらお届けします。
+                        </span>
+                    </Paragraph>
+                 </div>
+                 
+                 <div className="p-4 bg-base-200 rounded-lg text-sm text-base-content/70">
+                     <p>
+                       YouTube Liveで作成したフォントで表示されます。
+                      <Link
+                        href="/Tue_ofuro_kana-Regular.otf"
+                        className="link link-secondary ml-1"
+                      >
+                        ひらがなだけ自作フォント
+                      </Link>
+                     </p>
+                </div>
+            </div>
         </div>
-
-        <ul className="grid gap-y-8">
-          {episodes.map((e) => {
-            if (isPodcastEpisode(e)) {
-              return <PodcastEpisodeListItem key={e.guid} episode={e} />;
-            }
-            return <YouTubeEpisodeListItem key={e.videoId} episode={e} />;
-          })}
-        </ul>
       </main>
     </>
   );
