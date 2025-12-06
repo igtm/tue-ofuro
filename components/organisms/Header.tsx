@@ -24,7 +24,7 @@ export const Header: FC = () => {
     }
   };
   return (
-    <header className="flex flex-wrap items-center justify-between shadow bg-base-100">
+    <header className="flex flex-wrap items-center justify-between shadow bg-base-100 px-4">
       <HeaderLogo />
 
       <div className="hidden md:block">

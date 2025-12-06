@@ -18,6 +18,22 @@ class MyDocument extends Document {
     return (
       <Html lang="ja">
         <Head>
+        {process.env.NODE_ENV === "development" && (
+          <>
+            <Script
+              src="//unpkg.com/react-grab/dist/index.global.js"
+              strategy="beforeInteractive"
+            />
+            <Script
+              src="//unpkg.com/@react-grab/cursor/dist/client.global.js"
+              strategy="lazyOnload"
+            />
+            <Script
+              src="//unpkg.com/@react-grab/claude-code/dist/client.global.js"
+              strategy="lazyOnload"
+            />
+          </>
+        )}
           <Script
             id="darkmode-toggle"
             strategy="beforeInteractive"
