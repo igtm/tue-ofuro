@@ -9,6 +9,9 @@ import {
   useCustomFontDispatchContext,
 } from "../context/CustomFont";
 import {
+  getTranscriptHrefByVideoId,
+} from "../lib/transcripts";
+import {
   isPodcastEpisode,
   isPodcastEpisodes,
   isYouTubeEpisodes,
@@ -20,13 +23,32 @@ import { useScrollRestoration } from "../hooks/useScrollRestoration";
 
 type Props = {
   episodes: (PodcastEpisode | YouTubeEpisode)[];
+  transcriptHrefByVideoId: Record<string, string>;
+};
+
+type YouTubeSearchResponse = {
+  items?: Array<{
+    id: {
+      videoId: string;
+    };
+    snippet: {
+      liveBroadcastContent: string;
+      title: string;
+      description: string;
+      publishedAt: string;
+      thumbnails: {
+        high: {
+          url: string;
+        };
+      };
+    };
+  }>;
 };
 
 import { useState } from "react";
 import { HeroEpisode } from "../components/organisms/HeroEpisode";
 import { EpisodeCard } from "../components/molecules/EpisodeCard";
-
-const Page: NextPage<Props> = ({ episodes }) => {
+const Page: NextPage<Props> = ({ episodes, transcriptHrefByVideoId }) => {
   useScrollRestoration();
   const customFontContext = useCustomFontContext();
   const customFontDispatchContext = useCustomFontDispatchContext();
@@ -40,6 +62,10 @@ const Page: NextPage<Props> = ({ episodes }) => {
   const heroEpisode = episodes[0];
   const listEpisodes = episodes.slice(1, visibleCount);
   const hasMore = visibleCount < episodes.length;
+  const heroTranscriptHref =
+    heroEpisode != null && !isPodcastEpisode(heroEpisode)
+      ? transcriptHrefByVideoId[heroEpisode.videoId]
+      : undefined;
 
   return (
     <>
@@ -50,7 +76,10 @@ const Page: NextPage<Props> = ({ episodes }) => {
         {/* Full Width Hero Section */}
         {heroEpisode && (
           <div className="w-full mb-12">
-             <HeroEpisode episode={heroEpisode} />
+             <HeroEpisode
+               episode={heroEpisode}
+               transcriptHref={heroTranscriptHref}
+             />
           </div>
         )}
 
@@ -82,7 +111,14 @@ const Page: NextPage<Props> = ({ episodes }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                 {listEpisodes.map((e) => (
                     <div key={isPodcastEpisode(e) ? e.guid : e.videoId}>
-                        <EpisodeCard episode={e} />
+                        <EpisodeCard
+                          episode={e}
+                          transcriptHref={
+                            isPodcastEpisode(e)
+                              ? undefined
+                              : transcriptHrefByVideoId[e.videoId]
+                          }
+                        />
                     </div>
                 ))}
                 </div>
@@ -143,9 +179,9 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     const res = await fetch(
       `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=50&order=date&channelId=UCEpBWGBKeawXcNupDevCmSg&key=${process.env.YOUTUBE_API_KEY}`
     );
-    const data = await res.json();
+    const data = (await res.json()) as YouTubeSearchResponse;
     const videos =
-      data.items?.map((item: any) => ({
+      data.items?.map((item) => ({
         videoId: item.id.videoId,
         isLive: item.snippet.liveBroadcastContent === "live",
         title: item.snippet.title,
@@ -170,6 +206,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       return {
         props: {
           episodes: videoAndFeed,
+          transcriptHrefByVideoId: getTranscriptHrefByVideoId(),
         },
         revalidate: 3600,
       };
@@ -181,6 +218,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
       episodes: [],
+      transcriptHrefByVideoId: {},
     },
     revalidate: 3600,
   };

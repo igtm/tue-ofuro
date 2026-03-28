@@ -1,0 +1,123 @@
+{
+  "kind": "youtube-manual-chapters",
+  "createdAt": "2026-03-28T17:40:00+09:00",
+  "target": {
+    "episodeNumber": 172,
+    "videoId": "LAHIOeIbtZg",
+    "videoUrl": "https://www.youtube.com/watch?v=LAHIOeIbtZg",
+    "title": "GPT-5.4の衝撃！Codex 5.3 vs Opus 4.6の覇権争いとGitHub Copilot SDKで変わる開発現場 #172"
+  },
+  "sources": {
+    "notion": true,
+    "captions": true,
+    "transcription": false
+  },
+  "chapterText": "## Chapters\n00:00 オープニング\n08:58 Claude CodeでAndroidアプリをリファクタする\n15:00 UIイベントのシミュレーションとSDK不具合検知\n17:20 GPT-5.4 XとCodex 5.3の第一印象\n22:00 GitHub Copilot SDKでエージェントを自作する\n25:00 アービトラージbotと投資雑談\n35:00 政府系APIとデジタル庁CLI\n39:40 SWEベンチで見るCodex 5.3 vs Opus 4.6\n46:50 GPT-5.4の100万コンテキスト\n51:30 Claude Codeのスキル管理とMCP不要論\n56:30 調査・実装・レビューを分けるエージェント運用\n1:02:50 Gemini 3.1 Flash-LiteとAIレビュー\n1:10:00 cronで起こす常駐ボット\n1:18:00 AI人材流出とAppleのAI戦略\n1:25:30 AI時代に求められるエンジニア像\n1:31:20 Ghosttyと分割ターミナル\n1:35:00 GPT-5.4 APIとコーディング性能\n1:45:00 デジタル庁のガバメントAI\n2:00:00 WebゲームをSteamに出す話\n2:05:00 会社でClaude Desktopを導入する\n",
+  "chapters": [
+    {
+      "startSec": 0,
+      "timestamp": "00:00",
+      "title": "オープニング"
+    },
+    {
+      "startSec": 538,
+      "timestamp": "08:58",
+      "title": "Claude CodeでAndroidアプリをリファクタする"
+    },
+    {
+      "startSec": 900,
+      "timestamp": "15:00",
+      "title": "UIイベントのシミュレーションとSDK不具合検知"
+    },
+    {
+      "startSec": 1040,
+      "timestamp": "17:20",
+      "title": "GPT-5.4 XとCodex 5.3の第一印象"
+    },
+    {
+      "startSec": 1320,
+      "timestamp": "22:00",
+      "title": "GitHub Copilot SDKでエージェントを自作する"
+    },
+    {
+      "startSec": 1500,
+      "timestamp": "25:00",
+      "title": "アービトラージbotと投資雑談"
+    },
+    {
+      "startSec": 2100,
+      "timestamp": "35:00",
+      "title": "政府系APIとデジタル庁CLI"
+    },
+    {
+      "startSec": 2380,
+      "timestamp": "39:40",
+      "title": "SWEベンチで見るCodex 5.3 vs Opus 4.6"
+    },
+    {
+      "startSec": 2810,
+      "timestamp": "46:50",
+      "title": "GPT-5.4の100万コンテキスト"
+    },
+    {
+      "startSec": 3090,
+      "timestamp": "51:30",
+      "title": "Claude Codeのスキル管理とMCP不要論"
+    },
+    {
+      "startSec": 3390,
+      "timestamp": "56:30",
+      "title": "調査・実装・レビューを分けるエージェント運用"
+    },
+    {
+      "startSec": 3770,
+      "timestamp": "1:02:50",
+      "title": "Gemini 3.1 Flash-LiteとAIレビュー"
+    },
+    {
+      "startSec": 4200,
+      "timestamp": "1:10:00",
+      "title": "cronで起こす常駐ボット"
+    },
+    {
+      "startSec": 4680,
+      "timestamp": "1:18:00",
+      "title": "AI人材流出とAppleのAI戦略"
+    },
+    {
+      "startSec": 5130,
+      "timestamp": "1:25:30",
+      "title": "AI時代に求められるエンジニア像"
+    },
+    {
+      "startSec": 5480,
+      "timestamp": "1:31:20",
+      "title": "Ghosttyと分割ターミナル"
+    },
+    {
+      "startSec": 5700,
+      "timestamp": "1:35:00",
+      "title": "GPT-5.4 APIとコーディング性能"
+    },
+    {
+      "startSec": 6300,
+      "timestamp": "1:45:00",
+      "title": "デジタル庁のガバメントAI"
+    },
+    {
+      "startSec": 7200,
+      "timestamp": "2:00:00",
+      "title": "WebゲームをSteamに出す話"
+    },
+    {
+      "startSec": 7500,
+      "timestamp": "2:05:00",
+      "title": "会社でClaude Desktopを導入する"
+    }
+  ],
+  "diagnostics": [
+    "manual chapters from YouTube ja-orig auto captions",
+    "topic labels aligned with current description topics and transcript snippets",
+    "replaces broken transcript-only auto chapters"
+  ]
+}

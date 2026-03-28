@@ -1,0 +1,95 @@
+{
+  "kind": "youtube-manual-chapters",
+  "createdAt": "2026-03-27T22:28:00+09:00",
+  "target": {
+    "episodeNumber": 173,
+    "videoId": "zGM-gkPuqaw",
+    "videoUrl": "https://www.youtube.com/watch?v=zGM-gkPuqaw",
+    "title": "Chrome 146とVite 8の衝撃！Claude 4.6の1MコンテキストとNode.js年次リリースで変わる開発現場 #173"
+  },
+  "chapterText": "00:00 オープニング\n03:22 Chromeの2週リリースとNode.js年次リリース\n12:21 CSSセンタリングの新しい書き方\n46:37 Scroll-Driven Animationsとスクロールトリガー\n1:27:20 field-sizingでinput/textareaを自動伸縮\n1:32:16 Node.js新サイクルとTypeScript 6、Docker Agent\n1:37:18 グローバルパーミッションとModel Armor\n1:40:43 iOS WebKitデバッグ\n1:42:38 Vite 8とRolldown\n1:47:51 GPT-5.4の使用感と利用上限\n1:54:06 AIレビューでPRを軽くする\n2:20:24 AIニュース: Gemini Embedding 2とUI比較\n2:24:32 Lightpandaブラウザとは何か\n2:27:10 ロングコンテキストはどこまで実用か\n2:29:01 長時間エージェント実行とHyperland運用\n2:31:47 エンディング\n",
+  "chapters": [
+    {
+      "startSec": 0,
+      "timestamp": "00:00",
+      "title": "オープニング"
+    },
+    {
+      "startSec": 202,
+      "timestamp": "03:22",
+      "title": "Chromeの2週リリースとNode.js年次リリース"
+    },
+    {
+      "startSec": 741,
+      "timestamp": "12:21",
+      "title": "CSSセンタリングの新しい書き方"
+    },
+    {
+      "startSec": 2797,
+      "timestamp": "46:37",
+      "title": "Scroll-Driven Animationsとスクロールトリガー"
+    },
+    {
+      "startSec": 5240,
+      "timestamp": "1:27:20",
+      "title": "field-sizingでinput/textareaを自動伸縮"
+    },
+    {
+      "startSec": 5536,
+      "timestamp": "1:32:16",
+      "title": "Node.js新サイクルとTypeScript 6、Docker Agent"
+    },
+    {
+      "startSec": 5838,
+      "timestamp": "1:37:18",
+      "title": "グローバルパーミッションとModel Armor"
+    },
+    {
+      "startSec": 6043,
+      "timestamp": "1:40:43",
+      "title": "iOS WebKitデバッグ"
+    },
+    {
+      "startSec": 6158,
+      "timestamp": "1:42:38",
+      "title": "Vite 8とRolldown"
+    },
+    {
+      "startSec": 6471,
+      "timestamp": "1:47:51",
+      "title": "GPT-5.4の使用感と利用上限"
+    },
+    {
+      "startSec": 6846,
+      "timestamp": "1:54:06",
+      "title": "AIレビューでPRを軽くする"
+    },
+    {
+      "startSec": 8424,
+      "timestamp": "2:20:24",
+      "title": "AIニュース: Gemini Embedding 2とUI比較"
+    },
+    {
+      "startSec": 8672,
+      "timestamp": "2:24:32",
+      "title": "Lightpandaブラウザとは何か"
+    },
+    {
+      "startSec": 8830,
+      "timestamp": "2:27:10",
+      "title": "ロングコンテキストはどこまで実用か"
+    },
+    {
+      "startSec": 8941,
+      "timestamp": "2:29:01",
+      "title": "長時間エージェント実行とHyperland運用"
+    },
+    {
+      "startSec": 9107,
+      "timestamp": "2:31:47",
+      "title": "エンディング"
+    }
+  ],
+  "appliedToYoutube": true,
+  "transcriptArtifact": "/home/igtm/tmp/tue-ofuro-workspace/plugins/youtube-transcribe/tmp/transcribe/1774613529831-chunk_000_start000000_transcript_73b50796-0000-2ad8-9aff-24058871e270.combined.json"
+}
