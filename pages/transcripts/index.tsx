@@ -193,9 +193,13 @@ const Page: NextPage<Props> = ({ transcripts }) => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
+  const transcripts = JSON.parse(
+    JSON.stringify(getAllTranscripts())
+  ) as TranscriptEpisode[];
+
   return {
     props: {
-      transcripts: getAllTranscripts(),
+      transcripts,
     },
   };
 };

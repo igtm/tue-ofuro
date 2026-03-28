@@ -252,7 +252,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
 
   return {
     props: {
-      transcript: transcript,
+      transcript: JSON.parse(JSON.stringify(transcript)) as TranscriptEpisode,
     },
   };
 };
