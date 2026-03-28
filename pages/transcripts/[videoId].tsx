@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
+
 import { useRouter } from "next/router";
-import { Fragment, ReactNode, useEffect, useMemo, useState } from "react";
+import { Fragment, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { TranscriptPlayer } from "../../components/organisms/TranscriptPlayer";
 import { formatSecondsAsTimestamp } from "../../lib/transcript-format";
 import {
@@ -74,6 +74,7 @@ const Page: NextPage<Props> = ({ transcript }) => {
 
   const [currentTime, setCurrentTime] = useState(initialStartSec);
   const [seekToSec, setSeekToSec] = useState<number | null>(initialStartSec);
+  const transcriptListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setCurrentTime(initialStartSec);
@@ -89,6 +90,20 @@ const Page: NextPage<Props> = ({ transcript }) => {
 
     return activeCue?.index;
   }, [currentTime, transcript.cues]);
+
+  // アクティブな cue が変わったとき、スクロール領域内で自動スクロール
+  useEffect(() => {
+    if (activeCueIndex == null || !transcriptListRef.current) {
+      return;
+    }
+
+    const el = transcriptListRef.current.querySelector(
+      `#cue-${activeCueIndex}`
+    );
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [activeCueIndex]);
 
   const matchingCueCount = useMemo(() => {
     const normalizedQuery = normalizeSearchText(searchQuery);
@@ -124,63 +139,65 @@ const Page: NextPage<Props> = ({ transcript }) => {
       <Head>
         <title>{transcript.title} | Transcript | 火曜日のおフロ</title>
       </Head>
-      <main className="grid gap-8">
-        <section className="grid gap-5">
-          <div className="flex flex-wrap items-center gap-3">
-            {transcript.episodeNumber != null ? (
-              <span className="badge badge-primary text-white">
-                #{transcript.episodeNumber}
-              </span>
-            ) : null}
-            <span className="badge badge-outline">
-              {transcript.cues.length} cues
-            </span>
-            <span className="badge badge-outline">
-              {formatSecondsAsTimestamp(transcript.durationSec)}
-            </span>
-            <Link
-              href={transcript.videoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="link link-primary"
-            >
-              YouTubeで開く
-            </Link>
-          </div>
+      {/* 
+        レイアウト:
+        - モバイル: 縦積み（上: 動画、下: transcript スクロール）
+        - lg 以上: 左右2カラム（左: 動画+メタ情報、右: transcript スクロール）
+      */}
+      <main className="flex flex-col lg:flex-row h-full gap-4 lg:gap-6">
+        {/* 左カラム: YouTube プレーヤー + メタ情報 */}
+        <div className="shrink-0 lg:shrink lg:w-1/2 xl:w-3/5 lg:flex lg:flex-col lg:py-2">
+          {/* YouTube プレーヤー - lg以上では残りの高さに収まる */}
+          <section className="mb-4 lg:flex-1 lg:min-h-0">
+            <TranscriptPlayer
+              title={transcript.title}
+              videoId={transcript.videoId}
+              initialStartSec={initialStartSec}
+              seekToSec={seekToSec}
+              onCurrentTimeChange={setCurrentTime}
+            />
+          </section>
 
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold leading-tight">
+          {/* メタ情報 */}
+          <section className="grid gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              {transcript.episodeNumber != null ? (
+                <span className="badge badge-primary text-white">
+                  #{transcript.episodeNumber}
+                </span>
+              ) : null}
+              <span className="badge badge-outline">
+                {transcript.cues.length} cues
+              </span>
+              <span className="badge badge-outline">
+                {formatSecondsAsTimestamp(transcript.durationSec)}
+              </span>
+            </div>
+
+            <h1 className="text-xl md:text-2xl font-bold leading-tight">
               {transcript.title}
             </h1>
-            <p className="text-base-content/70 mt-3">
-              transcript をクリックすると上の YouTube player がその時刻へ移動します。再生中の行は自動でハイライトされます。
-            </p>
+
             {searchQuery ? (
-              <p className="text-sm text-base-content/60 mt-2">
+              <p className="text-sm text-base-content/60">
                 「{searchQuery}」に一致する cue: {matchingCueCount}
               </p>
             ) : null}
-          </div>
-        </section>
 
-        <section className="grid gap-5">
-          <TranscriptPlayer
-            title={transcript.title}
-            videoId={transcript.videoId}
-            initialStartSec={initialStartSec}
-            seekToSec={seekToSec}
-            onCurrentTimeChange={setCurrentTime}
-          />
-        </section>
+            <p className="text-sm text-base-content/50 hidden lg:block">
+              transcript をクリックすると YouTube player がその時刻へ移動します。再生中の行は自動でハイライトされます。
+            </p>
+          </section>
+        </div>
 
-        <section className="grid gap-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Transcript</h2>
-            <Link href="/transcripts" className="link link-secondary">
-              一覧へ戻る
-            </Link>
-          </div>
+        {/* モバイルのみ: 区切り線 */}
+        <div className="border-b border-base-300 lg:hidden" />
 
+        {/* 右カラム: Transcript リスト（スクロール） */}
+        <div
+          ref={transcriptListRef}
+          className="flex-1 overflow-y-auto py-2 lg:w-1/2 xl:w-2/5 lg:border-l lg:border-base-300 lg:pl-6"
+        >
           <div className="grid gap-3">
             {transcript.cues.map((cue) => {
               const isActive = cue.index === activeCueIndex;
@@ -216,7 +233,7 @@ const Page: NextPage<Props> = ({ transcript }) => {
               );
             })}
           </div>
-        </section>
+        </div>
       </main>
     </>
   );

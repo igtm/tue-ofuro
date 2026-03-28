@@ -159,11 +159,11 @@ export const TranscriptPlayer: VFC<Props> = ({
   }, [isReady, onCurrentTimeChange]);
 
   return (
-    <div className="rounded-2xl overflow-hidden border border-base-300 bg-neutral shadow-xl">
-      <div className="aspect-video">
+    <div className="rounded-2xl overflow-hidden border border-base-300 bg-neutral shadow-xl h-full">
+      <div className="relative w-full h-full" style={{ paddingTop: "56.25%" }}>
         <div
           id={playerContainerId}
-          className="w-full h-full"
+          className="absolute inset-0 w-full h-full"
           aria-label={title}
         />
       </div>

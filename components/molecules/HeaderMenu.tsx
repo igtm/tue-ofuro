@@ -55,7 +55,6 @@ export const HeaderMenu: FC = () => {
         <nav className="pt-8 grid gap-y-2">
           <ThemeToggle />
           <HeaderMenuNavLink href="/">ポッドキャスト</HeaderMenuNavLink>
-          <HeaderMenuNavLink href="/transcripts">書き起こし</HeaderMenuNavLink>
           <HeaderMenuNavLink href="/blog">ブログ</HeaderMenuNavLink>
           <HeaderMenuNavLink href="/fortune-telling">占い</HeaderMenuNavLink>
           <HeaderMenuNavLink href="/game">ゲーム</HeaderMenuNavLink>

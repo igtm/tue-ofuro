@@ -11,7 +11,6 @@ export const HeaderNav: FC = () => (
     >
       ポッドキャスト
     </Link>
-    <HeaderNavLink href="/transcripts">書き起こし</HeaderNavLink>
     <HeaderNavLink href="/blog">ブログ</HeaderNavLink>
     <HeaderNavLink href="/fortune-telling">占い</HeaderNavLink>
     <HeaderNavLink href="/game">ゲーム</HeaderNavLink>
