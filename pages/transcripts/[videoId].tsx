@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, ReactNode, useEffect, useMemo, useState } from "react";
 import { TranscriptPlayer } from "../../components/organisms/TranscriptPlayer";
+import { formatSecondsAsTimestamp } from "../../lib/transcript-format";
 import {
-  formatSecondsAsTimestamp,
   getAllTranscripts,
   getTranscriptByVideoId,
 } from "../../lib/transcripts";

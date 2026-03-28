@@ -3,10 +3,8 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, ReactNode, useMemo } from "react";
-import {
-  formatSecondsAsTimestamp,
-  getAllTranscripts,
-} from "../../lib/transcripts";
+import { formatSecondsAsTimestamp } from "../../lib/transcript-format";
+import { getAllTranscripts } from "../../lib/transcripts";
 import { TranscriptEpisode, TranscriptSearchHit } from "../../types";
 
 type Props = {
