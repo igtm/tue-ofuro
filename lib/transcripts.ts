@@ -12,6 +12,7 @@ const transcriptSourcesDirectory = path.join(
   "data",
   "transcript-artifacts"
 );
+const CHUNK_TIMESTAMP_SLOP_SEC = 30;
 
 type RawTranscriptArtifact = {
   kind?: string;
@@ -370,14 +371,21 @@ function parseChunkTimeRangeFromPath(filePath: string) {
     };
   }
 
-  const startClockMatch = baseName.match(/start(?<clock>\d{6})(?:[^0-9]|$)/u);
-  if (startClockMatch?.groups?.clock) {
-    const clock = startClockMatch.groups.clock;
-    const hours = Number(clock.slice(0, 2));
-    const minutes = Number(clock.slice(2, 4));
-    const seconds = Number(clock.slice(4, 6));
+  const startTokenMatch = baseName.match(/start(?<seconds>\d{6})(?:[^0-9]|$)/u);
+  if (startTokenMatch?.groups?.seconds) {
+    const startSec = Number(startTokenMatch.groups.seconds);
+    const durationMatch = baseName.match(/dur(?<seconds>\d{6})(?:[^0-9]|$)/u);
+    const durationSec = durationMatch?.groups?.seconds
+      ? Number(durationMatch.groups.seconds)
+      : undefined;
+
     return {
-      startSec: hours * 3600 + minutes * 60 + seconds,
+      // youtube-transcribe writes startNNNNNN as zero-padded absolute seconds.
+      startSec,
+      endSec:
+        durationSec != null
+          ? startSec + durationSec
+          : undefined,
     };
   }
 
@@ -393,13 +401,24 @@ function applyInferredTimeRangeToCues(
     return cues;
   }
 
+  const usesRelativeTimeline =
+    ext !== ".txt" &&
+    inferredTimeRange.startSec > 0 &&
+    cues.length > 0 &&
+    cues[0].startSec < inferredTimeRange.startSec;
+  const sanitizedSourceCues = sanitizeCuesWithinInferredRange(
+    cues,
+    inferredTimeRange,
+    usesRelativeTimeline
+  );
+
   if (
     ext === ".txt" &&
     cues.length === 1 &&
     cues[0].startSec === 0 &&
     cues[0].endSec === 0
   ) {
-    return cues.map((cue) => ({
+    return sanitizedSourceCues.map((cue) => ({
       ...cue,
       startSec: inferredTimeRange.startSec,
       endSec:
@@ -408,19 +427,36 @@ function applyInferredTimeRangeToCues(
     }));
   }
 
-  if (
-    inferredTimeRange.startSec > 0 &&
-    cues.length > 0 &&
-    cues[0].startSec < inferredTimeRange.startSec
-  ) {
-    return cues.map((cue) => ({
+  if (usesRelativeTimeline) {
+    return sanitizedSourceCues.map((cue) => ({
       ...cue,
       startSec: cue.startSec + inferredTimeRange.startSec,
       endSec: cue.endSec + inferredTimeRange.startSec,
     }));
   }
 
-  return cues;
+  return sanitizedSourceCues;
+}
+
+function sanitizeCuesWithinInferredRange(
+  cues: TranscriptCue[],
+  inferredTimeRange: { startSec: number; endSec?: number },
+  usesRelativeTimeline: boolean
+) {
+  if (inferredTimeRange.endSec == null) {
+    return cues.filter((cue) => cue.endSec >= cue.startSec);
+  }
+
+  const maxEndSec = usesRelativeTimeline
+    ? inferredTimeRange.endSec - inferredTimeRange.startSec + CHUNK_TIMESTAMP_SLOP_SEC
+    : inferredTimeRange.endSec + CHUNK_TIMESTAMP_SLOP_SEC;
+
+  return cues.filter((cue) => {
+    if (cue.endSec < cue.startSec) {
+      return false;
+    }
+    return cue.startSec <= maxEndSec && cue.endSec <= maxEndSec;
+  });
 }
 
 function parseTextSource(filePath: string): ParsedTranscriptSource | null {
