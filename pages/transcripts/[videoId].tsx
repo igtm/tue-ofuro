@@ -171,21 +171,6 @@ const Page: NextPage<Props> = ({ transcript }) => {
             seekToSec={seekToSec}
             onCurrentTimeChange={setCurrentTime}
           />
-
-          <div className="rounded-2xl bg-base-200 border border-base-300 p-4">
-            <div className="flex flex-wrap gap-2">
-              {transcript.chapters.map((chapter) => (
-                <button
-                  key={`${chapter.timestamp}-${chapter.title}`}
-                  type="button"
-                  className="btn btn-sm btn-outline"
-                  onClick={() => handleSeek(chapter.startSec)}
-                >
-                  {chapter.timestamp} {chapter.title}
-                </button>
-              ))}
-            </div>
-          </div>
         </section>
 
         <section className="grid gap-4">

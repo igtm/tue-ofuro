@@ -134,7 +134,7 @@ const Page: NextPage<Props> = ({ transcripts }) => {
                       </div>
                       <h3 className="text-xl font-bold">{transcript.title}</h3>
                       <p className="text-sm text-base-content/70">
-                        {transcript.chapters.length} chapters /{" "}
+                        {transcript.cues.length} cues /{" "}
                         {formatSecondsAsTimestamp(transcript.durationSec)}
                       </p>
                     </div>
