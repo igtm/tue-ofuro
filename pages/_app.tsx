@@ -13,13 +13,17 @@ import "../styles/global.css";
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const isHome = router.pathname === "/";
+  // Transcript詳細ページでは外側スクロールを無効にし、ページ内スクロールのみにする
+  const isTranscriptDetail = router.pathname === "/transcripts/[videoId]";
 
   return (
     <div>
       <CustomFontStateProvider>
         <FloatingPlayAreaStateProvider>
           <FontRoot>
-            <div className="flex flex-col min-h-screen relative z-0">
+            <div className={`flex flex-col relative z-0 ${
+              isTranscriptDetail ? "h-screen overflow-hidden" : "min-h-screen"
+            }`}>
               <div className="flex-shrink-0 sticky top-0 z-10 w-full">
                 <Header />
               </div>
@@ -28,15 +32,19 @@ const App = ({ Component, pageProps }: AppProps) => {
                 className={
                   isHome
                     ? "flex-grow w-full"
+                    : isTranscriptDetail
+                    ? "flex-1 overflow-hidden w-full px-4 lg:px-6"
                     : "flex-grow w-full max-w-screen-md m-auto mt-8 mb-8 px-4"
                 }
               >
                 <Component {...pageProps} />
               </div>
 
-              <div className="flex-shrink-0">
-                <Footer />
-              </div>
+              {!isTranscriptDetail && (
+                <div className="flex-shrink-0">
+                  <Footer />
+                </div>
+              )}
             </div>
           </FontRoot>
           <FloatingPlayArea />
