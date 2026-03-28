@@ -139,10 +139,16 @@ function isRawChapterArtifact(value: unknown): value is RawChapterArtifact {
 function inferVideoIdFromPath(filePath: string): string | undefined {
   const baseName = path.basename(filePath);
   const stem = baseName.replace(/\.[^.]+$/u, "");
-  const match = stem.match(
-    /(?:^|[^A-Za-z0-9_-])([A-Za-z0-9_-]{11})(?=(?:[-_.](?:transcript|captions?|subtitles?|manual-chapters|chapters|combined|full))|$)/u
+
+  const prefixMatch = stem.match(/^([A-Za-z0-9_-]{11})(?=$|[-_.])/u);
+  if (prefixMatch) {
+    return prefixMatch[1];
+  }
+
+  const embeddedMatch = stem.match(
+    /(?:^|[^A-Za-z0-9_-])([A-Za-z0-9_-]{11})(?=$|[-_.])/u
   );
-  return match?.[1];
+  return embeddedMatch?.[1];
 }
 
 function inferEpisodeNumberFromPath(filePath: string): number | undefined {
@@ -315,6 +321,32 @@ function parsePlainTextContent(content: string): TranscriptCue[] {
     return [];
   }
 
+  const timedLines = trimmed
+    .split(/\r?\n/u)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .flatMap((line, index) => {
+      const match = line.match(
+        /^\[(?<start>\d+(?:\.\d+)?)s\s*->\s*(?<end>\d+(?:\.\d+)?)s\]\s*(?<text>.+)$/u
+      );
+      if (!match?.groups?.text) {
+        return [];
+      }
+
+      return [
+        {
+          index: index + 1,
+          startSec: Number(match.groups.start),
+          endSec: Number(match.groups.end),
+          text: match.groups.text.trim(),
+        },
+      ];
+    });
+
+  if (timedLines.length > 0) {
+    return timedLines;
+  }
+
   return [
     {
       index: 1,
@@ -325,11 +357,78 @@ function parsePlainTextContent(content: string): TranscriptCue[] {
   ];
 }
 
+function parseChunkTimeRangeFromPath(filePath: string) {
+  const baseName = path.basename(filePath);
+
+  const minuteRangeMatch = baseName.match(
+    /(?:^|[_-])(?<start>\d{1,3})[_-](?<end>\d{1,3})min(?:[^a-zA-Z]|$)/u
+  );
+  if (minuteRangeMatch?.groups) {
+    return {
+      startSec: Number(minuteRangeMatch.groups.start) * 60,
+      endSec: Number(minuteRangeMatch.groups.end) * 60,
+    };
+  }
+
+  const startClockMatch = baseName.match(/start(?<clock>\d{6})(?:[^0-9]|$)/u);
+  if (startClockMatch?.groups?.clock) {
+    const clock = startClockMatch.groups.clock;
+    const hours = Number(clock.slice(0, 2));
+    const minutes = Number(clock.slice(2, 4));
+    const seconds = Number(clock.slice(4, 6));
+    return {
+      startSec: hours * 3600 + minutes * 60 + seconds,
+    };
+  }
+
+  return null;
+}
+
+function applyInferredTimeRangeToCues(
+  cues: TranscriptCue[],
+  inferredTimeRange: { startSec: number; endSec?: number } | null,
+  ext: string
+) {
+  if (!inferredTimeRange) {
+    return cues;
+  }
+
+  if (
+    ext === ".txt" &&
+    cues.length === 1 &&
+    cues[0].startSec === 0 &&
+    cues[0].endSec === 0
+  ) {
+    return cues.map((cue) => ({
+      ...cue,
+      startSec: inferredTimeRange.startSec,
+      endSec:
+        inferredTimeRange.endSec ??
+        Math.max(inferredTimeRange.startSec, cue.endSec),
+    }));
+  }
+
+  if (
+    inferredTimeRange.startSec > 0 &&
+    cues.length > 0 &&
+    cues[0].startSec < inferredTimeRange.startSec
+  ) {
+    return cues.map((cue) => ({
+      ...cue,
+      startSec: cue.startSec + inferredTimeRange.startSec,
+      endSec: cue.endSec + inferredTimeRange.startSec,
+    }));
+  }
+
+  return cues;
+}
+
 function parseTextSource(filePath: string): ParsedTranscriptSource | null {
   const ext = path.extname(filePath).toLowerCase();
   const content = fs.readFileSync(filePath, "utf8");
   const videoId = inferVideoIdFromPath(filePath);
   const episodeNumber = inferEpisodeNumberFromPath(filePath);
+  const inferredTimeRange = parseChunkTimeRangeFromPath(filePath);
 
   let cues: TranscriptCue[] = [];
   const transcriptSource = `file:${ext.replace(".", "")}`;
@@ -348,6 +447,7 @@ function parseTextSource(filePath: string): ParsedTranscriptSource | null {
     return null;
   }
 
+  cues = applyInferredTimeRangeToCues(cues, inferredTimeRange, ext);
   const durationSec = cues[cues.length - 1]?.endSec ?? 0;
 
   return {
@@ -493,6 +593,139 @@ function getDropInSources() {
   };
 }
 
+function resolveSourceIdentity(
+  source: ParsedTranscriptSource,
+  chapterByVideoId: Map<string, ParsedChapterArtifact>,
+  chapterByEpisodeNumber: Map<number, ParsedChapterArtifact>
+) {
+  const chapterArtifact =
+    (source.videoId ? chapterByVideoId.get(source.videoId) : undefined) ??
+    (source.episodeNumber != null
+      ? chapterByEpisodeNumber.get(source.episodeNumber)
+      : undefined);
+
+  return {
+    videoId: source.videoId ?? chapterArtifact?.target?.videoId,
+    episodeNumber:
+      source.episodeNumber ?? chapterArtifact?.target?.episodeNumber,
+    videoUrl:
+      source.videoUrl ??
+      chapterArtifact?.target?.videoUrl ??
+      buildVideoUrl(source.videoId ?? chapterArtifact?.target?.videoId),
+    chapterArtifact,
+  };
+}
+
+function getTranscriptGroupKey(
+  source: ParsedTranscriptSource,
+  chapterByVideoId: Map<string, ParsedChapterArtifact>,
+  chapterByEpisodeNumber: Map<number, ParsedChapterArtifact>
+) {
+  const resolvedIdentity = resolveSourceIdentity(
+    source,
+    chapterByVideoId,
+    chapterByEpisodeNumber
+  );
+
+  if (resolvedIdentity.videoId) {
+    return `video:${resolvedIdentity.videoId}`;
+  }
+
+  if (resolvedIdentity.episodeNumber != null) {
+    return `episode:${resolvedIdentity.episodeNumber}`;
+  }
+
+  return `file:${source.filePath}`;
+}
+
+function mergeTranscriptSources(
+  transcriptSources: ParsedTranscriptSource[],
+  chapterByVideoId: Map<string, ParsedChapterArtifact>,
+  chapterByEpisodeNumber: Map<number, ParsedChapterArtifact>
+): ParsedTranscriptSource[] {
+  const groupedSources = new Map<string, ParsedTranscriptSource[]>();
+
+  for (const source of transcriptSources) {
+    const groupKey = getTranscriptGroupKey(
+      source,
+      chapterByVideoId,
+      chapterByEpisodeNumber
+    );
+    const group = groupedSources.get(groupKey) ?? [];
+    group.push(source);
+    groupedSources.set(groupKey, group);
+  }
+
+  return Array.from(groupedSources.values()).map((sources) => {
+    const sortedSources = [...sources].sort((left, right) => {
+      const leftStartSec = left.cues[0]?.startSec ?? 0;
+      const rightStartSec = right.cues[0]?.startSec ?? 0;
+      if (leftStartSec !== rightStartSec) {
+        return leftStartSec - rightStartSec;
+      }
+
+      return left.filePath.localeCompare(right.filePath, "ja-JP");
+    });
+
+    const mergedCueKeys = new Set<string>();
+    const mergedCues = sortedSources
+      .flatMap((source) => source.cues)
+      .sort((left, right) => {
+        if (left.startSec !== right.startSec) {
+          return left.startSec - right.startSec;
+        }
+        if (left.endSec !== right.endSec) {
+          return left.endSec - right.endSec;
+        }
+        return left.text.localeCompare(right.text, "ja-JP");
+      })
+      .flatMap((cue) => {
+        const cueKey = `${cue.startSec}:${cue.endSec}:${cue.text}`;
+        if (mergedCueKeys.has(cueKey)) {
+          return [];
+        }
+
+        mergedCueKeys.add(cueKey);
+        return [cue];
+      })
+      .map((cue, index) => ({
+        ...cue,
+        index: index + 1,
+      }));
+
+    const transcriptSource = Array.from(
+      new Set(
+        sortedSources
+          .map((source) => source.transcriptSource)
+          .filter((value) => value.length > 0)
+      )
+    ).join(", ");
+
+    const durationSec =
+      mergedCues[mergedCues.length - 1]?.endSec ??
+      sortedSources[sortedSources.length - 1]?.durationSec ??
+      0;
+
+    const primarySource = sortedSources[0];
+    const resolvedIdentity = resolveSourceIdentity(
+      primarySource,
+      chapterByVideoId,
+      chapterByEpisodeNumber
+    );
+
+    return {
+      filePath: primarySource.filePath,
+      videoId: resolvedIdentity.videoId,
+      videoUrl: resolvedIdentity.videoUrl,
+      episodeNumber: resolvedIdentity.episodeNumber,
+      title: sortedSources.find((source) => source.title)?.title,
+      transcriptSource,
+      durationSec,
+      cues: mergedCues,
+    };
+  });
+}
+
 function normalizeDropInTranscripts(
   transcriptSources: ParsedTranscriptSource[],
   chapterArtifacts: ParsedChapterArtifact[]
@@ -511,20 +744,24 @@ function normalizeDropInTranscripts(
     }
   }
 
-  return transcriptSources.flatMap((source) => {
-    const chapterArtifact =
-      (source.videoId ? chapterByVideoId.get(source.videoId) : undefined) ??
-      (source.episodeNumber != null
-        ? chapterByEpisodeNumber.get(source.episodeNumber)
-        : undefined);
+  return mergeTranscriptSources(
+    transcriptSources,
+    chapterByVideoId,
+    chapterByEpisodeNumber
+  ).flatMap((source) => {
+    const resolvedIdentity = resolveSourceIdentity(
+      source,
+      chapterByVideoId,
+      chapterByEpisodeNumber
+    );
+    const chapterArtifact = resolvedIdentity.chapterArtifact;
 
-    const videoId = source.videoId ?? chapterArtifact?.target?.videoId;
+    const videoId = resolvedIdentity.videoId;
     if (!videoId) {
       return [];
     }
 
-    const episodeNumber =
-      chapterArtifact?.target?.episodeNumber ?? source.episodeNumber;
+    const episodeNumber = resolvedIdentity.episodeNumber;
     const chapters = chapterArtifact?.chapters ?? [];
     const title =
       chapterArtifact?.target?.title ??
