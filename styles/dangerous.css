@@ -4,12 +4,12 @@
 
 .dangerousHTML p,
 .dangerousHTML li {
-  @apply my-2 text-base text-gray-800;
+  @apply my-2 text-lg text-gray-800;
 }
 
 [data-theme="dark"] .dangerousHTML p,
 [data-theme="dark"] .dangerousHTML li {
-  @apply my-2 text-base text-[#A6ADBA];
+  @apply my-2 text-lg text-[#A6ADBA];
 }
 
 .dangerousHTML a {
